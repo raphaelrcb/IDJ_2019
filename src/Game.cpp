@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdio.h>
 #include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -64,7 +63,7 @@ Game::Game (std::string title, int width, int height){
       }
     }
   }
-  state = new State();
+  state = new State();//instancia um novo estado
 }
 
 Game& Game::GetInstance(){
@@ -81,7 +80,7 @@ Game& Game::GetInstance(){
   }
 }
 
-Game::~Game(){
+Game::~Game(){//destrutor desaloca a memória alocada para as funções da SDL
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   Mix_CloseAudio();
@@ -90,15 +89,15 @@ Game::~Game(){
   SDL_Quit();
 }
 
-State& Game::GetState(){
+State& Game::GetState(){//Retorna o estado atual
   return *state;
 }
 
-SDL_Renderer* Game::GetRenderer(){
+SDL_Renderer* Game::GetRenderer(){//Retorna o renderer a ser usado
   return renderer;
 }
 
-void Game::Run(){
+void Game::Run(){//loop principal do jogo
   do{
     state->Update(0);
     state->Render();
