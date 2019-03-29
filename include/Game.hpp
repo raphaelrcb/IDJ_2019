@@ -1,9 +1,8 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL_include.h>
 #include "State.hpp"
-#include "Sprite.hpp"
-#include "Music.hpp"
 
 class Game{
 

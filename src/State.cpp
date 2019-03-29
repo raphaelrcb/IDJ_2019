@@ -1,6 +1,4 @@
-#include <iostream>
-#include <SDL2/SDL.h>
-#include "State.hpp"
+#include "../include/State.hpp"
 
 State::State():bg("assets/img/ocean.jpg"),//o construtor é iniciado já instamnciando bg e music, assim não é necessário usar LoadAssets ainda
   music("assets/audio/stageState.ogg"){

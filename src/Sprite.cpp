@@ -1,12 +1,5 @@
-#include <iostream>
-#include <string>
-#include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 #include "../include/Game.hpp"
 #include "../include/Sprite.hpp"
-#include "../include/State.hpp"
 
 
 Sprite::Sprite(){//seta texture como nullptr (imagem não carregada)
