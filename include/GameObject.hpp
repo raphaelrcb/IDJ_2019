@@ -1,9 +1,12 @@
-#include "string.h"
+#pragma once
+
+#include <string.h>
+#include <stdio.h>
 #include "Component.hpp"
 
 class GameObject{
 private:
-  std::std::vector<Component*> components;
+  std::vector<Component*> components;
   bool IsDead
 public:
   GameObject();

@@ -1,12 +1,16 @@
-#include "string.h"
-#include "GameObject.h"
+#pragma once
+
+#include <string.h>
+#include "GameObject.hpp"
 
 class Component{
 private:
 public:
   Component(GameObject& associated);
   virtual ~Component();
-  void virtual pure Update(float dt);
-  void virtual pure Render();
-  bool virtual pure Is(std::string type);
+  virtual void Update(float dt) = 0;
+  virtual void Render() = 0;
+  virtual bool Is(std::string type) = 0;
+protected:
+  GameObject& associated;
 }

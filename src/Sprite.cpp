@@ -6,7 +6,7 @@ Sprite::Sprite(){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
 }
 
-Sprite::Sprite(std::string file){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+Sprite::Sprite(std::string file): Component(GameObject& associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
   texture = nullptr;
   Open(file);
 }
@@ -41,7 +41,7 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
   clipRect.h = h;
 }
 
-void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui quatro argumentos
+void Sprite::Render(/*int x, int y*/){// wrapper para a SDL_RenderCopy que possui quatro argumentos
   SDL_Rect dstrect;// um dos parâmetros de RenderCOpy, é o retâncgulo de destino, determina a posição da tela em que a textura será renderizada,
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
   dstrect.x = x;
@@ -72,4 +72,11 @@ bool Sprite::IsOpen(){//verifica se a imagem foi aberta
   else {
     return true;
   }
+}
+
+void Sprite::Update(){
+}
+
+void Sprite::Is(std::string type){
+
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObject.hpp"
 #include "Sprite.hpp"
 #include "Music.hpp"
 

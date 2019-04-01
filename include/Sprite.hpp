@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL_include.h>
 
-class Sprite{
+class Sprite: public Component{//implementar update, is e render da classe mãe (component)
   private:
     SDL_Texture* texture;
     int width;
@@ -18,7 +18,7 @@ class Sprite{
     ~Sprite();
     void Open(std::string file);
     void SetClip(int x, int y, int w, int h);
-    void  Render(int x, int y);
+    void  Render(/*int x, int y*/);
     int GetWidth();
     int GetHeight();
     bool IsOpen();

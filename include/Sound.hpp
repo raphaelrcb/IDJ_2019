@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "string.h"
+#include <string.h>
 
 class Sound : public Component {
 private:
