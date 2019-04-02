@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string.h>
+#include <iostream>
 #include "GameObject.hpp"
 
 class Component{
@@ -13,4 +14,4 @@ public:
   virtual bool Is(std::string type) = 0;
 protected:
   GameObject& associated;
-}
+};

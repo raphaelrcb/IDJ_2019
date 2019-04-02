@@ -23,7 +23,7 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
 }
 
 void State::Render(){//etapa 4 de Gamme::Run, renderiza o estado do jogoIsso inclui entidades, cenários, HUD, entre outros. Para esse rabalho, é chamdo apenas o render do fundo (bg).
-  bg.Render(0,0);//renderiza na posição 0,0 da tela (canto esquerdo superior)
+  bg.Render(/*0,0 PASSAR BOX PRA CÁ*/);//renderiza na posição 0,0 da tela (canto esquerdo superior)
 }
 bool State::QuitRequested(){
     return quitRequested;//retorna o nome da flag usada para encerrar o gjogo

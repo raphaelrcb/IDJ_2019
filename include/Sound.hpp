@@ -1,5 +1,10 @@
-#include "Component.h"
+#pragma once
+
+#include <SDL2/SDL_mixer.h>
+#include <iostream>
+#include "Component.hpp"
 #include <string.h>
+
 
 class Sound : public Component {
 private:
@@ -16,4 +21,4 @@ public:
   void Update(float dt);
   void Render();
   void Is(std::string type);
-}
+};
