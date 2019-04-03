@@ -5,9 +5,9 @@ GameObject::GameObject(){//inicializa IsDead como falso
 }
 
 GameObject::~GameObject(){
-  for (int i = components.size(); i > 0 ; i--) {
-    components.erase(components.begin()+i);
-  }
+  // for (int i = components.size(); i > 0 ; i--) {
+  //   components.erase(components.begin()+i);
+  // }
   components.clear();
 }
 
