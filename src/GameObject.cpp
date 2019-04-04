@@ -31,11 +31,11 @@ void GameObject::RequestDelete(){
   IsDead = true;
 }
 
-void GameObject::AddComponent(Component* cpt){
-  component.push_back(cpt)
+void GameObject::AddComponent(std::unique_ptr<Component>* cpt){
+  component.emplace_back(cpt)
 }
 
-void GameObject::RemoveComponent(Component* cpt){
+void GameObject::RemoveComponent(std::unique_ptr<Component>* cpt){
 
   cpt_iterator = std::find(components.begin(), components.end(), cpt);//compara cpt com os valores de vecotr entre begin e end
   if(cpt_iterator != components.end()) {//caso cpt esteja em components, o valor retornado é o iterador do elemento em components
@@ -45,7 +45,7 @@ void GameObject::RemoveComponent(Component* cpt){
   }
 }
 
-Component* GameObject::GetComponent(std::string type){
+std::unique_ptr<Component>* GameObject::GetComponent(std::string type){
 
   int exists = 0;
 
@@ -56,9 +56,8 @@ Component* GameObject::GetComponent(std::string type){
     }
   }
   if (exists == 1 ) {
-    return *(component[i]);
+    return component[i].get();
   } else {
-    return nullptr;
+    return std::nullptr_t;
   }
-}
-;
+};

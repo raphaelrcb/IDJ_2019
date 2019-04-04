@@ -1,8 +1,12 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include "GameObject.hpp"
 #include <string.h>
 #include <iostream>
-#include "GameObject.hpp"
+
+
+class GameObject;
 
 class Component{
 private:

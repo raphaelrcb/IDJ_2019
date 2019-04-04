@@ -32,7 +32,7 @@ void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho fil
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
   SetClip(0, 0, width, height);//seta o clip com as dimensões da imagem
-  SetClip(associated);//seta o box com as dimensões da imagem
+  SetBox(associated);//seta o box com as dimensões da imagem
 }
 
 void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetros sasos
@@ -45,8 +45,8 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 void Sprite::Render(GameObject& associated/*int x, int y*/){// wrapper para a SDL_RenderCopy que possui quatro argumentos
   SDL_Rect dstrect;// um dos parâmetros de RenderCOpy, é o retâncgulo de destino, determina a posição da tela em que a textura será renderizada,
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
-  dstrect.x = x;
-  dstrect.y = y;
+  dstrect.x = associated.box.x;
+  dstrect.y = associated.box.y;
   dstrect.w = GetWidth();
   dstrect.h = GetHeight();
   int RenderError;
@@ -90,5 +90,5 @@ void Sprite::SetBox(GameObject& associated){
   associated.box.x = clipRect.x;
   associated.box.y = clipRect.y;
   associated.box.w = clipRect.w;
-  associated.box.hh = clipRect.h;
+  associated.box.h = clipRect.h;
 }

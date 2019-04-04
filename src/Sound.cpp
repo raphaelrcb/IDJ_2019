@@ -1,4 +1,4 @@
-#include "Sound.hpp"
+#include "../include/Sound.hpp"
 
 #define empty_channel -1 //
 
@@ -13,12 +13,12 @@ Sound::Sound(GameObject& associated, std::string file):Sound::Sound(associated){
 
 Sound::~Sound(){
   if (chunk != nullptr) {
-    Mix_HaltChannel(int channel);
+    Mix_HaltChannel(channel);
   }
-  Mix_FreeChunk(chunk)
+  Mix_FreeChunk(chunk);
 }
 
-void Sound::Play(){
+void Sound::Play(int times){
   if (chunk != nullptr) {
   channel = Mix_PlayChannel(empty_channel, chunk, times -1);//empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
   // loops indica quantas vezes o som deve ser repetido, ou seja, loops = 1 faz tocar duas vezes.
@@ -29,20 +29,27 @@ void Sound::Play(){
 
 void Sound::Stop(){
   if (chunk != nullptr) {
-    Mix_HaltChannel(int channel);
+    Mix_HaltChannel(channel);
   } else {
     std::cout << "Chunk null, no sound to stop" << std::endl;
   }
 }
 
 void Sound::Open(std::string file){
-  Mix_Chunk* LoadError =  Mix_LoadWAV(file);
+  const char* path = file.c_str();
+  Mix_Chunk* LoadError =  Mix_LoadWAV(path);
   if (LoadError == nullptr) {
     std::cout << "Error loadind sound" << std::endl;
   }
 }
 
 bool Sound::IsOpen(){
+  if (chunk == nullptr) {
+    return false;
+  }
+  else {
+    return true;
+  }
 }
 
 void Sound::Update(float dt){
@@ -51,8 +58,8 @@ void Sound::Update(float dt){
 void Sound::Render(){
 }
 
-void Is(std::string type){
-  if (type == "Sound") {
+bool Is(std::string type){
+  if (type == "Sound") {//MUDAR ISS PARA COMPARAÇÃO DE STRING DECENTE
     return true;
   } else {
     return false;

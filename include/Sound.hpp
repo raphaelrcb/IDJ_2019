@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Component.hpp"
+#include "GameObject.hpp"
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
-#include "Component.hpp"
 #include <string.h>
 
 
@@ -20,5 +22,5 @@ public:
   bool IsOpen();
   void Update(float dt);
   void Render();
-  void Is(std::string type);
+  bool Is(std::string type);
 };

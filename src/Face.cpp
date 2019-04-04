@@ -1,6 +1,4 @@
-#pragma once
-
-#include "Face.hpp"
+#include "../include/Face.hpp"
 
 Face::Face(GameObject& associated):Component(associated){
   hitpoints = 50;

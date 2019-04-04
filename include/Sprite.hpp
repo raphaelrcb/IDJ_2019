@@ -23,7 +23,7 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     int GetWidth();
     int GetHeight();
     bool IsOpen();
-    void SetBox(GameObject& associated
+    void SetBox(GameObject& associated);
     void Render();
-    void Is(std::string type);
+    bool Is(std::string type);
 };

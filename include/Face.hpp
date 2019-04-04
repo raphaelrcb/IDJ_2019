@@ -1,8 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <SDL2/SDL.h>
 
-class Sound : public Component {
+class Face : public Component {
 private:
   int hitpoints;
 public:
