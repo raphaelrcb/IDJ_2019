@@ -25,7 +25,7 @@ void Face::Render(){
 }
 
 bool Face::Is(std::string type){
-  if (strcmp(type.c_str(),"Face")) {
+  if (type == "Face") {
     return true;
   } else {
     return false;

@@ -55,18 +55,11 @@ void GameObject::RemoveComponent(Component* cpt){
 
 Component* GameObject::GetComponent(std::string type){
 
-  int exists = 0;
-  unsigned int i;
-
-  for (i = 0; i < components.size(); i++) {
+  for (unsigned int i = 0; i < components.size(); i++) {
     if (components[i]->Is(type)){
-      exists = 1;
-      break;
+      return components[i];//components[i].get();
     }
   }
-  if (exists == 1 ) {
-    return components[i];//components[i].get();
-  } else {
-    return (nullptr);
-  }
+  std::cout << "return null" << '\n';
+  return (nullptr);
 }

@@ -68,6 +68,8 @@ void State::Input() {
 
 		// Se o evento for clique...
 		if(event.type == SDL_MOUSEBUTTONDOWN) {
+    std::cout << "click" << '\n';
+
 
 			// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
 			for(int i = objectArray.size() - 1; i >= 0; --i) {
@@ -78,10 +80,11 @@ void State::Input() {
 				// ao usar get(), violamos esse princípio e estamos menos seguros.
 				// Esse código, assim como a classe Face, é provisório. Futuramente, para
 				// chamar funções de GameObjects, use objectArray[i]->função() direto.
-
 				if(go->box.Contains( (float)mouseX, (float)mouseY ) ) {
 					Face* face = (Face*)go->GetComponent( "Face" );
-					if ( nullptr != face ) {
+          std::cout << "contained "<< face << '\n';
+					if ( face != nullptr ) {
+            std::cout << "damage" << '\n';
 						// Aplica dano
 						face->Damage(std::rand() % 10 + 10);
 						// Sai do loop (só queremos acertar um)
