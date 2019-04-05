@@ -4,6 +4,7 @@
 #include "Rect.hpp"
 #include "Vec2.hpp"
 #include <memory>
+#include <algorithm>
 #include <vector>
 #include <string.h>
 #include <iostream>
@@ -12,7 +13,7 @@ class Component;
 
 class GameObject{
 private:
-  std::vector< std::unique_ptr<Component>* > components;
+  std::vector< std::unique_ptr<Component> > components;
   bool isDead;
 public:
   GameObject();
@@ -21,8 +22,8 @@ public:
   void Render();
   bool IsDead();
   void RequestDelete();
-  void AddComponent(std::unique_ptr<Component>* cpt);
-  void RemoveComponent(std::unique_ptr<Component>* cpt);
-  std::unique_ptr<Component>* GetComponent(std::string type);
+  void AddComponent(std::unique_ptr<Component> cpt);
+  void RemoveComponent(std::unique_ptr<Component> cpt);
+  std::unique_ptr<Component> GetComponent(std::string type);
   Rect box;
 };

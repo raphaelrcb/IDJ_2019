@@ -26,4 +26,5 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     void SetBox(GameObject& associated);
     void Render();
     bool Is(std::string type);
+    void Update(float dt);
 };

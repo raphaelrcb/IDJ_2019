@@ -6,9 +6,11 @@ State::State() /*:    bg("assets/img/ocean.jpg"),//o construtor é iniciado já 
 
   GameObject *bg = new GameObject();
   // Sprite* enemy_sprite = new Sprite("img/penguinface.png");
-  Sprite* bg_sprite;
+  // Sprite* bg_sprite;
+  std::unique_ptr<Sprite>  bg_sprite;
+
   bg_sprite->Open("assets/img/ocean.jpg");
-  bg->AddComponent(bg_sprite);
+  bg->AddComponent(std::move(bg_sprite));
 
   quitRequested = false;//inicializa o quitRequested
   LoadAssets();//carrega as imagens e músicasa serem utilizadas
@@ -104,23 +106,23 @@ void State::AddObject(int mouseX, int mouseY){
   GameObject *enemy = new GameObject();
   // Sprite* enemy_sprite = new Sprite("img/penguinface.png");
 
-  Sprite* enemy_sprite;
+  std::unique_ptr<Sprite> enemy_sprite;
   enemy_sprite->Open("img/penguinface.png");
 
-  enemy->AddComponent(enemy_sprite);
+  enemy->AddComponent(std::move(enemy_sprite));
   enemy->box.x = (mouseX + enemy_sprite->GetWidth())/2 ;
   enemy->box.y = (mouseY + enemy_sprite->GetHeight())/2;
   enemy->box.w = enemy_sprite->GetWidth();
   enemy->box.h = enemy_sprite->GetHeight();
 
   // Sound* enemy_sound = new Sound(enemy, "audio/boom.wav");
-  Sound* enemy_sound;
+  std::unique_ptr<Sound> enemy_sound;
   enemy_sound->Open("audio/boom.wav");
-  enemy->AddComponent(enemy_sound);
+  enemy->AddComponent(std::move(enemy_sound));
 
   // Face* enemy_face = new Face(enemy);
-  Face* enemy_face;
-  enemy->AddComponent(enemy_face);
+  std::unique_ptr<Face> enemy_face;
+  enemy->AddComponent(std::move(enemy_face));
 
   objectArray.emplace_back( enemy);
 }

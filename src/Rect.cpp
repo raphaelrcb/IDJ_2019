@@ -4,4 +4,4 @@
 
 float Rect::Contains(float mouseX, float mouseY){
   return 0.0;
-};
+}

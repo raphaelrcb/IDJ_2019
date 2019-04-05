@@ -2,7 +2,7 @@
 #include "../include/Sprite.hpp"
 
 
-Sprite::Sprite(){//seta texture como nullptr (imagem não carregada)
+Sprite::Sprite():Component(associated){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
 }
 
@@ -75,10 +75,7 @@ bool Sprite::IsOpen(){//verifica se a imagem foi aberta
   }
 }
 
-void Sprite::Update(){
-}
-
-void Sprite::Is(std::string type){
+bool Sprite::Is(std::string type){
   if (type == "Sprite") {
     return true;
   } else {
@@ -91,4 +88,7 @@ void Sprite::SetBox(GameObject& associated){
   associated.box.y = clipRect.y;
   associated.box.w = clipRect.w;
   associated.box.h = clipRect.h;
+}
+void Sprite::Update(float dt){
+
 }
