@@ -4,13 +4,15 @@
 State::State() /*:    bg("assets/img/ocean.jpg"),//o construtor é iniciado já instamnciando bg e music, assim não é necessário usar LoadAssets ainda
   music("assets/audio/stageState.ogg")*/{
 
-  GameObject *bg = new GameObject();
-  // Sprite* enemy_sprite = new Sprite("img/penguinface.png");
+  std::unique_ptr<GameObject> bg = std::unique_ptr<GameObject> (new GameObject());
+  Sprite* bg_sprite = new Sprite(*bg, "assets/img/ocean.jpg");
   // Sprite* bg_sprite;
-  std::unique_ptr<Sprite>  bg_sprite;
+  // Sprite*  bg_sprite = new Sprite();
+  // bg_sprite->Open("assets/img/ocean.jpg");
 
-  bg_sprite->Open("assets/img/ocean.jpg");
-  bg->AddComponent(std::move(bg_sprite));
+  bg->AddComponent(bg_sprite);
+  objectArray.emplace_back(std::move(bg));
+
 
   quitRequested = false;//inicializa o quitRequested
   LoadAssets();//carrega as imagens e músicasa serem utilizadas
@@ -28,7 +30,7 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
   // quitRequested = SDL_QuitRequested();
   State::Input();
   for (unsigned int i = 0; i < objectArray.size(); i++) {
-    if (objectArray[i]->IsDead() == true) {
+    if (objectArray[i]->IsDead()) {
       objectArray.erase(objectArray.begin()+i);
     }
   }
@@ -103,26 +105,30 @@ void State::Input() {
 }
 
 void State::AddObject(int mouseX, int mouseY){
-  GameObject *enemy = new GameObject();
-  // Sprite* enemy_sprite = new Sprite("img/penguinface.png");
+  std::unique_ptr<GameObject> enemy = std::unique_ptr<GameObject> (new GameObject());
 
-  std::unique_ptr<Sprite> enemy_sprite;
-  enemy_sprite->Open("img/penguinface.png");
+  // Sprite* enemy_sprite = new Sprite();
+  // enemy_sprite->Open("img/penguinface.png");
 
-  enemy->AddComponent(std::move(enemy_sprite));
-  enemy->box.x = (mouseX + enemy_sprite->GetWidth())/2 ;
-  enemy->box.y = (mouseY + enemy_sprite->GetHeight())/2;
+  Sprite* enemy_sprite = new Sprite(*enemy, "assets/img/penguinface.png");
+
+  enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 ;
+  enemy->box.y = mouseY - enemy_sprite->GetHeight()/2;
   enemy->box.w = enemy_sprite->GetWidth();
   enemy->box.h = enemy_sprite->GetHeight();
+  enemy->AddComponent(enemy_sprite);
 
-  // Sound* enemy_sound = new Sound(enemy, "audio/boom.wav");
-  std::unique_ptr<Sound> enemy_sound;
-  enemy_sound->Open("audio/boom.wav");
-  enemy->AddComponent(std::move(enemy_sound));
+  // enemy_sprite->SetClip(enemy->box.x, enemy->box.y, enemy->box.w, enemy->box.h);
+  // enemy_sprite->Render(*enemy);
 
-  // Face* enemy_face = new Face(enemy);
-  std::unique_ptr<Face> enemy_face;
-  enemy->AddComponent(std::move(enemy_face));
+  // Sound* enemy_sound;
+  Sound* enemy_sound = new Sound(*enemy, "assets/audio/boom.wav");
+  enemy->AddComponent(enemy_sound);
+  // enemy_sound->Open("audio/boom.wav");
 
-  objectArray.emplace_back( enemy);
+  Face* enemy_face = new Face(*enemy);
+  enemy->AddComponent(enemy_face);
+  // Face* enemy_face;
+
+  objectArray.emplace_back( std::move(enemy));
 }

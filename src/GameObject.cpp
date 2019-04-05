@@ -5,9 +5,6 @@ GameObject::GameObject(){//inicializa IsDead como falso
 }
 
 GameObject::~GameObject(){
-  // for (int i = components.size(); i > 0 ; i--) {
-  //   components.erase(components.begin()+i);
-  // }
   components.clear();
 }
 
@@ -23,7 +20,7 @@ void GameObject::Render(){
   }
 }
 
-bool GameObject::IsDead(){
+bool GameObject::IsDead(){///////////////////////////////////////////checkpoint
   return isDead;
 }
 
@@ -31,26 +28,32 @@ void GameObject::RequestDelete(){
   isDead = true;
 }
 
-void GameObject::AddComponent(std::unique_ptr<Component> cpt){
+void GameObject::AddComponent(Component* cpt){
   components.emplace_back(std::move(cpt));
 }
 
-void GameObject::RemoveComponent(std::unique_ptr<Component> cpt){
-  // std::vector<int>::iterator cpt_iterator;      [&](std::unique_ptr<Component>& p) { return p.get() == cpt;}
+void GameObject::RemoveComponent(Component* cpt){
+  // std::vector<Component*>::iterator cpt_iterator;
   // auto cpt_iterator = std::find_if(components.begin(), components.end(),  [&](std::unique_ptr<Component>& p) { return p.get() == cpt;});//compara cpt com os valores de vecotr entre begin e end
-
   // std::vector<std::unique_ptr<Component>>::iterator cpt_iterator = std::find_if(components.begin(), components.end(), [&](std::unique_ptr<Component>& p) { return p.get() == cpt;});//compara cpt com os valores de vecotr entre begin e end
-  auto const& cpt_iterator = std::find_if(components.begin(), components.end(), std::move(cpt));//compara cpt com os valores de vecotr entre begin e end
-
-
-  if(cpt_iterator != components.end()) {//caso cpt esteja em components, o valor retornado é o iterador do elemento em components
-    components.erase(std::remove(components.begin(), components.begin(), *cpt_iterator));//caso não encontre o elemento, o valor retornado é igual a end
-  } else {
+  // std::vector<Component*>::iterator cpt_iterator = std::find(components.begin(), components.end(), cpt);//compara cpt com os valores de vecotr entre begin e end
+  int it = -1;
+  for (unsigned int i = 0; i < components.size(); i++) {
+    if (components[i] == cpt) {
+      it = i;
+      components.erase(components.begin() + it);
+      break;
+    } else {
     std::cout << "the vector does not contain the component you are looking for" <<  std::endl;
+    }
   }
+
+
+  // if(/*it != -1*/cpt_iterator != components.end()) {//caso cpt esteja em components, o valor retornado é o iterador do elemento em components
+    // components.erase(std::find(components.begin(), components.end(), cpt));//caso não encontre o elemento, o valor retornado é igual a end
 }
 
-std::unique_ptr<Component> GameObject::GetComponent(std::string type){
+Component* GameObject::GetComponent(std::string type){
 
   int exists = 0;
   unsigned int i;
@@ -58,12 +61,12 @@ std::unique_ptr<Component> GameObject::GetComponent(std::string type){
   for (i = 0; i < components.size(); i++) {
     if (components[i]->Is(type)){
       exists = 1;
-      i = components.size();
+      break;
     }
   }
   if (exists == 1 ) {
-    return std::move(components[i]);//components[i].get();
+    return components[i];//components[i].get();
   } else {
-    return std::unique_ptr<Component>(nullptr);
+    return (nullptr);
   }
 }

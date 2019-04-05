@@ -2,8 +2,12 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "Component.hpp"
+#include "Sound.hpp"
+#include <memory>
 
-class Face : public Component {
+
+class Face : public Component{
 private:
   int hitpoints;
 public:

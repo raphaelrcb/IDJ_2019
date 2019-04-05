@@ -14,17 +14,17 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     SDL_Rect clipRect;
 
   public:
-    Sprite();
-    Sprite(std::string file);
+
+    Sprite(GameObject& associated);
+    Sprite(GameObject& associated, std::string file);
     ~Sprite();
     void Open(std::string file);
     void SetClip(int x, int y, int w, int h);
-    void  Render(GameObject& associated/*int x, int y*/);
+    void  Render(/*int x, int y*/);
     int GetWidth();
     int GetHeight();
     bool IsOpen();
-    void SetBox(GameObject& associated);
-    void Render();
+    // void SetBox(GameObject& associated);
     bool Is(std::string type);
     void Update(float dt);
 };

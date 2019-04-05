@@ -7,7 +7,7 @@ Sound::Sound(GameObject& associated):Component(associated){
   chunk = nullptr;
 }
 
-Sound::Sound(GameObject& associated, std::string file):Sound::Sound(associated){
+Sound::Sound(GameObject& associated, std::string file):Component(associated){
   Open(file);
 }
 
@@ -20,10 +20,10 @@ Sound::~Sound(){
 
 void Sound::Play(int times){
   if (chunk != nullptr) {
-  channel = Mix_PlayChannel(empty_channel, chunk, times -1);//empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
+    channel = Mix_PlayChannel(empty_channel, chunk, times -1);//empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
   // loops indica quantas vezes o som deve ser repetido, ou seja, loops = 1 faz tocar duas vezes.
   } else {
-    std::cout << "Chunk null, can't play sound" << std::endl;
+    std::cout << "Chunk null, can't play sound, Error code: "<< SDL_GetError() << std::endl;
   }
 }
 
@@ -31,15 +31,15 @@ void Sound::Stop(){
   if (chunk != nullptr) {
     Mix_HaltChannel(channel);
   } else {
-    std::cout << "Chunk null, no sound to stop" << std::endl;
+    std::cout << "Chunk null, no sound to stop, Error code: "<< SDL_GetError() << std::endl;
   }
 }
 
 void Sound::Open(std::string file){
   const char* path = file.c_str();
-  Mix_Chunk* LoadError =  Mix_LoadWAV(path);
-  if (LoadError == nullptr) {
-    std::cout << "Error loadind sound" << std::endl;
+  chunk =  Mix_LoadWAV(path);
+  if (chunk == nullptr) {
+    std::cout << "Error loadind sound, Error code: "<< SDL_GetError() << std::endl;
   }
 }
 
@@ -58,7 +58,7 @@ void Sound::Update(float dt){
 void Sound::Render(){
 }
 
-bool Is(std::string type){
+bool Sound::Is(std::string type){
   if (type == "Sound") {//MUDAR ISS PARA COMPARAÇÃO DE STRING DECENTE
     return true;
   } else {

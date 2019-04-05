@@ -10,5 +10,7 @@ public:
   float y;
   float w;
   float h;
-  float Contains(float mouseX, float mouseY);
+  Rect();
+  Rect(float a, float b, float c, float d);
+  bool Contains(float mouseX, float mouseY);
 };

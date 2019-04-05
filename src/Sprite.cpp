@@ -2,11 +2,11 @@
 #include "../include/Sprite.hpp"
 
 
-Sprite::Sprite():Component(associated){//seta texture como nullptr (imagem não carregada)
+Sprite::Sprite(GameObject& associated):Component(associated){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
 }
 
-Sprite::Sprite(std::string file): Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+Sprite::Sprite(GameObject& associated, std::string file): Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
   texture = nullptr;
   Open(file);
 }
@@ -32,7 +32,9 @@ void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho fil
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
   SetClip(0, 0, width, height);//seta o clip com as dimensões da imagem
-  SetBox(associated);//seta o box com as dimensões da imagem
+  associated.box.w = width;
+  associated.box.h = height;
+  // SetBox(associated);//seta o box com as dimensões da imagem
 }
 
 void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetros sasos
@@ -42,7 +44,9 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
   clipRect.h = h;
 }
 
-void Sprite::Render(GameObject& associated/*int x, int y*/){// wrapper para a SDL_RenderCopy que possui quatro argumentos
+void Sprite::Render(/*int x, int y*/){// wrapper para a SDL_RenderCopy que possui quatro argumentos
+  // Game& instance = Game::GetInstance();
+
   SDL_Rect dstrect;// um dos parâmetros de RenderCOpy, é o retâncgulo de destino, determina a posição da tela em que a textura será renderizada,
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
   dstrect.x = associated.box.x;
@@ -83,12 +87,11 @@ bool Sprite::Is(std::string type){
   }
 }
 
-void Sprite::SetBox(GameObject& associated){
-  associated.box.x = clipRect.x;
-  associated.box.y = clipRect.y;
-  associated.box.w = clipRect.w;
-  associated.box.h = clipRect.h;
-}
+// void Sprite::SetBox(GameObject& associated){
+//   associated.box.x = clipRect.x;
+//   associated.box.y = clipRect.y;
+//   associated.box.w = clipRect.w;
+//   associated.box.h = clipRect.h;
+// }
 void Sprite::Update(float dt){
-
 }

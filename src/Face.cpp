@@ -1,16 +1,20 @@
 #include "../include/Face.hpp"
 
 Face::Face(GameObject& associated):Component(associated){
-  hitpoints = 50;
+  hitpoints = 1;
 }
 void Face::Damage(int damage){
   hitpoints-=damage;
 
   if (hitpoints <= 0) {
-    associated.RequestDelete();
-    if (associated.GetComponent("Sound") != nullptr) {
-      associated.Play(1);
+
+    Component* cpt = associated.GetComponent("Sound");
+    if (cpt != nullptr){
+      Sound* cpt_sound = dynamic_cast<Sound*>(cpt);
+      cpt_sound->Play(1);
+      // associated.Play(1);
     }
+    associated.RequestDelete();
   }
 }
 
@@ -21,7 +25,7 @@ void Face::Render(){
 }
 
 bool Face::Is(std::string type){
-  if (type == "Face") {
+  if (strcmp(type.c_str(),"Face")) {
     return true;
   } else {
     return false;
