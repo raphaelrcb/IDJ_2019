@@ -61,6 +61,8 @@ Game::Game (std::string title, int width, int height){
     }
   }
   state = new State();//instancia um novo estado
+  srand(time(NULL));
+
 }
 
 Game& Game::GetInstance(){//cria a instância do jogo
