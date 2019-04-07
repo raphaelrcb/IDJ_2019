@@ -1,12 +1,11 @@
 #include "../include/State.hpp"
 #define PI 3.14159265359
 
-State::State() /*:    bg("assets/img/ocean.jpg"),//o construtor é iniciado já instamnciando bg e music, assim não é necessário usar LoadAssets ainda
-  music("assets/audio/stageState.ogg")*/{
+State::State(){
 
-  std::unique_ptr<GameObject> bg = std::unique_ptr<GameObject> (new GameObject());
-  Sprite* bg_sprite = new Sprite(*bg, "assets/img/ocean.jpg");
-  // Sprite* bg_sprite;
+  std::shared_ptr<GameObject> bg = std::shared_ptr<GameObject> (new GameObject());
+  std::shared_ptr<Sprite> bg_sprite(new Sprite(*bg, "assets/img/ocean.jpg"));
+  // Sorite* bg_sprite;
   // Sprite*  bg_sprite = new Sprite();
   // bg_sprite->Open("assets/img/ocean.jpg");
 
@@ -74,18 +73,20 @@ void State::Input() {
 			// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
 			for(int i = objectArray.size() - 1; i >= 0; --i) {
 				// Obtem o ponteiro e casta pra Face.
-				GameObject* go = (GameObject*) objectArray[i].get();
-				// Nota: Desencapsular o ponteiro é algo que devemos evitar ao máximo.
+				std::shared_ptr<GameObject> go = (std::shared_ptr<GameObject>)objectArray[i],get();
+        // GameObject* go = (GameObject*) objectArray[i].get();
+      	// Nota: Desencapsular o ponteiro é algo que devemos evitar ao máximo.
 				// O propósito do unique_ptr é manter apenas uma cópia daquele ponteiro,
 				// ao usar get(), violamos esse princípio e estamos menos seguros.
 				// Esse código, assim como a classe Face, é provisório. Futuramente, para
 				// chamar funções de GameObjects, use objectArray[i]->função() direto.
 				if(go->box.Contains( (float)mouseX, (float)mouseY ) ) {
-					Face* face = (Face*)go->GetComponent( "Face" );
+					std::shared_ptr<Face> face = std::dynamic_pointer_cast<Face>(go->GetComponent( "Face" ));
+          // Face* face = (Face*)go->GetComponent( "Face" ); std::dynamic_pointer_cast<A>
           std::cout << "contained "<< face << '\n';
 					if ( face != nullptr ) {
-            std::cout << "damage" << '\n';
 						// Aplica dano
+            std::cout << "damage" << '\n';
 						face->Damage(std::rand() % 10 + 10);
 						// Sai do loop (só queremos acertar um)
 						break;
@@ -108,30 +109,22 @@ void State::Input() {
 }
 
 void State::AddObject(int mouseX, int mouseY){
-  std::unique_ptr<GameObject> enemy = std::unique_ptr<GameObject> (new GameObject());
+  std::shared_ptr<GameObject> enemy = std::shared_ptr<GameObject> (new GameObject());//instancia um GameObject para o que vai ser colocado no vetor ObjectArray com os componentes do inimigo
 
-  // Sprite* enemy_sprite = new Sprite();
-  // enemy_sprite->Open("img/penguinface.png");
-
-  Sprite* enemy_sprite = new Sprite(*enemy, "assets/img/penguinface.png");
+  std::shared_ptr<Sprite> enemy_sprite(new Sprite(*enemy, "assets/img/penguinface.png"));
+  std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, "assets/audio/boom.wav"));
+  std::shared_ptr<Face> enemy_face(new Face(*enemy));
+  std::cout << "enemy " << enemy_sound <<'\n';
+  // enemy_sound->Play(1);
 
   enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 ;
   enemy->box.y = mouseY - enemy_sprite->GetHeight()/2;
   enemy->box.w = enemy_sprite->GetWidth();
   enemy->box.h = enemy_sprite->GetHeight();
+
   enemy->AddComponent(enemy_sprite);
-
-  // enemy_sprite->SetClip(enemy->box.x, enemy->box.y, enemy->box.w, enemy->box.h);
-  // enemy_sprite->Render(*enemy);
-
-  // Sound* enemy_sound;
-  Sound* enemy_sound = new Sound(*enemy, "assets/audio/boom.wav");
   enemy->AddComponent(enemy_sound);
-  // enemy_sound->Open("audio/boom.wav");
-
-  Face* enemy_face = new Face(*enemy);
   enemy->AddComponent(enemy_face);
-  // Face* enemy_face;
 
-  objectArray.emplace_back( std::move(enemy));
+  objectArray.emplace_back(std::move(enemy));
 }

@@ -7,6 +7,7 @@
 #include <memory>
 
 
+
 class Face : public Component{
 private:
   int hitpoints;

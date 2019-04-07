@@ -12,7 +12,9 @@ Sound::Sound(GameObject& associated, std::string file):Component(associated){
 }
 
 Sound::~Sound(){
+  std::cout << "destructor" << '\n';
   if (chunk != nullptr) {
+    while(Mix_Playing(channel));
     Mix_HaltChannel(channel);
   }
   Mix_FreeChunk(chunk);
@@ -21,6 +23,8 @@ Sound::~Sound(){
 void Sound::Play(int times){
   if (chunk != nullptr) {
     channel = Mix_PlayChannel(empty_channel, chunk, times -1);//empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
+    std::cout << "play " << chunk <<'\n';
+    std::cout << "channel " << channel <<' ' << SDL_GetError() << std::endl;
   // loops indica quantas vezes o som deve ser repetido, ou seja, loops = 1 faz tocar duas vezes.
   } else {
     std::cout << "Chunk null, can't play sound, Error code: "<< SDL_GetError() << std::endl;
@@ -29,7 +33,7 @@ void Sound::Play(int times){
 
 void Sound::Stop(){
   if (chunk != nullptr) {
-    Mix_HaltChannel(channel);
+    Mix_HaltChannel(channel);//para a música no canal dado
   } else {
     std::cout << "Chunk null, no sound to stop, Error code: "<< SDL_GetError() << std::endl;
   }
@@ -59,7 +63,7 @@ void Sound::Render(){
 }
 
 bool Sound::Is(std::string type){
-  if (type == "Sound") {//MUDAR ISS PARA COMPARAÇÃO DE STRING DECENTE
+  if (type == "Sound") {
     return true;
   } else {
     return false;
