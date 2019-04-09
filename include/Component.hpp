@@ -19,3 +19,7 @@ public:
 protected:
   GameObject& associated;
 };
+// + public
+// - private
+// # protected
+// _ static
