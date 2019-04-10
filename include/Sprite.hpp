@@ -20,7 +20,8 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     ~Sprite();
     void Open(std::string file);
     void SetClip(int x, int y, int w, int h);
-    void  Render(/*int x, int y*/);
+    void  Render();
+    void  Render(float x, float y);
     int GetWidth();
     int GetHeight();
     bool IsOpen();
