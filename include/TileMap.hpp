@@ -1,4 +1,6 @@
 #include "TileSet.hpp"
+#include <fstream>
+#include <stdio.h>
 
 class TileMap: public Component{
   private:
@@ -11,9 +13,7 @@ class TileMap: public Component{
 
   public:
 
-    TileMap();
-    ~TileMap();
-    TileMap(GameObject& associated, std::string, TileSet* tileSet);
+    TileMap(GameObject& associated, std::string file, TileSet* tileSet);
 
     void Load(std::string file);
     void SetTileSet(TileSet* tileSet);

@@ -6,7 +6,7 @@ class TileSet{
 
 private:
 
-  Sprite *tileSet;//verificar lista de inicialização 
+  Sprite tileSet;//verificar lista de inicialização
 
   int rows;
   int columns;
@@ -14,9 +14,8 @@ private:
   int tileHeight;
 
 public:
-  TileSet();
-  ~TileSet();
-  TileSet(int tileW, int tileH, std::string file);
+
+  TileSet(GameObject& associated, int tileWidth, int tileHeight, std::string file);
   void RenderTile(unsigned index, float x, float y);
   int GetTileWidth();
   int GetTileHeight();
