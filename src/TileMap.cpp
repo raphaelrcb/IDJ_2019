@@ -12,18 +12,22 @@ TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet):Com
 }
 
 void TileMap::Load(std::string file){
-  std::ofstream map;
+  std::fstream map;
   map.open("../assets/tileMap.txt");
-  // FILE *map = fopen("../assets/tileMap.txt", "r");
-  // if (!map){
-    // std::cout << "could not open file" << std::endl;
-  // }
+  int tile;
 
-  //Criar lógica pra ler o filemap
+  map >> mapWidth;
+  map.seekg (1, map.cur);
+  map >> mapHeight;
+  map.seekg (1, map.cur);
+  map >> mapDepth;
 
-  // if (!map)
-    // fclose(map);
-
+  for (int i = 0; i < (mapWidth*mapHeight*mapDepth); i++){
+    map >> tile;
+    tileMatrix.push_back(tile-1);
+    map.seekg (1, map.cur);
+  }
+  
   map.close();
 }
 
