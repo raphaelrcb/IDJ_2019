@@ -24,6 +24,8 @@ class TileMap: public Component{
     int GetWidth();
     int GetHeight();
     int GetDepth();
+    bool Is(std::string type);
+    void Update(float dt);
 
 
 };
