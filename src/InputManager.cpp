@@ -9,8 +9,8 @@ InputManager::InputManager(){//inicializando todas a as variáveis
   }
   quitRequested = false;
   updateCounter = 0;
-  mouseX = 0
-  mouseY = 0;;
+  mouseX = 0;
+  mouseY = 0;
 
 }
 
