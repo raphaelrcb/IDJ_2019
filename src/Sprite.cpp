@@ -12,21 +12,23 @@ Sprite::Sprite(GameObject& associated, std::string file): Component(associated){
 }
 
 Sprite::~Sprite(){//destrutor, caso haja uma imagem alocada, desaloca
-  if (texture != nullptr) {
-    SDL_DestroyTexture(texture);
-  }
+  // if (texture != nullptr) {
+  //   SDL_DestroyTexture(texture);
+  // }
 }
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
-  if (texture != nullptr) {
-    SDL_DestroyTexture(texture);//desaloca qualquer imagem alocada antes
-  }
+  // if (texture != nullptr) {
+  //   SDL_DestroyTexture(texture);//desaloca qualquer imagem alocada antes
+  // }
 
-  const char* path = file.c_str();//converte o caminho de string para const char* como é o tipo utilizado pela função
-  texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);//carrega a imagem
+  // const char* path = file.c_str();//converte o caminho de string para const char* como é o tipo utilizado pela função
+  // texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);//carrega a imagem
+  // //chamar GetImage
+  texture = Resources::GetImage(file);
 
   if (texture == nullptr){
-      std::cout << "Error loading texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+      std::cout << "Error returning texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
   }
   else {
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
@@ -44,10 +46,10 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 }
 
 void Sprite::Render(){//chama o render utilizando o associated como argumento
-  Sprite::Render(associated.box.x, associated.box.y);
+  Render(associated.box.x, associated.box.y);
 }
 
-void Sprite::Render(float x, float y){// wrapper para a SDL_RenderCopy que possui quatro argumentos
+void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui quatro argumentos
   SDL_Rect dstrect;// um dos parâmetros de RenderCOpy, é o retâncgulo de destino, determina a posição da tela em que a textura será renderizada,
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
   dstrect.x = x;

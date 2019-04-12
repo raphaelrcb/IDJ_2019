@@ -3,7 +3,10 @@
 #include <SDL2/SDL.h>
 #include <SDL_include.h>
 #include "State.hpp"
+#include "Resources.hpp"
 
+class State;
+class Resources;
 class Game{
 
   private:

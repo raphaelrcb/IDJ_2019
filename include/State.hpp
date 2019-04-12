@@ -1,21 +1,22 @@
 #pragma once
 
+#include <ctime>
+#include <cstdlib>
+
 #include "Component.hpp"
 #include "GameObject.hpp"
 #include "Sound.hpp"
 #include "Face.hpp"
 #include "Sprite.hpp"
+#include "TileMap.hpp"
 #include "Music.hpp"
-#include <ctime>
-#include <cstdlib>
-
-
 
 class State{
 
 private:
   // Sprite bg;
   Music music;
+  
   bool quitRequested;
   void Input();
   void AddObject(int mouseX, int mouseY);

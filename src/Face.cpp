@@ -5,7 +5,7 @@ Face::Face(GameObject& associated):Component(associated){
 }
 void Face::Damage(int damage){
   hitpoints-=damage;
-  std::cout << "damage2" << '\n';
+  // std::cout << "damage2" << '\n';
   if (hitpoints <= 0) {
 
     std::shared_ptr<Component> cpt = associated.GetComponent("Sound");

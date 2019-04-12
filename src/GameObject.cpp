@@ -30,7 +30,7 @@ void GameObject::RequestDelete(){
 }
 
 void GameObject::AddComponent(std::shared_ptr<Component> cpt){
-  std::cout << "added component " << cpt->Is("Sound") <<'\n';
+  // std::cout << "added component " << cpt->Is("Sound") <<'\n';
 
   components.emplace_back(std::move(cpt));//Adiciona um componente ao
 }

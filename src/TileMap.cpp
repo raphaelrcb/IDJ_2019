@@ -3,8 +3,8 @@
 TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet):Component(associated){
 
   if (tileSet != nullptr) {
-    Load(file);
     SetTileSet(tileSet);
+    Load(file);
   } else {
     std::cout << "tileSet null" << std::endl;
   }
@@ -13,7 +13,7 @@ TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet):Com
 
 void TileMap::Load(std::string file){
   std::fstream map;
-  map.open("../assets/tileMap.txt");
+  map.open(file);
   int tile;
 
   map >> mapWidth;
@@ -21,36 +21,55 @@ void TileMap::Load(std::string file){
   map >> mapHeight;
   map.seekg (1, map.cur);
   map >> mapDepth;
+  map.seekg (1, map.cur);
+  // std::cout << mapWidth <<" " << mapHeight <<" " <<mapDepth << '\n';
 
   for (int i = 0; i < (mapWidth*mapHeight*mapDepth); i++){
     map >> tile;
     tileMatrix.push_back(tile-1);
     map.seekg (1, map.cur);
+    // std::cout << tile <<tileMatrix[i] << '\n';
   }
-
+  // std::cout <<  mapWidth << " " << mapHeight << " " <<  mapDepth  << '\n';
   map.close();
+
+  // for (int i = 0; i < mapDepth; i++) {
+  //   for (int j = 0; j < mapHeight; j++) {
+  //     for (int k = 0; k < mapWidth; k++) {
+  //       std::cout << tileMatrix[k + mapHeight*j + mapWidth*mapHeight*i] +1 << ',';
+  //     }
+  //     std::cout << "\n";
+  //   }
+  //   std::cout << "\n" << '\n';
+  // }
+  // SDL_Delay(5000);
+  // getchar();
+
 }
 
 void TileMap::SetTileSet(TileSet* tileSet){
   this->tileSet = tileSet;
 }
 
-int& TileMap::At(int x, int y, int z){//x é coluna, y é linha e z é profundidade
+int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profundidade
   //o cálculo é feito por linha + (tamanho da linha)*coluna + (área do tilemap)*profundidade
-  return tileMatrix[x + mapWidth*y + mapWidth*mapHeight*z];
+  return (tileMatrix[x + mapWidth*y + mapWidth*mapHeight*z]);
 }
 
 void TileMap::Render(){
   for (int z = 0; z < mapDepth; z++) {
-    RenderLayer(z, associated.box.x, associated.box.y);
+    RenderLayer(z, this->associated.box.x, this->associated.box.y);
   }
 }
 
-void TileMap::RenderLayer(int layer, int cameraX, int cameraY){
+void TileMap::RenderLayer(int layer, int cameraX = 0, int cameraY = 0){
 
-  for (int i = 0; i < mapHeight; i++) {
-    for (int j = 0; j < mapWidth; j++) {
-      tileSet->RenderTile(tileMatrix[layer*mapHeight*mapWidth + mapHeight*i + j], cameraX + tileSet->GetTileWidth()*j , cameraY + tileSet->GetTileHeight()*i);
+  for (int i = 0; i < GetHeight(); i++) {
+    for (int j = 0; j < GetWidth(); j++) {
+
+      // std::cout << At(j, i, layer) << ":" << '\n';
+      tileSet->RenderTile(At(j, i, layer), cameraX + tileSet->GetTileWidth()*j , cameraY + tileSet->GetTileHeight()*i);
+
     }
   }
 }

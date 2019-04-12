@@ -3,16 +3,26 @@
 
 State::State(){
 
+
+  /////////////////Background
   std::shared_ptr<GameObject> bg = std::shared_ptr<GameObject> (new GameObject());
   std::shared_ptr<Sprite> bg_sprite(new Sprite(*bg, "assets/img/ocean.jpg"));
-  // Sorite* bg_sprite;
-  // Sprite*  bg_sprite = new Sprite();
-  // bg_sprite->Open("assets/img/ocean.jpg");
 
   bg->AddComponent(bg_sprite);
   objectArray.emplace_back(std::move(bg));
 
+  ////////////////TileSet
+  std::shared_ptr<GameObject> tileObject = std::shared_ptr<GameObject> (new GameObject());
+  tileObject->box.x = 0;
+  tileObject->box.y = 0;
+  TileSet* tileSet(new TileSet(*tileObject, 64, 64, "assets/img/tileset.png"));
+  std::shared_ptr<TileMap> tileMap(new TileMap(*tileObject, "assets/map/tileMap.txt", tileSet));
 
+  tileObject->AddComponent(tileMap);
+  objectArray.emplace_back(std::move(tileObject));
+  // std::cout << "tileset" << '\n';
+
+  //////////////////////
   quitRequested = false;//inicializa o quitRequested
   LoadAssets();//carrega as imagens e músicasa serem utilizadas
   music.Play(-1);//toca a música carregada
@@ -83,10 +93,10 @@ void State::Input() {
 				if(go->box.Contains( (float)mouseX, (float)mouseY ) ) {
 					std::shared_ptr<Face> face = std::dynamic_pointer_cast<Face>(go->GetComponent( "Face" ));
           // Face* face = (Face*)go->GetComponent( "Face" ); std::dynamic_pointer_cast<A>
-          std::cout << "contained "<< face << '\n';
+          // std::cout << "contained "<< face << '\n';
 					if ( face != nullptr ) {
 						// Aplica dano
-            std::cout << "damage" << '\n';
+            // std::cout << "damage" << '\n';
 						face->Damage(std::rand() % 10 + 10);
 						// Sai do loop (só queremos acertar um)
 						break;
@@ -101,6 +111,7 @@ void State::Input() {
 			}
 			// Se não, crie um objeto
 			else {
+        std::cout << "tleck" << '\n';
 				Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( mouseX, mouseY );
 				AddObject((int)objPos.x, (int)objPos.y);
 			}
@@ -114,7 +125,7 @@ void State::AddObject(int mouseX, int mouseY){
   std::shared_ptr<Sprite> enemy_sprite(new Sprite(*enemy, "assets/img/penguinface.png"));
   std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, "assets/audio/boom.wav"));
   std::shared_ptr<Face> enemy_face(new Face(*enemy));
-  std::cout << "enemy " << enemy_sound <<'\n';
+  // std::cout << "enemy " << enemy_sound <<'\n';
   // enemy_sound->Play(1);
 
   enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 ;
