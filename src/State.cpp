@@ -77,7 +77,7 @@ void State::Input() {
 
 		// Se o evento for clique...
 		if(event.type == SDL_MOUSEBUTTONDOWN) {
-    std::cout << "click" << '\n';
+    // std::cout << "click" << '\n';
 
 
 			// Percorrer de trás pra frente pra sempre clicar no objeto mais de cima
@@ -111,7 +111,7 @@ void State::Input() {
 			}
 			// Se não, crie um objeto
 			else {
-        std::cout << "tleck" << '\n';
+        // std::cout << "tleck" << '\n';
 				Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( mouseX, mouseY );
 				AddObject((int)objPos.x, (int)objPos.y);
 			}
