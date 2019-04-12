@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Music.hpp"
+#include "Resources.hpp"
 
 Music::Music(){//seta music como nullptr (música não carregada)
   music = nullptr;
@@ -26,8 +27,9 @@ void Music::Stop(int msToStop){//para a música
 }
 
 void Music::Open(std::string file){
-  const char* MusicFile = file.c_str();//converte a string do caminho para const char* que é usado pela função
-  music = Mix_LoadMUS(MusicFile);//carrega a música indicada pelo caminho em file
+  // const char* MusicFile = file.c_str();//converte a string do caminho para const char* que é usado pela função
+  // music = Mix_LoadMUS(MusicFile);//carrega a música indicada pelo caminho em file
+  music = Resources::GetMusic(file);
   if (music == nullptr){
     std::cout << "Can't open, music file null: " << SDL_GetError()  << std::endl;
   }
@@ -44,5 +46,5 @@ bool Music::IsOpen(){//checa se a música é nula
 
 Music::~Music(){//destrutor, chama stop e libera a música da memória
  Stop(0);//passando 0 pra a função Mix_FadeOutMusic em Stop, a música para instantaneamente
- Mix_FreeMusic(music);
+ // Mix_FreeMusic(music);
 }

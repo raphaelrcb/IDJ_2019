@@ -12,21 +12,23 @@ Sprite::Sprite(GameObject& associated, std::string file): Component(associated){
 }
 
 Sprite::~Sprite(){//destrutor, caso haja uma imagem alocada, desaloca
-  if (texture != nullptr) {
-    SDL_DestroyTexture(texture);
-  }
+  // if (texture != nullptr) {
+  //   SDL_DestroyTexture(texture);
+  // }
 }
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
-  if (texture != nullptr) {
-    SDL_DestroyTexture(texture);//desaloca qualquer imagem alocada antes
-  }
+  // if (texture != nullptr) {
+  //   SDL_DestroyTexture(texture);//desaloca qualquer imagem alocada antes
+  // }
 
-  const char* path = file.c_str();//converte o caminho de string para const char* como é o tipo utilizado pela função
-  texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);//carrega a imagem
+  // const char* path = file.c_str();//converte o caminho de string para const char* como é o tipo utilizado pela função
+  // texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);//carrega a imagem
+  // //chamar GetImage
+  texture = Resources::GetImage(file);
 
   if (texture == nullptr){
-      std::cout << "Error loading texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+      std::cout << "Error returning texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
   }
   else {
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
@@ -43,13 +45,17 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
   clipRect.h = h;
 }
 
-void Sprite::Render(){// wrapper para a SDL_RenderCopy que possui quatro argumentos
+void Sprite::Render(){//chama o render utilizando o associated como argumento
+  Render(associated.box.x, associated.box.y);
+}
+
+void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui quatro argumentos
   SDL_Rect dstrect;// um dos parâmetros de RenderCOpy, é o retâncgulo de destino, determina a posição da tela em que a textura será renderizada,
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
-  dstrect.x = associated.box.x;
-  dstrect.y = associated.box.y;
-  dstrect.w = GetWidth();
-  dstrect.h = GetHeight();
+  dstrect.x = x;
+  dstrect.y = y;
+  dstrect.w = clipRect.w;
+  dstrect.h = clipRect.h;
   int RenderError;
   //Game& game = Game::GetInstance();//instâcnia local para o singleto
   //SDL_Renderer* renderer = game.GetRenderer();
@@ -59,6 +65,8 @@ void Sprite::Render(){// wrapper para a SDL_RenderCopy que possui quatro argumen
     std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
   }
 }
+
+
 
 int Sprite::GetWidth(){//retorna a largura da imagem
   return width;
@@ -84,11 +92,5 @@ bool Sprite::Is(std::string type){
   }
 }
 
-// void Sprite::SetBox(GameObject& associated){
-//   associated.box.x = clipRect.x;
-//   associated.box.y = clipRect.y;
-//   associated.box.w = clipRect.w;
-//   associated.box.h = clipRect.h;
-// }
 void Sprite::Update(float dt){
 }
