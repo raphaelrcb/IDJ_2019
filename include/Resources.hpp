@@ -26,7 +26,3 @@ class Resources{
     static void ClearSounds();
 
 };
-// + public
-// - private
-// # protected
-// _ static

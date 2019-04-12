@@ -12,12 +12,16 @@
 class Component;
 
 class GameObject{
+
 private:
-  std::vector<std::shared_ptr<Component>> components;
+  std::vector< std::shared_ptr<Component> > components;
   bool isDead;
+
 public:
+
   GameObject();
   ~GameObject();
+
   void Update(float dt);
   void Render();
   bool IsDead();

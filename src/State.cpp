@@ -125,8 +125,6 @@ void State::AddObject(int mouseX, int mouseY){
   std::shared_ptr<Sprite> enemy_sprite(new Sprite(*enemy, "assets/img/penguinface.png"));
   std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, "assets/audio/boom.wav"));
   std::shared_ptr<Face> enemy_face(new Face(*enemy));
-  // std::cout << "enemy " << enemy_sound <<'\n';
-  // enemy_sound->Play(1);
 
   enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 ;
   enemy->box.y = mouseY - enemy_sprite->GetHeight()/2;

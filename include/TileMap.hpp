@@ -4,8 +4,8 @@
 
 
 class TileMap: public Component{
-  private:
 
+  private:
     std::vector<int> tileMatrix;
     TileSet* tileSet;
     int mapWidth;
@@ -13,7 +13,6 @@ class TileMap: public Component{
     int mapDepth;
 
   public:
-
     TileMap(GameObject& associated, std::string file, TileSet* tileSet);
 
     void Load(std::string file);
@@ -26,10 +25,4 @@ class TileMap: public Component{
     int GetDepth();
     bool Is(std::string type);
     void Update(float dt);
-
-
 };
-// + public
-// - private
-// # protected
-// _ static

@@ -9,13 +9,16 @@
 
 
 class Sound : public Component {
+
 private:
   Mix_Chunk* chunk;
   int channel;
+
 public:
   Sound(GameObject& associated);
   Sound(GameObject& associated, std::string file);
   ~Sound();
+
   void Play(int times = 1);
   void Stop();
   void Open(std::string file);

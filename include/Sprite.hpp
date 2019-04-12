@@ -7,6 +7,7 @@
 #include "GameObject.hpp"
 
 class Sprite: public Component{//implementar update, is e render da classe mãe (component)
+
   private:
     SDL_Texture* texture;
     int width;
@@ -14,10 +15,10 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     SDL_Rect clipRect;
 
   public:
-
     Sprite(GameObject& associated);
     Sprite(GameObject& associated, std::string file);
     ~Sprite();
+
     void Open(std::string file);
     void SetClip(int x, int y, int w, int h);
     void  Render();

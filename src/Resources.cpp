@@ -2,7 +2,7 @@
 #include <iostream>
 // #include "Game.hpp"
 
-// Game *Game::instance = nullptr;
+// Inicializa as variáveis estáticas da classe
 std::unordered_map<std::string, SDL_Texture*> Resources::imageTable = {{"", nullptr}};
 std::unordered_map<std::string, Mix_Music*> Resources::musicTable = {{"", nullptr}};
 std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable = {{"", nullptr}};
@@ -10,9 +10,9 @@ std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable = {{"", nullpt
 
 SDL_Texture* Resources::GetImage(std::string file){
 
-     std::unordered_map<std::string, SDL_Texture*>::const_iterator it = imageTable.find(file);
+     std::unordered_map<std::string, SDL_Texture*>::const_iterator it = imageTable.find(file);//procura o arquivo solicitado na tabela de imagens
 
-     if ( it == imageTable.end() ){//abre a imagem
+     if ( it == imageTable.end() ){//Caso não encontre a imagem, abre e aloca ela na memória
 
        const char* path = file.c_str();
        SDL_Texture* texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);
@@ -20,78 +20,72 @@ SDL_Texture* Resources::GetImage(std::string file){
        if (texture == nullptr){
            std::cout << "Error loading texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
        } else {
-         imageTable.emplace (file, texture);
+         imageTable.emplace (file, texture);//coloca a imagem e seu caminho na tabela
          return texture;
        }
 
      }
-       return (it->second);
+       return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
        // std::cout << it->first << " is " << it->second;
 }
 
- // for (size_t i = 0; i < imageTable.size(); i++) {
- //   imageTable.first == file? return *imageTable:;
- // }
 
  void Resources::ClearImages(){
    std::unordered_map<std::string, SDL_Texture*>::const_iterator it = imageTable.begin();
 
-   while (it != imageTable.end()) {
+   while (it != imageTable.end()) {//para todos as imagens na tabela, desaloca a memória e apaga da tabela
      SDL_DestroyTexture(it->second);
      it = imageTable.erase(it);
    }
-   imageTable.clear();
+   imageTable.clear();//limpa a tabela
    // std::cout << "cleared" << '\n';
  }
 
 
  Mix_Music* Resources::GetMusic(std::string file){
 
-   std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.find(file);
+   std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.find(file);//procura o arquivo solicitado na tabela de Músicas
 
-   if ( it == musicTable.end() ){//abre a musicm
+   if ( it == musicTable.end() ){//Caso não encontre a música, abre e aloca ela na memória
 
      const char* path = file.c_str();
      Mix_Music* music = Mix_LoadMUS(path);
 
      if (music == nullptr){
-         std::cout << "Error loading music, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+         std::cout << "Error loading music, Error code: "<< SDL_GetError() << std::endl;
      } else {
-       musicTable.emplace (file, music);
+       musicTable.emplace (file, music);//coloca a música e seu caminho na tabela
        return music;
      }
 
    }
-     return (it->second);
+     return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
      // std::cout << it->first << " is " << it->second;
-
-
  }
 
  void Resources::ClearMusics(){
 
    std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.begin();
 
-   // Music::Stop(0);
-   while (it != musicTable.end()) {
+   while (it != musicTable.end()) {//para todos as musicas na tabela, desaloca a memória e apaga da tabela
      Mix_FreeMusic(it->second);
      it = musicTable.erase(it);
    }
-   musicTable.clear();
+   musicTable.clear();//limpa a tabela
    // std::cout << "cleared" << '\n';
  }
 
 
- Mix_Chunk* Resources::GetSound(std::string file){
+ Mix_Chunk* Resources::GetSound(std::string file){// Funciona de forma semelhante à GetImage e GetMusic
    std::unordered_map<std::string, Mix_Chunk*>::const_iterator it = soundTable.find(file);
 
-   if ( it == soundTable.end() ){//abre a soundm
+   if ( it == soundTable.end() ){
 
      const char* path = file.c_str();
      Mix_Chunk* chunk = Mix_LoadWAV(path);
 
      if (chunk == nullptr){
-         std::cout << "Error loading chunk, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+         std::cout << "Error loading chunk, Error code: "<< SDL_GetError() << std::endl;
      } else {
        soundTable.emplace (file, chunk);
        return chunk;
@@ -100,13 +94,11 @@ SDL_Texture* Resources::GetImage(std::string file){
    }
      return (it->second);
      // std::cout << it->first << " is " << it->second;
-   // return nullptr;
  }
 
- void Resources::ClearSounds(){
+ void Resources::ClearSounds(){// Funciona de forma semelhante à ClearImages e ClearMusics
    std::unordered_map<std::string, Mix_Chunk*>::const_iterator it = soundTable.begin();
 
-   // Music::Stop(0);
    while (it != soundTable.end()) {
      Mix_FreeChunk(it->second);
      it = soundTable.erase(it);
