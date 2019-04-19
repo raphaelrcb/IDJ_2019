@@ -21,124 +21,85 @@ InputManager::~InputManager(){
 
 void InputManager::Update(){
   SDL_Event event;
-  // unsigned int keySize;
-  // int mouseX,mouseY;
 
-  // SDL_GetMouseState(&mouseX, mouseY);
+  updateCounter++;
+  SDL_GetMouseState(&mouseX, &mouseY);
+  quitRequested = false;//se um State já tratou e resolveu não fechar o jogo (ainda), ou não se interessou evento de quit não for tratado por State no frame em que ocorreu, é porque
 
   while (SDL_PollEvent(&event)) {
+    while (event.key.repeat < 1) {//evitar que eventos sejam repetidos
 
-    switch (event.type) {
+      switch (event.type) {
 
-      case SDL_QUIT:// SDL_QUIT  Clique no X, Alt+F4, etc.
-        quitRequested = true;
-        break;
+        case SDL_QUIT:// SDL_QUIT  Clique no X, Alt+F4, etc.
+          quitRequested = true;
+          break;
 
-      case SDL_KEYDOWN:// SDL_KEYDOWN   Pressionamento de tecla
-        keyState[event.key.keysym.sym] = true;
-        keyUpdate[event.key.keysym.sym] = updateCounter;
-        break;
+        case SDL_KEYDOWN:// SDL_KEYDOWN   Pressionamento de tecla
+          keyState[event.key.keysym.sym] = true;
+          keyUpdate[event.key.keysym.sym] = updateCounter;
+          break;
 
-      case  SDL_KEYUP:// SDL_KEYUP     Uma tecla foi solta
-        keyState[event.key.keysym.sym] = false;
-        break;
+        case  SDL_KEYUP:// SDL_KEYUP     Uma tecla foi solta
+          keyState[event.key.keysym.sym] = false;
+          keyUpdate[event.key.keysym.sym] = updateCounter;
+          break;
 
-      case SDL_MOUSEBUTTONDOWN:// SDL_MOUSEBUTTONDOWN Pressionamento de botão do mouse
-        mouseState[event.button.button] = true;
-        mouseUpdate[event.button.button] +=1;
-        break;
+        case SDL_MOUSEBUTTONDOWN:// SDL_MOUSEBUTTONDOWN Pressionamento de botão do mouse
+          mouseState[event.button.button] = true;
+          mouseUpdate[event.button.button] = updateCounter;
+          break;
 
-      case SDL_MOUSEBUTTONUP:// SDL_MOUSEBUTTONUP Botão do mouse foi solto
-        mouseState[event.button.button] = true;
-        mouseUpdate[event.button.button] -=1;
-        break;
+        case SDL_MOUSEBUTTONUP:// SDL_MOUSEBUTTONUP Botão do mouse foi solto
+          mouseState[event.button.button] = false;
+          mouseUpdate[event.button.button] = updateCounter;
+          break;
 
-
-      default:
-        break;
-    }
-/////////////////////
-    // std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.find(file);//procura o arquivo solicitado na tabela de Músicas
-    //
-    // if ( it == musicTable.end() ){//Caso não encontre a música, abre e aloca ela na memória
-    //
-    //   if (music == nullptr){
-    //       std::cout << "Error loading music, Error code: "<< SDL_GetError() << std::endl;
-    //   } else {
-    //     musicTable.emplace (file, music);//coloca a música e seu caminho na tabela
-    //     return music;
-    //   }
-    //
-    // }
-    //   return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
-    //   // std::cout << it->first << " is " << it->second;
-  //}///////////////////////
-
-    if (event.type == SDL_KEYUP){
-
-
-    }
-
-    if (event.type == SDL_MOUSEBUTTONUP){// SDL_MOUSEBUTTONUP Botão do mouse foi solto
-
-      if (event.button.button == SDL_BUTTON_LEFT) {
-        mouseState[0] = false;
+        default:
+          break;
       }
-      if (event.button.button == SDL_BUTTON_MIDDLE) {
-        mouseState[1] = false;
-      }
-      if (event.button.button == SDL_BUTTON_RIGHT) {
-        mouseState[2] = false;
-      }
-      if (event.button.button == SDL_BUTTON_X1) {
-        mouseState[3] = false;
-      }
-      if (event.button.button == SDL_BUTTON_X2) {
-        mouseState[4] = false;
-      }
-
     }
   }
 }
 
 
 bool InputManager::KeyPress(int key){
-  return false;
+  return (keyState[key] && keyUpdate[key] == updateCounter);
 }
 
 bool InputManager::KeyRelease(int key){
-  return false;
+  return (!keyState[key] && keyUpdate[key] == updateCounter);
 }
 
 bool InputManager::IsKeyDown(int key){
-  return false;
+  return keyState[key];
 }
 
 
 bool InputManager::MousePress(int key){
-  return false;
+  return (mouseState[key] && (mouseUpdate[key] == updateCounter));
 }
 
 bool InputManager::MouseRelease(int key){
-  return false;
+  return (!mouseState[key] && (mouseUpdate[key] == updateCounter));
 }
 
 bool InputManager::IsMouseDown(int key){
-  return false;
+  return mouseState[key];
 }
 
 
 int InputManager::GetMouseX(){
-  return 0;
+  return mouseX;
 }
 
 int InputManager::GetMouseY(){
-  return 0;
+  return mouseY;
 }
 
 
 bool InputManager::QuitRequested(){
-  return false;
+  return quitRequested;
 }
 
 
