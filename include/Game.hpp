@@ -6,6 +6,11 @@
 #include "Resources.hpp"
 // #include "InputManager.hpp"
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 600
+#define MIX_CHUNKSIZE 1024
+#define AUDIO_CHANNELS 32
+
 class State;
 class Resources;
 class Game{

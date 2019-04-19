@@ -1,5 +1,7 @@
 #include "../include/TileMap.hpp"
 
+#include "Camera.hpp"
+
 TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet):Component(associated){
 
   if (tileSet != nullptr) {
@@ -33,18 +35,6 @@ void TileMap::Load(std::string file){
   // std::cout <<  mapWidth << " " << mapHeight << " " <<  mapDepth  << '\n';
   map.close();
 
-  // for (int i = 0; i < mapDepth; i++) {
-  //   for (int j = 0; j < mapHeight; j++) {
-  //     for (int k = 0; k < mapWidth; k++) {
-  //       std::cout << tileMatrix[k + mapHeight*j + mapWidth*mapHeight*i] +1 << ',';
-  //     }
-  //     std::cout << "\n";
-  //   }
-  //   std::cout << "\n" << '\n';
-  // }
-  // SDL_Delay(5000);
-  // getchar();
-
 }
 
 void TileMap::SetTileSet(TileSet* tileSet){
@@ -58,7 +48,8 @@ int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profu
 
 void TileMap::Render(){
   for (int z = 0; z < mapDepth; z++) {
-    RenderLayer(z, this->associated.box.x, this->associated.box.y);
+    RenderLayer(z, this->associated.box.x + Camera::pos.x, this->associated.box.y + Camera::pos.y);
+    // associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y
   }
 }
 

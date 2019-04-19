@@ -2,9 +2,6 @@
 #include <string>
 #include "../include/Game.hpp"
 
-#define MIX_CHUNKSIZE 1024
-#define AUDIO_CHANNELS 32
-
 //inicialização de membro estático da classe
 Game *Game::instance = nullptr;
 
@@ -69,8 +66,8 @@ Game::Game (std::string title, int width, int height){
 
 Game& Game::GetInstance(){//cria a instância do jogo
   std::string title = "Raphael_R_C_Barbosa_14/0160281 ";
-  int width = 1024;
-  int height = 600;
+  int width = WINDOW_WIDTH;
+  int height = WINDOW_HEIGHT;
 
   if(Game::instance != nullptr){
     return (*Game::instance);
