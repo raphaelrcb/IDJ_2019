@@ -5,8 +5,6 @@
 #include <SDL2/SDL.h>
 #include "Component.hpp"
 #include "Sound.hpp"
-// #include "InputManager.hpp"
-//
 
 class Face : public Component{
 
