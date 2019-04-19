@@ -1,4 +1,6 @@
 #include <unordered_map>
+#include <SDL2/SDL.h>
+#include <iostream>
 
 class InputManager{
 
