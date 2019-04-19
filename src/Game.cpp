@@ -11,6 +11,8 @@ Game *Game::instance = nullptr;
 Game::Game (std::string title, int width, int height){
 
   int SDLError, ImgError, MixError;
+  dt = 0;
+  frameStart = 0;
 
   if (Game::instance != nullptr){//chechando se já existe uma instância do jogo rodando, se tiver existe um problema na lógica
     std::cout << "Game Logic Problem" << std::endl;
@@ -96,11 +98,26 @@ SDL_Renderer* Game::GetRenderer(){//Retorna o renderer a ser usado
   return renderer;
 }
 
+void Game::CalculateDeltaTime(){
+  int previousFrame = frameStart;
+  frameStart = (float)SDL_GetTicks();
+  dt = float(frameStart - previousFrame)/1000;
+
+  // std::cout << "previousFrame: " << previousFrame << " -- frameStart: " << frameStart << " -- dt:  " << dt << '\n';
+}
+
+float Game::GetDeltaTime(){
+  return dt;
+}
+
 void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, porém nesse trabalho apenas as etapas 3 e 4
+
   InputManager& input = InputManager::GetInstance();
+
   while(state->QuitRequested() != true){
+    CalculateDeltaTime();
     input.Update();
-    state->Update(0);//etapa 3
+    state->Update(dt);//etapa 3
     state->Render();//etapa 4
     SDL_RenderPresent(Game::GetInstance().GetRenderer());
     SDL_Delay(33);//impõe-se um limite de framerate, com um delay de 33ms, nos dará aproximadamente 30 FPS, (usado para não usar 100% di cpu já que é desnecessário)

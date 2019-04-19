@@ -36,8 +36,6 @@ public:
 private:
   bool mouseState[6];
   int mouseUpdate[6];
-  // bool keyState[416];
-  // int keyUpdate[416];
 
   std::unordered_map<int, bool> keyState;
   std::unordered_map<int, int> keyUpdate;
