@@ -25,7 +25,7 @@ Game::Game (std::string title, int width, int height){
     std::cout << "SDL_Init failed, Error Code: " << SDL_GetError() << std::endl;//sdl_get error obtem o ultimo erro ocorrido na biblioteca
   }
   else {//casso não haja falha, inicia a imagem
-    // std::cout << "SDL initiated" << std::endl;
+    std::cout << "SDL initiated" << std::endl;
     ImgError = IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG |IMG_INIT_TIF);//img_init carregar os loaders da imagem, e retorna um bitmask correspondente aos loaders que ela conseguiu carregar
     if (ImgError == 0) {//se não carrefar nenhum, o retorno é 0 e há um erro
       std::cout << "IMIG_Init failed to load" << std::endl;
@@ -97,12 +97,15 @@ SDL_Renderer* Game::GetRenderer(){//Retorna o renderer a ser usado
 }
 
 void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, porém nesse trabalho apenas as etapas 3 e 4
-  do{
+  InputManager& input = InputManager::GetInstance();
+  while(state->QuitRequested() != true){
+    input.Update();
     state->Update(0);//etapa 3
     state->Render();//etapa 4
     SDL_RenderPresent(Game::GetInstance().GetRenderer());
     SDL_Delay(33);//impõe-se um limite de framerate, com um delay de 33ms, nos dará aproximadamente 30 FPS, (usado para não usar 100% di cpu já que é desnecessário)
-  } while(state->QuitRequested() != true);
+  }
+
   Resources::ClearImages();
   Resources::ClearMusics();
   Resources::ClearSounds();

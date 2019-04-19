@@ -4,6 +4,7 @@
 #include <SDL_include.h>
 #include "State.hpp"
 #include "Resources.hpp"
+// #include "InputManager.hpp"
 
 class State;
 class Resources;

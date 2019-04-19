@@ -10,6 +10,7 @@
 #include "Sprite.hpp"
 #include "TileMap.hpp"
 #include "Music.hpp"
+#include "InputManager.hpp"
 
 class State{
 
@@ -18,7 +19,7 @@ private:
   Music music;
 
   bool quitRequested;
-  void Input();
+  // void Input();
   void AddObject(int mouseX, int mouseY);
   std::vector< std::shared_ptr<GameObject> > objectArray;
 

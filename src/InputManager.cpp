@@ -16,6 +16,8 @@ InputManager::InputManager(){//inicializando todas a as variáveis
 }
 
 InputManager::~InputManager(){
+  keyState.clear();
+  keyUpdate.clear();
 }
 
 
@@ -27,8 +29,7 @@ void InputManager::Update(){
   quitRequested = false;//se um State já tratou e resolveu não fechar o jogo (ainda), ou não se interessou evento de quit não for tratado por State no frame em que ocorreu, é porque
 
   while (SDL_PollEvent(&event)) {
-    while (event.key.repeat < 1) {//evitar que eventos sejam repetidos
-
+    if (event.key.repeat != 1) {//evitar que eventos sejam repetidos
       switch (event.type) {
 
         case SDL_QUIT:// SDL_QUIT  Clique no X, Alt+F4, etc.
