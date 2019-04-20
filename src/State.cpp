@@ -1,6 +1,6 @@
 #include "../include/State.hpp"
-
-#include "Camera.hpp"
+// #include "../include/Camera.hpp"
+#include "../include/CameraFollower.hpp"
 
 
 #define PI 3.14159265359
@@ -11,8 +11,9 @@ State::State(){
   /////////////////Background
   std::shared_ptr<GameObject> bg = std::shared_ptr<GameObject> (new GameObject());
   std::shared_ptr<Sprite> bg_sprite(new Sprite(*bg, "assets/img/ocean.jpg"));
-
+  std::shared_ptr<CameraFollower> CamFollow(new CameraFollower(*bg));
   bg->AddComponent(bg_sprite);
+  bg->AddComponent(CamFollow);
   objectArray.emplace_back(std::move(bg));
 
   ////////////////TileSet
@@ -41,14 +42,14 @@ void State::LoadAssets(){
 
 void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enquanto apenas verifica se já vai sair do jogo
 
-  Camera::Update(dt);
   InputManager& input = InputManager::GetInstance();
+  Camera::Update(dt);
   if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
     quitRequested = true;
   }
 
   if (input.KeyPress(SPACE_KEY)){
-    // std::cout << "tleck" << '\n';
+    // std::cout << " space tleck" << '\n';
     Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( input.GetMouseX(), input.GetMouseY() );
     AddObject((int)objPos.x, (int)objPos.y);
   }
@@ -144,8 +145,8 @@ void State::AddObject(int mouseX, int mouseY){
   std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, "assets/audio/boom.wav"));
   std::shared_ptr<Face> enemy_face(new Face(*enemy));
 
-  enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 ;
-  enemy->box.y = mouseY - enemy_sprite->GetHeight()/2;
+  enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 + Camera::pos.x;
+  enemy->box.y = mouseY - enemy_sprite->GetHeight()/2 + Camera::pos.y;
   enemy->box.w = enemy_sprite->GetWidth();
   enemy->box.h = enemy_sprite->GetHeight();
 

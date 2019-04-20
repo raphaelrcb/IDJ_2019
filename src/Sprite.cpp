@@ -47,8 +47,8 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 }
 
 void Sprite::Render(){//chama o render utilizando o associated como argumento
-  // Render(associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y);
-  Render(associated.box.x, associated.box.y);
+  Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
+  // Render(associated.box.x, associated.box.y);
 
 }
 

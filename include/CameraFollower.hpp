@@ -1,4 +1,5 @@
-#include "Component.hpp";
+#include "Component.hpp"
+#include "Camera.hpp"
 
 class CameraFollower : public Component{
 
@@ -6,7 +7,7 @@ private:
 
 public:
 
-  CameraFollower(GameObject& go)
+  CameraFollower(GameObject& associated);
 
   void Update(float dt);
   void Render();

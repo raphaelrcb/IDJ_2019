@@ -17,19 +17,16 @@ void Camera::Update(float dt){
 
   InputManager& input = InputManager::GetInstance();
 
-  // int dx = 0;
-  // int dy = 0;
-
   if (focus != nullptr) {
     pos.x = focus->box.x + focus->box.w - WINDOW_WIDTH/2;
     pos.y = focus->box.y + focus->box.h - WINDOW_HEIGHT/2;
 
   } else {
 
-    if (input.IsKeyDown(RIGHT_ARROW_KEY) && (speed.x <= MAX_SPEED_X)) {//é definido uma velocidade máxima à qual a câmera pode acelerar
+    if (input.IsKeyDown(LEFT_ARROW_KEY) && (speed.x <= MAX_SPEED_X)) {//é definido uma velocidade máxima à qual a câmera pode acelerar
       speed.x+=DELTA_SPEED;
     }
-     else if (input.IsKeyDown(LEFT_ARROW_KEY) && (speed.x >= MIN_SPEED_X)) {
+     else if (input.IsKeyDown(RIGHT_ARROW_KEY) && (speed.x >= MIN_SPEED_X)) {
       speed.x-=DELTA_SPEED;
     } else {
 
@@ -41,10 +38,10 @@ void Camera::Update(float dt){
         speed.x = 0;
     }
 
-    if (input.IsKeyDown(UP_ARROW_KEY) && (speed.y >= MIN_SPEED_Y) ) {
+    if (input.IsKeyDown(DOWN_ARROW_KEY) && (speed.y >= MIN_SPEED_Y) ) {
       speed.y-=DELTA_SPEED;
     }
-     else if (input.IsKeyDown(DOWN_ARROW_KEY) && (speed.y <= MAX_SPEED_Y)) {
+     else if (input.IsKeyDown(UP_ARROW_KEY) && (speed.y <= MAX_SPEED_Y)) {
       speed.y+=DELTA_SPEED;
     } else {
 
