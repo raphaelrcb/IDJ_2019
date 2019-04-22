@@ -17,27 +17,26 @@ void TileMap::Load(std::string file){
   map.open(file);
   int tile;
 
+//Pega as primeiras três informações do arquivo que são a largura, a altura e a prifundidade do tilemap
   map >> mapWidth;
   map.seekg (1, map.cur);
   map >> mapHeight;
   map.seekg (1, map.cur);
   map >> mapDepth;
   map.seekg (1, map.cur);
-  // std::cout << mapWidth <<" " << mapHeight <<" " <<mapDepth << '\n';
 
+//Nesse laço, percorre-se o resto do arquivo salvando todos os tiles no tilemap em um único vector
   for (int i = 0; i < (mapWidth*mapHeight*mapDepth); i++){
     map >> tile;
     tileMatrix.push_back(tile-1);
     map.seekg (1, map.cur);
-    // std::cout << tile <<tileMatrix[i] << '\n';
   }
-  // std::cout <<  mapWidth << " " << mapHeight << " " <<  mapDepth  << '\n';
   map.close();
 
 }
 
 void TileMap::SetTileSet(TileSet* tileSet){
-  this->tileSet = tileSet;
+  this->tileSet = tileSet;//seta o tileset
 }
 
 int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profundidade
@@ -47,10 +46,10 @@ int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profu
 
 void TileMap::Render(){
   for (int z = 0; z < mapDepth; z++) {
-    Camera::ParallaxUpdate(z, false);
+    // Camera::ParallaxUpdate(z, false);//Chamma a função que vai mudar a velocidade do objeto no jogo dependendo do layer
     RenderLayer(z, this->associated.box.x + Camera::pos.x, this->associated.box.y + Camera::pos.y);
-    Camera::ParallaxUpdate(z, true);
-    // associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y
+    // RenderLayer(z, this->associated.box.x + Camera::pos.x*(1+z), this->associated.box.y + Camera::pos.y*(1+z)); Outra opção seria fazer desse jeito, mas manter uma função para calcular a mudança no layers pode se tornar útil mais para frente, caso alguma mudança na lógica seja necessária
+    // Camera::ParallaxUpdate(z, true);//Chama a função de novo para resetar os parâmetros originais
   }
 }
 
@@ -58,8 +57,6 @@ void TileMap::RenderLayer(int layer, int cameraX = 0, int cameraY = 0){
 
   for (int i = 0; i < GetHeight(); i++) {
     for (int j = 0; j < GetWidth(); j++) {
-
-      // std::cout << At(j, i, layer) << ":" << '\n';
       tileSet->RenderTile(At(j, i, layer), cameraX + tileSet->GetTileWidth()*j , cameraY + tileSet->GetTileHeight()*i);
 
     }
