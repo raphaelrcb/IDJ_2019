@@ -4,6 +4,8 @@
 GameObject* Camera::focus;
 Vec2 Camera::pos;
 Vec2 Camera::speed;
+int Camera::Parallax_aux_x;
+int Camera::Parallax_aux_y;
 
 void Camera::Follow(GameObject* newFocus){
   focus = newFocus;
@@ -56,5 +58,16 @@ void Camera::Update(float dt){
     pos.y += speed.y*dt;
 
   }
+}
+void Camera::ParallaxUpdate(int layer, bool ParallaxEnd){
 
+  if (!ParallaxEnd) {
+    Parallax_aux_x = pos.x;
+    Parallax_aux_y = pos.y;
+    pos.x = pos.x*(1+layer);
+    pos.y = pos.y*(1+layer);
+  } else {
+    pos.x = Parallax_aux_x;
+    pos.y = Parallax_aux_y;
+  }
 }

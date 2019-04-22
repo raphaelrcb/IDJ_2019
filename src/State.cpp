@@ -1,5 +1,4 @@
 #include "../include/State.hpp"
-// #include "../include/Camera.hpp"
 #include "../include/CameraFollower.hpp"
 
 
@@ -44,6 +43,7 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
 
   InputManager& input = InputManager::GetInstance();
   Camera::Update(dt);
+
   if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
     quitRequested = true;
   }

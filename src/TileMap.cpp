@@ -1,5 +1,4 @@
 #include "../include/TileMap.hpp"
-
 #include "Camera.hpp"
 
 TileMap::TileMap(GameObject& associated, std::string file, TileSet* tileSet):Component(associated){
@@ -48,7 +47,9 @@ int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profu
 
 void TileMap::Render(){
   for (int z = 0; z < mapDepth; z++) {
+    Camera::ParallaxUpdate(z, false);
     RenderLayer(z, this->associated.box.x + Camera::pos.x, this->associated.box.y + Camera::pos.y);
+    Camera::ParallaxUpdate(z, true);
     // associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y
   }
 }

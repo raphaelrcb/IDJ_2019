@@ -1,4 +1,5 @@
 #include "GameObject.hpp"
+// #include "TileMap.hpp"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 600
@@ -19,7 +20,10 @@ public:
   static void Follow(GameObject* newFocus);
   static void Unfollow();
   static void Update(float dt);
+  static void ParallaxUpdate(int layer, bool ParallaxEnd);
 
   static Vec2 pos;
   static Vec2 speed;
+  static int Parallax_aux_x;
+  static int Parallax_aux_y;
 };
