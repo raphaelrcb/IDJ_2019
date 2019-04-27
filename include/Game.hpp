@@ -4,7 +4,6 @@
 #include <SDL_include.h>
 #include "State.hpp"
 #include "Resources.hpp"
-// #include "InputManager.hpp"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 600
