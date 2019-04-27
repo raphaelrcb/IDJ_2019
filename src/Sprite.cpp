@@ -1,5 +1,6 @@
 #include "../include/Game.hpp"
 #include "../include/Sprite.hpp"
+#include "../include/Camera.hpp"
 
 
 Sprite::Sprite(GameObject& associated):Component(associated){//seta texture como nullptr (imagem não carregada)
@@ -46,7 +47,9 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 }
 
 void Sprite::Render(){//chama o render utilizando o associated como argumento
-  Render(associated.box.x, associated.box.y);
+  Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
+  // Render(associated.box.x, associated.box.y);
+
 }
 
 void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui quatro argumentos

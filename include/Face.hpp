@@ -1,12 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <SDL2/SDL.h>
 #include "Component.hpp"
 #include "Sound.hpp"
-#include <memory>
-
-
 
 class Face : public Component{
 

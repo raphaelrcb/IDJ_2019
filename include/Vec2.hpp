@@ -14,7 +14,3 @@ public:
   Vec2 GetRotated(float angle);
   Vec2 operator+(const Vec2&);
 };
-
-
-// std::find_if(numbers.begin(), numbers.end(), [&](std::unique_ptr<int>& p) { return p.get() == x;});
-//ué

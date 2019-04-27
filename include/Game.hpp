@@ -4,6 +4,12 @@
 #include <SDL_include.h>
 #include "State.hpp"
 #include "Resources.hpp"
+// #include "InputManager.hpp"
+
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 600
+#define MIX_CHUNKSIZE 1024
+#define AUDIO_CHANNELS 32
 
 class State;
 class Resources;
@@ -17,6 +23,11 @@ class Game{
     SDL_Renderer* renderer;
     State* state;
 
+    int frameStart;
+    float dt;
+
+    void CalculateDeltaTime();
+
   public:
 
     ~Game();
@@ -25,4 +36,5 @@ class Game{
     SDL_Renderer* GetRenderer();
     State& GetState();
     static Game& GetInstance();
+    float GetDeltaTime();
 };
