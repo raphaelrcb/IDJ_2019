@@ -12,6 +12,13 @@
 #include "Music.hpp"
 #include "InputManager.hpp"
 
+#define PI 3.14159265359
+#define BG_PATH "assets/img/ocean.jpg"
+#define TILESET_PATH "assets/img/tileset.png"
+#define TILEMAP_PATH "assets/map/tileMap.txt"
+#define MUSIC_PATH "assets/audio/stageState.ogg"
+#define ENEMY_SPRITE_PATH "assets/img/penguinface.png"
+#define ENEMY_SOUND_PATH "assets/audio/boom.wav"
 class State{
 
 private:
@@ -19,13 +26,18 @@ private:
   Music music;
 
   bool quitRequested;
-  // void Input();
-  void AddObject(int mouseX, int mouseY);
+  bool started;
   std::vector< std::shared_ptr<GameObject> > objectArray;
 
 public:
+
   State();
   ~State();
+
+  std::weak_ptr<GameObject> AddObject(GameObject* go);
+  std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+
+  void Start();
   bool QuitRequested();
   void LoadAssets();
   void Update(float dt);

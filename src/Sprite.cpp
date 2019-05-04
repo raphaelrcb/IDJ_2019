@@ -3,11 +3,13 @@
 #include "../include/Camera.hpp"
 
 
-Sprite::Sprite(GameObject& associated):Component(associated){//seta texture como nullptr (imagem não carregada)
+Sprite::Sprite(GameObject& associated)
+                                      :Component(associated){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
 }
 
-Sprite::Sprite(GameObject& associated, std::string file): Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+Sprite::Sprite(GameObject& associated, std::string file)
+                                                        :Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
   texture = nullptr;
   Open(file);
 }

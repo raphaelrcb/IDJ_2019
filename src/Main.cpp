@@ -1,6 +1,6 @@
 #include "../include/Game.hpp"
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *argv[]) {
 
   Game& game = Game::GetInstance();//cria o game
   game.Run();//executa o game até a janela ser fechada

@@ -3,6 +3,7 @@
 
 GameObject::GameObject(){//inicializa IsDead como falso
   isDead = false;
+  started = false;
 }
 
 GameObject::~GameObject(){
@@ -58,4 +59,11 @@ std::shared_ptr<Component> GameObject::GetComponent(std::string type){
   }
   std::cout << "return null" << '\n';
   return (nullptr);
+}
+
+void GameObject::Start(){
+  for (unsigned int i = 0; i < components.size(); i++) {
+    components[i]->Start();
+  }
+  started = true;
 }
