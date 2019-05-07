@@ -1,5 +1,7 @@
 #include "../include/State.hpp"
 #include "../include/CameraFollower.hpp"
+#include "../include/Alien.hpp"
+
 
 State::State(){
 
@@ -7,9 +9,9 @@ State::State(){
   /////////////////Background
   // std::shared_ptr<GameObject> bg = std::shared_ptr<GameObject> (new GameObject());
   GameObject *bg_object = new GameObject();
+
   std::weak_ptr<GameObject> weak_bg =  AddObject(bg_object);
   std::shared_ptr<GameObject> bg = weak_bg.lock();
-
 
   bg->box.x = 0;
   bg->box.y = 0;
@@ -33,6 +35,16 @@ State::State(){
 
   tileObject->AddComponent(tileMap);
   // objectArray.emplace_back(std::move(tileObject));
+
+  ////////////////ALIEN
+  GameObject *alien_object = new GameObject();
+
+  std::weak_ptr<GameObject> weak_alien =  AddObject(alien_object);
+  std::shared_ptr<GameObject> alien = weak_alien.lock();
+  alien->box.x = 512;
+  alien->box.y = 300;
+  std::shared_ptr<Alien> alien_sprite(new Alien(*alien, 0));
+  alien->AddComponent(alien_sprite);
 
   quitRequested = false;//inicializa o quitRequested
   started = false;

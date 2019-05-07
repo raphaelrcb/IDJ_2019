@@ -6,7 +6,6 @@
 #include "Component.hpp"
 #include "GameObject.hpp"
 #include "Sound.hpp"
-#include "Face.hpp"
 #include "Sprite.hpp"
 #include "TileMap.hpp"
 #include "Music.hpp"

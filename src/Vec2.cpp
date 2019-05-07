@@ -24,10 +24,36 @@ Vec2 Vec2::GetRotated(float angle){
   return *(this);
 }
 
+float Vec2::Absolute(){
+  return (sqrt(this->x*this->x + this->y*this->y));
+}
+
 Vec2 Vec2::operator+(const Vec2& v){
   Vec2 sum;
   sum.x = this->x + v.x;
   sum.y = this->y + v.y;
 
   return (sum);
+}
+
+Vec2 Vec2::operator-(const Vec2& v){
+  Vec2 dif;
+  dif.x = this->x - v.x;
+  dif.y = this->y - v.y;
+
+  return (dif);
+}
+Vec2 Vec2::operator*(const Vec2& v){
+  Vec2 prod;
+  prod.x = this->x*v.x;
+  prod.y = this->y*v.y;
+
+  return (prod);
+}
+Vec2 Vec2::operator/(const Vec2& v){
+  Vec2 divs;
+  divs.x = this->x/v.x;
+  divs.y = this->y/v.y;
+
+  return (divs);
 }
