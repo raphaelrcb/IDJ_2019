@@ -43,8 +43,8 @@ State::State(){
   std::shared_ptr<GameObject> alien = weak_alien.lock();
   alien->box.x = 512;
   alien->box.y = 300;
-  std::shared_ptr<Alien> alien_sprite(new Alien(*alien, 0));
-  alien->AddComponent(alien_sprite);
+  std::shared_ptr<Alien> alien_s(new Alien(*alien, 0));
+  alien->AddComponent(alien_s);
 
   quitRequested = false;//inicializa o quitRequested
   started = false;

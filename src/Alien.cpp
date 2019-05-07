@@ -36,21 +36,24 @@ void Alien::Update(float dt){
 
   InputManager& input = InputManager::GetInstance();
   float alien_dist = 10000; //distância do alien
+  std::cout << "Update" << '\n';
 
   // SDL_GetMouseState(&action.pos.x, &action.pos.y);
   // action.pos.x += Camera::pos.x;
   // action.pos.y += Camera::pos.y;
 
-  if (input.KeyPress(LEFT_MOUSE_BUTTON)){
+  if (input.IsMouseDown(LEFT_MOUSE_BUTTON)){
+    std::cout << "SHOOT" << '\n';
     // action.type = SHOOT;
     Alien::Action action(Alien::Action::SHOOT, input.GetMouseX() + Camera::pos.x, input.GetMouseY() + Camera::pos.y);
     taskQueue.emplace(action);
   }
-  if (input.KeyPress(RIGHT_MOUSE_BUTTON)) {
+  if (input.IsMouseDown(RIGHT_MOUSE_BUTTON)) {
     // action.type = MOVE;
     Action action(Action::MOVE, input.GetMouseX() + Camera::pos.x, input.GetMouseY() + Camera::pos.y);
     taskQueue.emplace(action);
-    alien_dist = associated.box.x - input.GetMouseX();
+    // alien_dist = (associated.box.x - input.GetMouseX())*(associated.box.x - input.GetMouseX()) + (associated.box.y - input.GetMouseY())*(associated.box.y - input.GetMouseY());
+    std::cout << "MOVE" << '\n';
   }
 
   if (!taskQueue.empty()){
