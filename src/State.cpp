@@ -41,9 +41,12 @@ State::State(){
 
   std::weak_ptr<GameObject> weak_alien =  AddObject(alien_object);
   std::shared_ptr<GameObject> alien = weak_alien.lock();
-  alien->box.x = 512;
-  alien->box.y = 300;
+  // alien->box.w = ALIEN_WIDTH;
+  // alien->box.h =ALIEN_HEIGHT;
   std::shared_ptr<Alien> alien_s(new Alien(*alien, 0));
+
+  alien->box.x = 512 - alien->box.w/2;
+  alien->box.y = 300 - alien->box.h/2;
   alien->AddComponent(alien_s);
 
   quitRequested = false;//inicializa o quitRequested

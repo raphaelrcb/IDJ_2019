@@ -23,3 +23,6 @@ bool Rect::Contains(float mouseX, float mouseY){
     return false;
   }
 }
+Vec2 Rect::Get(){
+  return Vec2(this->x, this->y);
+}

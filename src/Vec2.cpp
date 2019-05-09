@@ -57,3 +57,17 @@ Vec2 Vec2::operator/(const Vec2& v){
 
   return (divs);
 }
+Vec2 Vec2::operator*(float mult){
+  Vec2 prod;
+  prod.x = this->x*mult;
+  prod.y = this->y*mult;
+
+  return (prod);
+}
+Vec2 Vec2::operator/(float divs){
+  Vec2 res;
+  res.x = this->x/divs;
+  res.y = this->y/divs;
+
+  return (res);
+}

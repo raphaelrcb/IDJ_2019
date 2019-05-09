@@ -35,32 +35,23 @@ void Alien::Start(){
 void Alien::Update(float dt){
 
   InputManager& input = InputManager::GetInstance();
-  float alien_dist = 10000; //distância do alien
-  std::cout << "Update" << '\n';
+  Vec2 alien_dist = Vec2(); //distância do alien
+  // std::cout << dt << '\n';
 
-  // SDL_GetMouseState(&action.pos.x, &action.pos.y);
-  // action.pos.x += Camera::pos.x;
-  // action.pos.y += Camera::pos.y;
-
-  if (input.IsMouseDown(LEFT_MOUSE_BUTTON)){
-    std::cout << "SHOOT" << '\n';
+  if (input.MousePress(LEFT_MOUSE_BUTTON)){
     // action.type = SHOOT;
-    Alien::Action action(Alien::Action::SHOOT, input.GetMouseX() + Camera::pos.x, input.GetMouseY() + Camera::pos.y);
+    Alien::Action action(Action::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y);
     taskQueue.emplace(action);
   }
-  if (input.IsMouseDown(RIGHT_MOUSE_BUTTON)) {
+  if (input.MousePress(RIGHT_MOUSE_BUTTON)) {
     // action.type = MOVE;
-    Action action(Action::MOVE, input.GetMouseX() + Camera::pos.x, input.GetMouseY() + Camera::pos.y);
+    Action action(Action::MOVE, input.GetMouseX() - (associated.box.w/2) - Camera::pos.x, input.GetMouseY() - (associated.box.h/2) - Camera::pos.y);
     taskQueue.emplace(action);
-    // alien_dist = (associated.box.x - input.GetMouseX())*(associated.box.x - input.GetMouseX()) + (associated.box.y - input.GetMouseY())*(associated.box.y - input.GetMouseY());
-    std::cout << "MOVE" << '\n';
+    // alien_dist = taskQueue.front().pos - associated.box.Get();
   }
 
   if (!taskQueue.empty()){
-  // while (!taskQueue.empty()) {
-  // Action action = taskQueue.front();
-  // Action::ActionType t;// = taskQueue.front().type;
-  // int t;
+
     switch (taskQueue.front().type) {
 
       case Action::SHOOT:
@@ -68,20 +59,23 @@ void Alien::Update(float dt){
       break;
 
       case Action::MOVE:
-        if (abs(alien_dist) < DISTANCE_RANGE) {
-          speed.x = 0;
-          speed.y = 0;
+
+        alien_dist = (taskQueue.front().pos - associated.box.Get());
+        speed = (   alien_dist/(  alien_dist.Absolute() )   )*(float)ALIEN_SPEED;
+
+        if ((alien_dist.x > -DISTANCE_RANGE) && (alien_dist.x < DISTANCE_RANGE) &&
+            (alien_dist.y > -DISTANCE_RANGE) && (alien_dist.y < DISTANCE_RANGE) ) {
+
+          speed = Vec2();
           taskQueue.pop();
+          std::cout << "Chegou!!" << '\n';
+
         } else {
-          speed.x = (alien_dist - associated.box.x)*ALIEN_SPEED;
-          speed.y = (alien_dist - associated.box.y)*ALIEN_SPEED;
-        }
+
         associated.box.x += speed.x*dt;
         associated.box.y += speed.y*dt;
 
-      break;
-
-      default:
+      }
       break;
     }
 

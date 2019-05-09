@@ -27,6 +27,9 @@ void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho fil
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
   SetClip(0, 0, width, height);//seta o clip com as dimensões da imagem
+
+  associated.box.w = width;
+  associated.box.h = height;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetros sasos

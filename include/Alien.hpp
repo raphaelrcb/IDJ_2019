@@ -9,10 +9,10 @@
 #include "GameObject.hpp"
 #include "Music.hpp"
 #include "Sprite.hpp"
-#define ALIEN_PATH "assets/img/alien.png"
-#define ALIEN_SPEED 10 //valor da variação de velocidade dado ao objeto caso ele se movimente
-#define DISTANCE_RANGE 20
 
+#define ALIEN_PATH "assets/img/alien.png"
+#define ALIEN_SPEED 200 //valor da variação de velocidade dado ao objeto caso ele se movimente
+#define DISTANCE_RANGE 5
 
 class Alien : public Component {
 
