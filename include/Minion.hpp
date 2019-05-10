@@ -4,7 +4,9 @@
 #include "Component.hpp"
 #include "Sprite.hpp"
 #include "Game.hpp"
+#include "Bullet.hpp"
 
+class Bullet;
 
 #define PI 3.14159265359
 #define MINION_PATH "assets/img/minion.png"

@@ -74,7 +74,7 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
 
   if (input.KeyPress(SPACE_KEY)){
     // std::cout << " space tleck" << '\n';
-    Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( input.GetMouseX(), input.GetMouseY() );
+    // Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( input.GetMouseX(), input.GetMouseY() );
     // AddObject((int)objPos.x, (int)objPos.y);
   }
 

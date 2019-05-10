@@ -67,10 +67,6 @@ void Alien::Update(float dt){
 
     switch (taskQueue.front().type) {
 
-      case Action::SHOOT:
-        taskQueue.pop();
-      break;
-
       case Action::MOVE:
 
         alien_dist = (taskQueue.front().pos - associated.box.Get());
@@ -81,14 +77,35 @@ void Alien::Update(float dt){
 
           speed = Vec2();
           taskQueue.pop();
-          std::cout << "Chegou!!" << '\n';
+          // std::cout << "Chegou!!" << '\n';
 
         } else {
 
         associated.box.x += speed.x*dt;
         associated.box.y += speed.y*dt;
+        }
+      break;
 
-      }
+      case Action::SHOOT:
+
+          int prox_minion = (rand() % nMinions );
+
+          // std::weak_ptr<Component> cpt;
+          // std::shared_ptr<Component> shared = cpt.lock();
+          // std::vector< std::shared_ptr<Component> > minions;
+          // std::cout << "erro aqui 1" << '\n';
+          //
+          // for (int i = 0; i < nMinions; i++){
+          //   shared = associated.GetComponent("Minion");
+          //   ( ( (minions).push_back(shared) ) );
+          // }
+
+          // std::cout << "erro aqui 2" << '\n';
+          std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>( minionArray[prox_minion].lock()->GetComponent("Minion"));
+          minion->Shoot(taskQueue.front().pos);
+          // std::cout << "erro aqui 2" << '\n';
+          taskQueue.pop();
+
       break;
     }
 

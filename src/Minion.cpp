@@ -60,4 +60,22 @@ bool Minion::Is(std::string type){
 
 void Minion::Shoot(Vec2 target){
 
+  GameObject *bullet_object = new GameObject();
+  std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
+  std::shared_ptr<GameObject> bullet = weak_bullet.lock();
+  // std::cout << "cria bullet" << '\n';
+  // std::cout << "alienCenter (x,y) " << alienCenter.lock()->box.x + alienCenter.lock()->box.w/2 << " " <<  alienCenter.lock()->box.y + alienCenter.lock()->box.h/2 << " ";
+  // std::cout << "minion (x,y) " << associated.box.x + associated.box.w/2 << " " <<  associated.box.y + associated.box.h/2 << " ";
+  Vec2 shoot_dist = (target - ( alienCenter.lock() )->box.GetCenter() + associated.box.GetCenter());
+  bullet->box = associated.box;
+  // std::cout << "target " << target.x << " "<< target.y << '\n';
+  std::cout << "shoot_dist " << shoot_dist.x << " "<< shoot_dist.y << '\n';
+
+  float angle = atan2(target.y - associated.box.y, target.x - associated.box.x);
+
+  // float angle = atan2(shoot_dist.y, shoot_dist.x);
+
+  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, (int)BULLET_DAMAGE, shoot_dist.Absolute(), BULLET_PATH));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
+  bullet->AddComponent(bullet_s);
+
 }

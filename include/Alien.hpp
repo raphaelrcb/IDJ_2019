@@ -10,6 +10,7 @@
 #include "Music.hpp"
 #include "Sprite.hpp"
 #include "Minion.hpp"
+#include "Bullet.hpp"
 #include "State.hpp"
 #include "Game.hpp"
 
