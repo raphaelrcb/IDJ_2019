@@ -34,6 +34,9 @@ void Minion::Update(float dt){
   Vec2 origin_dist = Vec2(150,0);
   std::shared_ptr<GameObject> alien = alienCenter.lock();
 
+  // associated.angleDeg = atan2(associated.box.y - ( alienCenter.lock() )->box.y, associated.box.x - ( alienCenter.lock() )->box.x );
+  associated.angleDeg = -arc*180/PI;
+
   if (alien != nullptr) {
 
     origin_dist.Rotate(arc);//rotaciona com o arco dado

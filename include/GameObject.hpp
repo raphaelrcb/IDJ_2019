@@ -33,4 +33,5 @@ public:
   bool started;
   std::shared_ptr<Component> GetComponent(std::string type);
   Rect box;
+  double angleDeg;
 };
