@@ -5,13 +5,14 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
   std::shared_ptr<Sprite> bullet_sprite(new Sprite(associated, sprite));
   associated.AddComponent(bullet_sprite);
-
   this->distanceLeft = maxDistance;
 
   this->speed.x = speed*cos(angle);
   this->speed.y = speed*sin(angle);
 
   this->damage = damage;
+
+  associated.angleDeg = angle*180/PI;
 }
 
 

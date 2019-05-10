@@ -51,6 +51,11 @@ void Alien::Update(float dt){
   Vec2 alien_dist = Vec2(); //distância do alien
   // std::cout << dt << '\n';
 
+  associated.angleDeg += ALIEN_ANG_SPEED*dt;//sinal positivo faz o alien girar no sentido horário
+  if (associated.angleDeg >= 359 && associated.angleDeg <= 361) {
+    associated.angleDeg = 0;
+  }
+
   if (input.MousePress(LEFT_MOUSE_BUTTON)){
     // action.type = SHOOT;
     Alien::Action action(Action::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y);

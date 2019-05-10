@@ -16,7 +16,7 @@
 
 #define ALIEN_PATH "assets/img/alien.png"
 #define ALIEN_SPEED 200 //valor da variação de velocidade dado ao objeto caso ele se movimente
-#define ALIEN_ANG_SPEED 0.5
+#define ALIEN_ANG_SPEED 30
 #define DISTANCE_RANGE 5
 #define N_MINIONS 4
 
