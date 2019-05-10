@@ -43,7 +43,7 @@ State::State(){
   std::shared_ptr<GameObject> alien = weak_alien.lock();
   // alien->box.w = ALIEN_WIDTH;
   // alien->box.h =ALIEN_HEIGHT;
-  std::shared_ptr<Alien> alien_s(new Alien(*alien, 0));
+  std::shared_ptr<Alien> alien_s(new Alien(*alien, N_MINIONS));
 
   alien->box.x = 512 - alien->box.w/2;
   alien->box.y = 300 - alien->box.h/2;

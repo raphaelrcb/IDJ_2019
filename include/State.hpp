@@ -18,6 +18,8 @@
 #define MUSIC_PATH "assets/audio/stageState.ogg"
 #define ENEMY_SPRITE_PATH "assets/img/penguinface.png"
 #define ENEMY_SOUND_PATH "assets/audio/boom.wav"
+#define N_MINIONS 4
+
 class State{
 
 private:

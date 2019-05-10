@@ -1,18 +1,19 @@
 #include "../include/Minion.hpp"
 
 
-Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) :  Component(associated),
-                                                                                                alienCenter(alienCenter){
+Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, float arcOffsetDeg) :
+                                                                                                  Component(associated),
+                                                                                                  alienCenter(alienCenter){
 
 
   std::shared_ptr<Sprite> minion_sprite(new Sprite(associated, MINION_PATH));
   associated.AddComponent(minion_sprite);
 
-  this->alienCenter = alienCenter;
-  std::shared_ptr<GameObject> alien = alienCenter.lock();
+  this->alienCenter = alienCenter;//ponteiro para o alien
+  std::shared_ptr<GameObject> alien = alienCenter.lock();//transforma em shared ponter para se fazerem operações com ele
 
-  Vec2 origin_dist = Vec2(200,0);
-  arc = arcOffsetDeg*PI/180;
+  Vec2 origin_dist = Vec2(150,0);
+  arc = arcOffsetDeg*PI/180;//converte o arcOffsetDeg para radianos
 
   if (alien != nullptr) {//se tem um alien, inicia com o minion já em uma posição rotacionada
 
@@ -20,7 +21,7 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
     origin_dist += (alien->box).GetCenter();//soma à posição do centro do alien já que o minion orbita o alien
     origin_dist.x -= associated.box.w/2;//corrige para pegar o centro do minion
     origin_dist.y -= associated.box.h/2;
-    associated.box += origin_dist;//atualiza a posição do minion com a distância deslocada
+    associated.box += origin_dist;//atualiza a posição do minion com a distância deslocada para que os próximos não sejam impressos em cima
   }
   else {
     associated.RequestDelete();//se não existe alien, deleta o minion
@@ -30,7 +31,7 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
 
 void Minion::Update(float dt){
 
-  Vec2 origin_dist = Vec2(200,0);
+  Vec2 origin_dist = Vec2(150,0);
   std::shared_ptr<GameObject> alien = alienCenter.lock();
 
   if (alien != nullptr) {
@@ -42,8 +43,7 @@ void Minion::Update(float dt){
 
     arc += V_ANG_MINION*dt;//atualiza o arco para se mover com a velocidade angular definida no próximo frame
     associated.box = origin_dist;//atualiza a posição do minion
-    // associated.box.x = origin_dist.x;
-    // associated.box.y = origin_dist.y;
+
   }
   else {
     associated.RequestDelete();

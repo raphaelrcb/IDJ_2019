@@ -1,5 +1,4 @@
 #include "../include/Alien.hpp"
-#include "../include/InputManager.hpp"
 #include "../include/Camera.hpp"
 
 
@@ -12,6 +11,7 @@ Alien::Alien(GameObject& associated, int nMinions)
   associated.AddComponent(alien_sprite);
 
   hp = 100;
+  this->nMinions = nMinions;
   speed.x = 0;
   speed.y = 0;
 
@@ -32,6 +32,17 @@ Alien::~Alien(){
 
 void Alien::Start(){
 
+  for (int i = 0; i < nMinions; i++) {
+    GameObject *minion_object = new GameObject();
+    std::weak_ptr<GameObject> weak_minion =  Game::GetInstance().GetState().AddObject(minion_object);//pega a função AddObject do state para adicionar o novo minion ao array de objetos
+    std::shared_ptr<GameObject> minion = weak_minion.lock();
+
+    std::weak_ptr<GameObject> weak_alien = Game::GetInstance().GetState().GetObjectPtr(&associated);//pega um ponteiro para o alien que vai ser guardados pelos minions (outra função de state)
+    std::shared_ptr<Minion> minion_s(new Minion(*minion, weak_alien, (360.0/nMinions)*i));//divide o arco de 360 graus pela quantidade de minions desejada para que tenham a mesma distância entre si
+
+    minion->AddComponent(minion_s);
+    minionArray.emplace_back(weak_minion);//adiciona o novo minion ao array de minions
+  }
 }
 
 void Alien::Update(float dt){

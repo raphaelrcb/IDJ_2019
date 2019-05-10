@@ -26,8 +26,8 @@ bool Rect::Contains(float mouseX, float mouseY){
 Vec2 Rect::Get(){
   return Vec2(this->x, this->y);
 }
-Vec2 Rect::GetCenter(){
-  return Vec2(this->x + this->h/2, this->y + this->w/2);
+Vec2 Rect::GetCenter(){ 
+  return Vec2(this->x + this->w/2, this->y + this->h/2);
 }
 void Rect::operator=(const Vec2& v){
   this->x = v.x;
