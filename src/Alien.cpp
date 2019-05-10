@@ -17,9 +17,11 @@ Alien::Alien(GameObject& associated, int nMinions)
 
 }
 Alien::Action::Action(ActionType type, float x, float y){
+
   this->type = type;
   this->pos.x = x;
   this->pos.y = y;
+
 }
 
 Alien::~Alien(){
@@ -88,15 +90,3 @@ void Alien::Render(){
 bool Alien::Is(std::string type){
   return (type == "Alien");
 }
-// std::shared_ptr<GameObject> enemy = std::shared_ptr<GameObject> (new GameObject());//instancia um GameObject para o que vai ser colocado no vetor ObjectArray com os componentes do inimigo
-//
-// std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, ENEMY_SOUND_PATH));
-// std::shared_ptr<Face> enemy_face(new Face(*enemy));
-//
-
-//
-// enemy->AddComponent(enemy_sprite);
-// enemy->AddComponent(enemy_sound);
-// enemy->AddComponent(enemy_face);
-
-// objectArray.emplace_back(std::move(enemy));

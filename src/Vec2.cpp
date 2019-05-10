@@ -24,7 +24,7 @@ Vec2 Vec2::GetRotated(float angle){
   return *(this);
 }
 
-float Vec2::Absolute(){
+float Vec2::Absolute(){ 
   return (sqrt(this->x*this->x + this->y*this->y));
 }
 
@@ -70,4 +70,8 @@ Vec2 Vec2::operator/(float divs){
   res.y = this->y/divs;
 
   return (res);
+}
+void Vec2::operator+=(const Vec2& v){
+  this->x += v.x;
+  this->y += v.y;
 }
