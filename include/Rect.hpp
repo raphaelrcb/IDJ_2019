@@ -15,7 +15,7 @@ public:
   Rect();
   Rect(float a, float b, float c, float d);
   bool Contains(float mouseX, float mouseY);
-  Vec2 Get();
+  Vec2 GetVec2();
   Vec2 GetCenter();
 
   void operator=(const Vec2& v);

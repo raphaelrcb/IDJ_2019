@@ -5,12 +5,13 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
   std::shared_ptr<Sprite> bullet_sprite(new Sprite(associated, sprite));
   associated.AddComponent(bullet_sprite);
-  this->distanceLeft = maxDistance;
+  this->distanceLeft = maxDistance;// no inicio a distancia restante é igual a máxima
 
-  this->speed.x = speed*cos(angle);
+  this->speed.x = speed*cos(angle);//define o vetor velocidade de acordo com o valor passado para o consturtor
   this->speed.y = speed*sin(angle);
+  // std::cout <<"max " << maxDistance << '\n';
 
-  this->damage = damage;
+  this->damage = damage;//define odanode acordo com o passado pelo construtor
 
   associated.angleDeg = angle*180/PI;
 }
@@ -18,11 +19,12 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
 
 void Bullet::Update(float dt){
 
-  associated.box += speed*dt;
-  distanceLeft -= (speed*dt).Absolute();
+  associated.box += speed*dt; // o passo em que a bullet anda o frame é calculado pela volocidade vezes o tempo em que passou entre os frames
+  // std::cout << distanceLeft << '\n';
+  distanceLeft -= (speed*dt).Absolute(); //diminui esse passo da distância restante
 
   if (distanceLeft <= 0 ) {
-    associated.RequestDelete();
+    associated.RequestDelete();//se a distância restante for igual ou menor que zero , chegou no alvo e a bullet é deletada
   }
 
 }

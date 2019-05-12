@@ -11,6 +11,7 @@ class Bullet;
 #define PI 3.14159265359
 #define MINION_PATH "assets/img/minion.png"
 #define V_ANG_MINION 0.75
+#define MINION_RADIUS 180
 
 class Minion : public Component {
 

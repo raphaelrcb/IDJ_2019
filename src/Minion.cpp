@@ -12,12 +12,11 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
   this->alienCenter = alienCenter;//ponteiro para o alien
   std::shared_ptr<GameObject> alien = alienCenter.lock();//transforma em shared ponter para se fazerem operações com ele
 
-  Vec2 origin_dist = Vec2(150,0);
+  Vec2 origin_dist = Vec2(MINION_RADIUS,0);
   arc = arcOffsetDeg*PI/180;//converte o arcOffsetDeg para radianos
 
-  float random_scale = 1 + ( (rand() % 6) )/10.0;
-  // std::cout << random_scale << '\n';
-  minion_sprite->SetScaleX(random_scale, random_scale);
+  float random_scale = 1 + ( (rand() % 6) )/10.0;//cria uma escala aleatória entre 1 e 1.5
+  minion_sprite->SetScaleX(random_scale, random_scale);//manda essa escala para o minion
 
   if (alien != nullptr) {//se tem um alien, inicia com o minion já em uma posição rotacionada
 
@@ -35,10 +34,9 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
 
 void Minion::Update(float dt){
 
-  Vec2 origin_dist = Vec2(150,0);
+  Vec2 origin_dist = Vec2(MINION_RADIUS,0);
   std::shared_ptr<GameObject> alien = alienCenter.lock();
 
-  // associated.angleDeg = atan2(associated.box.y - ( alienCenter.lock() )->box.y, associated.box.x - ( alienCenter.lock() )->box.x );
   associated.angleDeg = -arc*180/PI;//sinal negativo faz o minion girar no sentido anti-horário
 
   if (alien != nullptr) {
@@ -70,15 +68,12 @@ void Minion::Shoot(Vec2 target){
   GameObject *bullet_object = new GameObject();
   std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
   std::shared_ptr<GameObject> bullet = weak_bullet.lock();
-  // std::cout << "cria bullet" << '\n';
-  // std::cout << "alienCenter (x,y) " << alienCenter.lock()->box.x + alienCenter.lock()->box.w/2 << " " <<  alienCenter.lock()->box.y + alienCenter.lock()->box.h/2 << " ";
-  // std::cout << "minion (x,y) " << associated.box.x + associated.box.w/2 << " " <<  associated.box.y + associated.box.h/2 << " ";
-  Vec2 shoot_dist = (target - ( alienCenter.lock() )->box.GetCenter() + associated.box.GetCenter());
-  bullet->box = associated.box;
-  // std::cout << "target " << target.x << " "<< target.y << '\n';
-  // std::cout << "shoot_dist " << shoot_dist.x << " "<< shoot_dist.y << '\n';
+  Vec2 shoot_dist = (target - associated.box.GetCenter());// a distância do tiro é o vetor resultante da diferença da posição do tiro e da posição do minion que vai atirar
 
-  float angle = atan2(target.y - associated.box.y, target.x - associated.box.x);
+  bullet->box.x = associated.box.x + associated.box.w/2;//a posição em que a bullet sai é a mesma possição so minion
+  bullet->box.y = associated.box.y + associated.box.h/2;
+
+  float angle = atan2(target.y - associated.box.y - associated.box.h/2, target.x - associated.box.x - associated.box.w/2);
   // float angle = atan2(shoot_dist.y, shoot_dist.x);
 
   std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, (int)BULLET_DAMAGE, shoot_dist.Absolute(), BULLET_PATH));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string.h>
 #include <queue>
+#include <limits>
 #include "Component.hpp"
 #include "GameObject.hpp"
 #include "Music.hpp"
