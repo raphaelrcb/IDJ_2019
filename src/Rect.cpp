@@ -23,3 +23,17 @@ bool Rect::Contains(float mouseX, float mouseY){
     return false;
   }
 }
+Vec2 Rect::GetVec2(){
+  return Vec2(this->x, this->y);
+}
+Vec2 Rect::GetCenter(){
+  return Vec2(this->x + this->w/2, this->y + this->h/2);
+}
+void Rect::operator=(const Vec2& v){
+  this->x = v.x;
+  this->y = v.y;
+}
+void Rect::operator+=(const Vec2& v){
+  this->x += v.x;
+  this->y += v.y;
+}

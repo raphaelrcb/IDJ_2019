@@ -46,7 +46,7 @@ Game::Game (std::string title, int width, int height){
         std::cout << "Failed to create window, error code: " << SDL_GetError() << std::endl;
         }
         // else {
-        //   std::cout << "Window created" << std::endl;
+          // std::cout << "Window created" << std::endl;
         // }
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);//cria um renderizador para a janela cirada, como entradas colocamos a janela, um valor de index que determinaqual dos drivers devemos usar;
         //o valor -1 faz o SDL escolher o melhor renderizador para o ambiente e para as flags setadas, o terceiro argumento é a flag
@@ -110,6 +110,7 @@ float Game::GetDeltaTime(){
 void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, porém nesse trabalho apenas as etapas 3 e 4
 
   InputManager& input = InputManager::GetInstance();
+  state->Start();
 
   while(state->QuitRequested() != true){
     CalculateDeltaTime();

@@ -46,10 +46,10 @@ int& TileMap::At(int x, int y, int z = 0){//x é coluna, y é linha e z é profu
 
 void TileMap::Render(){
   for (int z = 0; z < mapDepth; z++) {
-    // Camera::ParallaxUpdate(z, false);//Chamma a função que vai mudar a velocidade do objeto no jogo dependendo do layer
+    Camera::ParallaxUpdate(z, false);//Chamma a função que vai mudar a velocidade do objeto no jogo dependendo do layer
     RenderLayer(z, this->associated.box.x + Camera::pos.x, this->associated.box.y + Camera::pos.y);
     // RenderLayer(z, this->associated.box.x + Camera::pos.x*(1+z), this->associated.box.y + Camera::pos.y*(1+z)); Outra opção seria fazer desse jeito, mas manter uma função para calcular a mudança no layers pode se tornar útil mais para frente, caso alguma mudança na lógica seja necessária
-    // Camera::ParallaxUpdate(z, true);//Chama a função de novo para resetar os parâmetros originais
+    Camera::ParallaxUpdate(z, true);//Chama a função de novo para resetar os parâmetros originais
   }
 }
 

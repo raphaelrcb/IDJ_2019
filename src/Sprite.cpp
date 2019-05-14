@@ -3,12 +3,17 @@
 #include "../include/Camera.hpp"
 
 
-Sprite::Sprite(GameObject& associated):Component(associated){//seta texture como nullptr (imagem não carregada)
+Sprite::Sprite(GameObject& associated)
+                                      :Component(associated){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
+  scale = Vec2(1,1);
 }
 
-Sprite::Sprite(GameObject& associated, std::string file): Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+Sprite::Sprite(GameObject& associated, std::string file)
+                                                        :Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+
   texture = nullptr;
+  scale = Vec2(1,1);
   Open(file);
 }
 
@@ -16,6 +21,7 @@ Sprite::~Sprite(){
 }
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
+  SDL_DestroyTexture(texture);
   texture = Resources::GetImage(file);
 
   if (texture == nullptr){
@@ -25,6 +31,9 @@ void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho fil
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
   SetClip(0, 0, width, height);//seta o clip com as dimensões da imagem
+
+  associated.box.w = width;
+  associated.box.h = height;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetros sasos
@@ -35,7 +44,7 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 }
 
 void Sprite::Render(){//chama o render utilizando o associated como argumento
-  Render(associated.box.x - Camera::pos.x, associated.box.y - Camera::pos.y);
+  Render(associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y);
   // Render(associated.box.x, associated.box.y);
 
 }
@@ -45,23 +54,21 @@ void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui qu
   // se a altura e largura forem diferentes da original, há uma mudança de escala da imagem
   dstrect.x = x;
   dstrect.y = y;
-  dstrect.w = clipRect.w;
-  dstrect.h = clipRect.h;
+  dstrect.w = clipRect.w*scale.x;
+  dstrect.h = clipRect.h*scale.y;
   int RenderError;
 
-  RenderError = SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect);
+  RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
   if (RenderError != 0) {
     std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
   }
 }
 
-
-
 int Sprite::GetWidth(){//retorna a largura da imagem
-  return width;
+  return width*scale.x;
 }
 int Sprite::GetHeight(){//retorna a altura da imagem
-  return height;
+  return height*scale.y;
 }
 
 bool Sprite::IsOpen(){//verifica se a imagem foi aberta
@@ -82,4 +89,22 @@ bool Sprite::Is(std::string type){
 }
 
 void Sprite::Update(float dt){
+
+}
+
+void Sprite::SetScaleX(float scaleX, float scaleY){
+
+  if (scaleX > 0 ){
+    scale.x = scaleX;
+    // associated.box.x = scaleX*associated.box.x;
+  }
+  if (scaleY > 0) {
+    scale.y = scaleY;
+    // associated.box.y = scaleY*associated.box.y;
+  }
+
+}
+
+Vec2 Sprite::GetScale(){
+  return scale;
 }

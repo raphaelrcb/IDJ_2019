@@ -49,11 +49,13 @@ void InputManager::Update(){
         case SDL_MOUSEBUTTONDOWN:// SDL_MOUSEBUTTONDOWN Pressionamento de botão do mouse
           mouseState[event.button.button] = true;
           mouseUpdate[event.button.button] = updateCounter;
+          // std::cout << "down" << '\n';
           break;
 
         case SDL_MOUSEBUTTONUP:// SDL_MOUSEBUTTONUP Botão do mouse foi solto
           mouseState[event.button.button] = false;
           mouseUpdate[event.button.button] = updateCounter;
+          // std::cout << "up" << '\n';
           break;
 
         default:
