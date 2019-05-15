@@ -6,9 +6,11 @@
 #include <math.h>
 
 
-#define BULLET_PATH "assets/img/minionbullet1.png"
+#define BULLET_PATH "assets/img/minionbullet2.png"
 #define BULLET_DAMAGE 500
-#define BULLET_SPEED 500.0
+#define BULLET_SPEED 50.0
+#define BULLET_FRAMECOUNT 3
+#define BULLET_FRAMETIME BULLET_FRAMECOUNT/33
 
 class Minion;
 

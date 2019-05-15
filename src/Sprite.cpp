@@ -6,14 +6,24 @@
 Sprite::Sprite(GameObject& associated)
                                       :Component(associated){//seta texture como nullptr (imagem não carregada)
   texture = nullptr;
+  currentFrame = 0;
+  timeElapsed = 0;
+  frameTime = 1;
+  frameCount = 1;
+
   scale = Vec2(1,1);
 }
 
-Sprite::Sprite(GameObject& associated, std::string file)
-                                                        :Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
-
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime)
+                                                                                        :Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
   texture = nullptr;
   scale = Vec2(1,1);
+
+  currentFrame = 0;
+  timeElapsed = 0;
+  this->frameCount = frameCount;
+  this->frameTime = frameTime;
+
   Open(file);
 }
 
@@ -21,6 +31,7 @@ Sprite::~Sprite(){
 }
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
+
   SDL_DestroyTexture(texture);
   texture = Resources::GetImage(file);
 
@@ -30,9 +41,9 @@ void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho fil
   else {
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
-  SetClip(0, 0, width, height);//seta o clip com as dimensões da imagem
-
-  associated.box.w = width;
+  // width = width/frameCount;
+  SetClip(0, 0, width/frameCount, height);//seta o clip com as dimensões da imagem
+  associated.box.w = width/frameCount;//seta o tamanho e a largura do goameobject associado com aqueles setados pelas funções anteriores
   associated.box.h = height;
 }
 
@@ -45,8 +56,6 @@ void Sprite::SetClip(int x, int y, int w, int h){// seta o clip com os parâmetr
 
 void Sprite::Render(){//chama o render utilizando o associated como argumento
   Render(associated.box.x + Camera::pos.x, associated.box.y + Camera::pos.y);
-  // Render(associated.box.x, associated.box.y);
-
 }
 
 void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui quatro argumentos
@@ -65,7 +74,7 @@ void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui qu
 }
 
 int Sprite::GetWidth(){//retorna a largura da imagem
-  return width*scale.x;
+  return width*scale.x/frameCount;
 }
 int Sprite::GetHeight(){//retorna a altura da imagem
   return height*scale.y;
@@ -81,15 +90,27 @@ bool Sprite::IsOpen(){//verifica se a imagem foi aberta
 }
 
 bool Sprite::Is(std::string type){
-  if (type == "Sprite") {
-    return true;
-  } else {
-    return false;
-  }
+  return(type == "Sprite");
 }
 
 void Sprite::Update(float dt){
 
+  // std::cout << "frameTime\t"<< frameTime << '\n';
+  // std::cout << "frameCount\t"<< frameCount << '\n';
+  if (frameCount > 1) {
+    /* code */
+    timeElapsed += dt;
+    if (timeElapsed >= frameTime) {//se o tempo passado for maior que o tempo em que o frame deve permanecer, muda o frame
+      timeElapsed = 0;
+      if (frameCount == currentFrame) {
+        currentFrame = 1; //se o frame atual foir o último, retorna para o fram inicial
+      }
+      else {
+        currentFrame += 1;//se não for o último vai para o próximo frame
+      }
+      SetClip(  (width/frameCount)*(currentFrame-1) , 0, width/frameCount, height);
+    }
+  }
 }
 
 void Sprite::SetScaleX(float scaleX, float scaleY){
@@ -107,4 +128,24 @@ void Sprite::SetScaleX(float scaleX, float scaleY){
 
 Vec2 Sprite::GetScale(){
   return scale;
+}
+
+void Sprite::SetFrame(int frame){
+  if (frame <= frameCount && frame > 0) {
+    currentFrame = frame;
+  }
+
+}
+
+void Sprite::SetFrameCount(int frameCount){
+  if (frameCount > 0) {
+    currentFrame = 0;
+    this->frameCount = frameCount;
+    associated.box.w = width/frameCount;
+    SetClip(0 , 0, width/frameCount, height);
+  }
+}
+
+void Sprite::SetFrameTime(float frameTime){
+  this->frameTime = frameTime;
 }

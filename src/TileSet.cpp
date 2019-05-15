@@ -20,7 +20,7 @@ TileSet::TileSet(GameObject& associated, int tileWidth, int tileHeight, std::str
     rows = 0;
     columns = 0;
   }
-  
+
   //calcula o número de linhas colunas do tileset sado o tamnho dado pela função sprite
 
 }/////////////////////////lista de inicialização?
