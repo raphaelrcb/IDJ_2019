@@ -7,7 +7,6 @@ State::State(){
 
 
   /////////////////Background
-  // std::shared_ptr<GameObject> bg = std::shared_ptr<GameObject> (new GameObject());
   GameObject *bg_object = new GameObject();
 
   std::weak_ptr<GameObject> weak_bg =  AddObject(bg_object);
@@ -19,7 +18,6 @@ State::State(){
   std::shared_ptr<CameraFollower> CamFollow(new CameraFollower(*bg));
   bg->AddComponent(bg_sprite);
   bg->AddComponent(CamFollow);
-  // objectArray.emplace_back(std::move(bg));
 
   ////////////////TileSet
   // std::shared_ptr<GameObject> tileObject = std::shared_ptr<GameObject> (new GameObject());
@@ -34,15 +32,12 @@ State::State(){
   std::shared_ptr<TileMap> tileMap(new TileMap(*tileObject, TILEMAP_PATH , tileSet));
 
   tileObject->AddComponent(tileMap);
-  // objectArray.emplace_back(std::move(tileObject));
 
   ////////////////ALIEN
   GameObject *alien_object = new GameObject();
 
   std::weak_ptr<GameObject> weak_alien =  AddObject(alien_object);
   std::shared_ptr<GameObject> alien = weak_alien.lock();
-  // alien->box.w = ALIEN_WIDTH;
-  // alien->box.h =ALIEN_HEIGHT;
   std::shared_ptr<Alien> alien_s(new Alien(*alien, N_MINIONS));
 
   alien->box.x = 512 - alien->box.w/2;
@@ -117,25 +112,6 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* go){
 
   return weak;
 }
-
-/////////////////////////////FACE
-  // std::shared_ptr<GameObject> enemy = std::shared_ptr<GameObject> (new GameObject());//instancia um GameObject para o que vai ser colocado no vetor ObjectArray com os componentes do inimigo
-  //
-  // std::shared_ptr<Sprite> enemy_sprite(new Sprite(*enemy, ENEMY_SPRITE_PATH));
-  // std::shared_ptr<Sound> enemy_sound(new Sound(*enemy, ENEMY_SOUND_PATH));
-  // std::shared_ptr<Face> enemy_face(new Face(*enemy));
-  //
-  // enemy->box.x = mouseX - enemy_sprite->GetWidth()/2 + Camera::pos.x;
-  // enemy->box.y = mouseY - enemy_sprite->GetHeight()/2 + Camera::pos.y;
-  // enemy->box.w = enemy_sprite->GetWidth();
-  // enemy->box.h = enemy_sprite->GetHeight();
-  //
-  // enemy->AddComponent(enemy_sprite);
-  // enemy->AddComponent(enemy_sound);
-  // enemy->AddComponent(enemy_face);
-
-  // objectArray.emplace_back(std::move(enemy));
-//////////////////////////////////
 
 std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go){
 
