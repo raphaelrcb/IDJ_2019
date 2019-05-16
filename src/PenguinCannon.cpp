@@ -8,6 +8,9 @@ PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> p
 
   std::shared_ptr<Sprite> penguinc_sprite(new Sprite(associated, PENGUINCANNON_PATH));//criando a sprite e adicionando ao vetor de Components
   associated.AddComponent(penguinc_sprite);
+
+  std::shared_ptr<Collider> penguinc_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  associated.AddComponent(penguinc_collider);
 }
 
 

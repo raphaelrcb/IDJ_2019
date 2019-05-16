@@ -11,6 +11,9 @@ PenguinBody::PenguinBody(GameObject& associated)
   std::shared_ptr<Sprite> penguinb_sprite(new Sprite(associated, PENGUINBODY_PATH));
   associated.AddComponent(penguinb_sprite);//cirando a sprite e adicionando ao vetor de components
 
+  std::shared_ptr<Collider> penguinb_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  associated.AddComponent(penguinb_collider);
+
   player = this;//seta a variável de instância(player) com a instância da classe criada para que seja acessado por outros lugares no código
 
 }

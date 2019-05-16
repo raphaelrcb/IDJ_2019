@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Vec2.hpp"
-#include "Minion.hpp"
+#include "Component.hpp"
+#include "Collider.hpp"
+#include "Sprite.hpp"
 #include <string>
 #include <math.h>
 

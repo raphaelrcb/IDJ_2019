@@ -9,6 +9,9 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
   std::shared_ptr<Sprite> minion_sprite(new Sprite(associated, MINION_PATH));
   associated.AddComponent(minion_sprite);
 
+  std::shared_ptr<Collider> minion_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  associated.AddComponent(minion_collider);
+
   this->alienCenter = alienCenter;//ponteiro para o alien
   std::shared_ptr<GameObject> alien = alienCenter.lock();//transforma em shared ponter para se fazerem operações com ele
 

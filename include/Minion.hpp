@@ -5,6 +5,7 @@
 #include "Sprite.hpp"
 #include "Game.hpp"
 #include "Bullet.hpp"
+#include "Collider.hpp"
 
 class Bullet;
 

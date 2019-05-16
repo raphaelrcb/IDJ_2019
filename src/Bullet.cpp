@@ -1,10 +1,15 @@
 #include "../include/Bullet.hpp"
+#define PI 3.14159265359
 
 Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount, float frameTime):
                                                                                                                       Component(associated){
 
   std::shared_ptr<Sprite> bullet_sprite(new Sprite(associated, sprite, frameCount, frameTime));
   associated.AddComponent(bullet_sprite);
+
+  std::shared_ptr<Collider> bullet_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  associated.AddComponent(bullet_collider);
+
   this->distanceLeft = maxDistance;// no inicio a distancia restante é igual a máxima
 
   this->speed.x = speed*cos(angle);//define o vetor velocidade de acordo com o valor passado para o consturtor

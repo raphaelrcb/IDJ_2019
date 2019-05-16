@@ -10,6 +10,9 @@ Alien::Alien(GameObject& associated, int nMinions)
   std::shared_ptr<Sprite> alien_sprite(new Sprite(associated, ALIEN_PATH));
   associated.AddComponent(alien_sprite);
 
+  std::shared_ptr<Collider> alien_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  associated.AddComponent(alien_collider);
+
   hp = 1500;
   this->nMinions = nMinions;
   speed.x = 0;

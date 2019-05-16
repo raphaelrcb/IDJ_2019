@@ -2,13 +2,14 @@
 
 #include "Component.hpp"
 #include "PenguinCannon.hpp"
+#include "Collider.hpp"
 #include "Sprite.hpp"
 #include "Game.hpp"
 #include "State.hpp"
 
 
 #define PENGUINBODY_PATH "assets/img/penguin.png"
-#define PENGUIN_DELTA_SPEED 100
+#define PENGUIN_DELTA_SPEED 150
 #define PENGUIN_MAX_SPEED 500
 #define PENGUIN_MIN_SPEED -500
 #define PENGUIN_ANGULAR_SPEED 200
