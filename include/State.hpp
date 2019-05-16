@@ -8,8 +8,12 @@
 #include "Sound.hpp"
 #include "Sprite.hpp"
 #include "TileMap.hpp"
+#include "CameraFollower.hpp"
 #include "Music.hpp"
 #include "InputManager.hpp"
+#include "Alien.hpp"
+#include "PenguinBody.hpp"
+
 
 #define PI 3.14159265359
 #define BG_PATH "assets/img/ocean.jpg"

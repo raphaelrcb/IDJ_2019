@@ -1,6 +1,4 @@
 #include "../include/State.hpp"
-#include "../include/CameraFollower.hpp"
-#include "../include/Alien.hpp"
 
 
 State::State(){
@@ -43,6 +41,20 @@ State::State(){
   alien->box.x = 512 - alien->box.w/2;
   alien->box.y = 300 - alien->box.h/2;
   alien->AddComponent(alien_s);
+
+  ////////////////PENGUIN
+  GameObject *penguin_object = new GameObject();
+
+  std::weak_ptr<GameObject> weak_penguin =  AddObject(penguin_object);
+  std::shared_ptr<GameObject> penguin = weak_penguin.lock();
+  std::shared_ptr<PenguinBody> penguin_s(new PenguinBody(*penguin));
+
+  penguin->box.x = 704;
+  penguin->box.y = 640;
+  penguin->AddComponent(penguin_s);
+  Camera::Follow(penguin.get());
+
+
 
   quitRequested = false;//inicializa o quitRequested
   started = false;

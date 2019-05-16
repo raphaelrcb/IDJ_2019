@@ -1,3 +1,4 @@
+#pragma once
 #include "GameObject.hpp"
 
 #define WINDOW_WIDTH 1024

@@ -1,6 +1,8 @@
+#pragma once
 #include "Component.hpp"
 #include "Camera.hpp"
 
+class Camera;
 class CameraFollower : public Component{
 
 private:

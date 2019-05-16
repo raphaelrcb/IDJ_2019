@@ -1,6 +1,5 @@
 #include "../include/Game.hpp"
 #include "../include/Sprite.hpp"
-#include "../include/Camera.hpp"
 
 
 Sprite::Sprite(GameObject& associated)

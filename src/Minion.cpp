@@ -76,7 +76,7 @@ void Minion::Shoot(Vec2 target){
   float angle = atan2(target.y - associated.box.y - associated.box.h/2, target.x - associated.box.x - associated.box.w/2);
   // float angle = atan2(shoot_dist.y, shoot_dist.x);
 
-  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, (int)BULLET_DAMAGE, shoot_dist.Absolute(), BULLET_PATH));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
+  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, (int)BULLET_DAMAGE, shoot_dist.Absolute(), MINION_BULLET_PATH, MINION_BULLET_FRAMECOUNT, MINION_BULLET_FRAMETIME));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
   bullet->AddComponent(bullet_s);
 
 }

@@ -17,14 +17,13 @@ void Vec2::Rotate(float angle){
 
   this->x = temp_x;
   this->y = temp_y;
-
 }
 Vec2 Vec2::GetRotated(float angle){
   this->Rotate(angle);
   return *(this);
 }
 
-float Vec2::Absolute(){ 
+float Vec2::Absolute(){
   return (sqrt(this->x*this->x + this->y*this->y));
 }
 

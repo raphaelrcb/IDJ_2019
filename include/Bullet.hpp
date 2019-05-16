@@ -6,11 +6,9 @@
 #include <math.h>
 
 
-#define BULLET_PATH "assets/img/minionbullet2.png"
 #define BULLET_DAMAGE 500
 #define BULLET_SPEED 50.0
-#define BULLET_FRAMECOUNT 3
-#define BULLET_FRAMETIME BULLET_FRAMECOUNT/33
+
 
 class Minion;
 
@@ -24,7 +22,7 @@ private:
 
 public:
 
-  Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite);
+  Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount = 1, float frameTime = 1);
 
   void Update(float dt);
   void Render();

@@ -1,9 +1,9 @@
 #include "../include/Bullet.hpp"
 
-Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite):
+Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, float maxDistance, std::string sprite, int frameCount, float frameTime):
                                                                                                                       Component(associated){
 
-  std::shared_ptr<Sprite> bullet_sprite(new Sprite(associated, sprite, BULLET_FRAMECOUNT, BULLET_FRAMETIME));
+  std::shared_ptr<Sprite> bullet_sprite(new Sprite(associated, sprite, frameCount, frameTime));
   associated.AddComponent(bullet_sprite);
   this->distanceLeft = maxDistance;// no inicio a distancia restante é igual a máxima
 

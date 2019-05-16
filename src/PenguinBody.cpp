@@ -37,7 +37,57 @@ void PenguinBody::Start(){
 
 void PenguinBody::Update(float dt){
 
+  InputManager& input = InputManager::GetInstance();
 
+  if (input.IsKeyDown(A_KEY)) {
+    std::cout << "A" << '\n';
+    angle -= PENGUIN_ANGULAR_SPEED*dt;
+
+  }
+  if (input.IsKeyDown(D_KEY)) {
+     std::cout << "D" << '\n';
+     angle += PENGUIN_ANGULAR_SPEED*dt;
+  }
+
+  associated.angleDeg = angle;
+
+  if (input.IsKeyDown(W_KEY) && (linearSpeed <= PENGUIN_MAX_SPEED)) {//é definido uma velocidade máxima à qual a câmera pode acelerar
+    std::cout << "W" << '\n';
+    linearSpeed+=PENGUIN_DELTA_SPEED*dt;
+
+  }
+   else if (input.IsKeyDown(S_KEY) && (linearSpeed >= PENGUIN_MIN_SPEED)) {
+     std::cout << "S" << '\n';
+     linearSpeed-=PENGUIN_DELTA_SPEED*dt;
+
+  } else {
+
+    if (linearSpeed > 0){//com essa lógica a movimentação nao para instantâneamente, mas a velocidade diminui gradativamente até 0
+      linearSpeed -= PENGUIN_DELTA_SPEED*dt/FRICTION;
+
+    }
+    else if (linearSpeed < 0){
+      linearSpeed += PENGUIN_DELTA_SPEED*dt/FRICTION;
+
+    }
+    else{
+      speed = Vec2();
+    }
+  }
+
+  speed.x = linearSpeed;
+  speed.y = 0;
+
+  speed.Rotate(-angle*PI/180);
+  associated.box.x += speed.x*dt;
+  associated.box.y += speed.y*dt;
+
+
+
+  if (hp <= 0) {
+    hp = 0;
+    associated.RequestDelete();
+  }
 }
 
 void PenguinBody::Render(){
