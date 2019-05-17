@@ -27,7 +27,7 @@ float Vec2::Absolute(){
   return (sqrt(this->x*this->x + this->y*this->y));
 }
 
-Vec2 Vec2::operator+(const Vec2& v){
+Vec2 Vec2::operator+(const Vec2& v) {
   Vec2 sum;
   sum.x = this->x + v.x;
   sum.y = this->y + v.y;
@@ -35,7 +35,7 @@ Vec2 Vec2::operator+(const Vec2& v){
   return (sum);
 }
 
-Vec2 Vec2::operator-(const Vec2& v){
+Vec2 Vec2::operator-(const Vec2& v) {
   Vec2 dif;
   dif.x = this->x - v.x;
   dif.y = this->y - v.y;
@@ -43,11 +43,7 @@ Vec2 Vec2::operator-(const Vec2& v){
   return (dif);
 }
 Vec2 Vec2::operator*(const Vec2& v){
-  Vec2 prod;
-  prod.x = this->x*v.x;
-  prod.y = this->y*v.y;
-
-  return (prod);
+  return (Vec2(this->x*v.x, this->y*v.y));
 }
 Vec2 Vec2::operator/(const Vec2& v){
   Vec2 divs;
@@ -56,12 +52,8 @@ Vec2 Vec2::operator/(const Vec2& v){
 
   return (divs);
 }
-Vec2 Vec2::operator*(float mult){
-  Vec2 prod;
-  prod.x = this->x*mult;
-  prod.y = this->y*mult;
-
-  return (prod);
+Vec2 Vec2::operator*(float mult) const {
+  return (Vec2(this->x*mult, this->y*mult));
 }
 Vec2 Vec2::operator/(float divs){
   Vec2 res;

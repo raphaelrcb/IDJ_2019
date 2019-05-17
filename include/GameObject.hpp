@@ -30,6 +30,8 @@ public:
   void AddComponent(std::shared_ptr<Component> cpt);
   void RemoveComponent(std::shared_ptr<Component> cpt);
 
+  void NotifyCollision(GameObject& other);
+
   bool started;
   std::shared_ptr<Component> GetComponent(std::string type);
   Rect box;

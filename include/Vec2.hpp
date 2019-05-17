@@ -20,7 +20,7 @@ public:
   Vec2 operator-(const Vec2&);
   Vec2 operator*(const Vec2&);
   Vec2 operator/(const Vec2&);
-  Vec2 operator*(float mult);
+  Vec2 operator*(float mult) const;
   Vec2 operator/(float divs);
   void operator+=(const Vec2&);
 
