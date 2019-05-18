@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.hpp"
-#include "Collision.h"
+#include "Collision.hpp"
 
 class Collider : public Component {
 

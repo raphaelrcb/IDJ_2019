@@ -9,7 +9,7 @@ int Camera::Parallax_aux_y;
 
 void Camera::Follow(GameObject* newFocus){
   focus = newFocus;
-  std::cout << "x " << focus->box.x <<" y " << focus->box.y << " w " <<focus->box.w <<" h " << focus->box.h << '\n';
+  // std::cout << "x " << focus->box.x <<" y " << focus->box.y << " w " <<focus->box.w <<" h " << focus->box.h << '\n';
 }
 
 void Camera::Unfollow(){
