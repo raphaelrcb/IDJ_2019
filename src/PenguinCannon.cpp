@@ -16,9 +16,12 @@ PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> p
 void PenguinCannon::Update(float dt){
 
   InputManager& input = InputManager::GetInstance();
+  static Timer cooldown;
+
   Vec2 mouse = Vec2(input.GetMouseX(), input.GetMouseY());
   std::shared_ptr<GameObject> penguin_body = pbody.lock();
-  // Vec2 pcenter = associated.box.GetCenter();
+
+  std::cout << dt << '\n';
 
   if (penguin_body == nullptr) {
     associated.RequestDelete();
@@ -31,8 +34,12 @@ void PenguinCannon::Update(float dt){
     associated.angleDeg = angle*180/PI;
 
   }
+  cooldown.Update(dt);
   if (input.MousePress(LEFT_MOUSE_BUTTON)){
-    Shoot();
+    if (cooldown.Get() > CANNON_COOLDOWN) {
+      cooldown.Restart();
+      Shoot();
+    }
     // std::cout << associated.box.x << '\n';
   }
 
