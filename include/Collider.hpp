@@ -12,7 +12,7 @@ private:
 
 public:
 
-  Collider(GameObject& associated, Vec2 scale = Vec2(1,1), Vec2 offset = Vec2() );
+  Collider(GameObject& associated, Vec2 scale = Vec2(1,1), Vec2 offset = {0,0} );
 
   Rect box;
 

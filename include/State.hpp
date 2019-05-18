@@ -13,6 +13,7 @@
 #include "InputManager.hpp"
 #include "Alien.hpp"
 #include "PenguinBody.hpp"
+#include "Collider.hpp"
 
 
 #define PI 3.14159265359

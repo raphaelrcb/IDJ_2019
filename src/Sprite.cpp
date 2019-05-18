@@ -11,6 +11,8 @@ Sprite::Sprite(GameObject& associated)
   frameCount = 1;
 
   scale = Vec2(1,1);
+  width = 0;
+  height = 0;
 }
 
 Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime)
@@ -22,6 +24,8 @@ Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float f
   timeElapsed = 0;
   this->frameCount = frameCount;
   this->frameTime = frameTime;
+  width = 0;
+  height = 0;
 
   Open(file);
 }
@@ -116,11 +120,11 @@ void Sprite::SetScaleX(float scaleX, float scaleY){
 
   if (scaleX > 0 ){
     scale.x = scaleX;
-    // associated.box.x = scaleX*associated.box.x;
+    associated.box.w = GetWidth();
   }
   if (scaleY > 0) {
     scale.y = scaleY;
-    // associated.box.y = scaleY*associated.box.y;
+    associated.box.h = GetHeight();
   }
 
 }
@@ -132,6 +136,7 @@ Vec2 Sprite::GetScale(){
 void Sprite::SetFrame(int frame){
   if (frame <= frameCount && frame > 0) {
     currentFrame = frame;
+    SetClip(  (width/frameCount)*currentFrame , 0, width/frameCount, height);
   }
 
 }

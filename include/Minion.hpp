@@ -16,6 +16,7 @@ class Bullet;
 #define MINION_RADIUS 180
 #define MINION_BULLET_FRAMECOUNT 3
 #define MINION_BULLET_FRAMETIME MINION_BULLET_FRAMECOUNT/33
+#define MINION_BULLET_RANGE 1000
 
 class Minion : public Component {
 
@@ -32,5 +33,7 @@ public:
   void Render();
   bool Is(std::string type);
   void Shoot(Vec2 target);
+  void NotifyCollision(GameObject& other);
+
 
 };

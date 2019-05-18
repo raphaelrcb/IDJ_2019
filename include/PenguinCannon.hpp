@@ -7,7 +7,11 @@
 #define PENGUINCANNON_PATH "assets/img/cubngun.png"
 #define PENGUIN_BULLET_PATH "assets/img/penguinbullet.png"
 #define PENGUIN_BULLET_FRAMECOUNT 4
-#define PENGUIN_BULLET_FRAMETIME 1/PENGUIN_BULLET_FRAMECOUNT
+#define PENGUIN_BULLET_FRAMETIME 2
+#define PENGUIN_BULLET_RANGE 1500
+// #define PENGUIN_BULLET_PATH "assets/img/penguinbullet.png"
+// #define PENGUIN_BULLET_FRAMECOUNT 4
+// #define PENGUIN_BULLET_FRAMETIME 1/PENGUIN_BULLET_FRAMECOUNT
 
 
 class PenguinBody;
@@ -26,5 +30,7 @@ public:
   void Render();
   bool Is(std::string type);
   void Shoot();
+  void NotifyCollision(GameObject& other);
+
 
 };

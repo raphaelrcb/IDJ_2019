@@ -6,7 +6,8 @@ PenguinBody::PenguinBody(GameObject& associated)
   speed = Vec2();//inicialiizando as variáveis
   linearSpeed = 0;
   angle = 0;
-  hp = (std::rand() % 100) + 1000;
+  // hp = (std::rand() % 6)*10 + 500;
+  hp = 700;
 
   std::shared_ptr<Sprite> penguinb_sprite(new Sprite(associated, PENGUINBODY_PATH));
   associated.AddComponent(penguinb_sprite);//cirando a sprite e adicionando ao vetor de components
@@ -43,34 +44,40 @@ void PenguinBody::Update(float dt){
   InputManager& input = InputManager::GetInstance();
 
   if (input.IsKeyDown(A_KEY)) {
-    std::cout << "A" << '\n';
+    // std::cout << "A" << '\n';
     angle -= PENGUIN_ANGULAR_SPEED*dt;
 
   }
   if (input.IsKeyDown(D_KEY)) {
-     std::cout << "D" << '\n';
+     // std::cout << "D" << '\n';
      angle += PENGUIN_ANGULAR_SPEED*dt;
   }
 
   associated.angleDeg = angle;
 
   if (input.IsKeyDown(W_KEY) && (linearSpeed <= PENGUIN_MAX_SPEED)) {//é definido uma velocidade máxima à qual a câmera pode acelerar
-    std::cout << "W" << '\n';
-    linearSpeed+=PENGUIN_DELTA_SPEED*dt;
+    // std::cout << "W" << '\n';
+    if (linearSpeed < 0) {
+      linearSpeed += 2*PENGUIN_DELTA_SPEED*dt;
+    }
+    linearSpeed += PENGUIN_DELTA_SPEED*dt;
 
   }
    else if (input.IsKeyDown(S_KEY) && (linearSpeed >= PENGUIN_MIN_SPEED)) {
-     std::cout << "S" << '\n';
-     linearSpeed-=PENGUIN_DELTA_SPEED*dt;
+     // std::cout << "S" << '\n';
+     if (linearSpeed > 0) {
+       linearSpeed -= 2*PENGUIN_DELTA_SPEED*dt;
+     }
+     linearSpeed -= PENGUIN_DELTA_SPEED*dt;
 
   } else {
 
     if (linearSpeed > 0){//com essa lógica a movimentação nao para instantâneamente, mas a velocidade diminui gradativamente até 0
-      linearSpeed -= PENGUIN_DELTA_SPEED*dt/FRICTION;
+      linearSpeed -= PENGUIN_DELTA_SPEED*dt;
 
     }
     else if (linearSpeed < 0){
-      linearSpeed += PENGUIN_DELTA_SPEED*dt/FRICTION;
+      linearSpeed += PENGUIN_DELTA_SPEED*dt;
 
     }
     else{
@@ -85,9 +92,8 @@ void PenguinBody::Update(float dt){
   associated.box.x += speed.x*dt;
   associated.box.y += speed.y*dt;
 
-
-
   if (hp <= 0) {
+    Camera::Unfollow();
     hp = 0;
     associated.RequestDelete();
   }
@@ -100,4 +106,13 @@ void PenguinBody::Render(){
 
 bool PenguinBody::Is(std::string type){
   return (type == "PenguinBody");
+}
+
+void PenguinBody::NotifyCollision(GameObject& other){
+
+  std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet"));
+
+  if (  (bullet != nullptr) && bullet->targetsPlayer == true  ) {
+    hp -= bullet->GetDamage();
+  }
 }

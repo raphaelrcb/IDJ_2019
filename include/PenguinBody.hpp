@@ -13,7 +13,7 @@
 #define PENGUIN_MAX_SPEED 500
 #define PENGUIN_MIN_SPEED -500
 #define PENGUIN_ANGULAR_SPEED 200
-#define FRICTION 2
+#define FRICTION 500
 
 class PenguinCannon;
 
@@ -36,6 +36,7 @@ public:
   void Update(float dt);
   void Render();
   bool Is(std::string type);
+  void NotifyCollision(GameObject& other);
 
   PenguinBody* player;
 

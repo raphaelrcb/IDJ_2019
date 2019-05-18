@@ -10,10 +10,12 @@ Alien::Alien(GameObject& associated, int nMinions)
   std::shared_ptr<Sprite> alien_sprite(new Sprite(associated, ALIEN_PATH));
   associated.AddComponent(alien_sprite);
 
-  std::shared_ptr<Collider> alien_collider(new Collider(associated));//criando a sprite e adicionando ao vetor de Components
+  std::shared_ptr<Collider> alien_collider(new Collider(associated, {0.8, 0.8}));//criando a sprite e adicionando ao vetor de Components
   associated.AddComponent(alien_collider);
-
+  // hp = ( (rand() % 6) )*100.0 + 1000;//cria uma escala aleatória entre 1 e 1.5
   hp = 1500;
+
+  // hp = (std::rand() % 6)*100 + 1000;
   this->nMinions = nMinions;
   speed.x = 0;
   speed.y = 0;
@@ -42,6 +44,9 @@ void Alien::Start(){
 
     std::weak_ptr<GameObject> weak_alien = Game::GetInstance().GetState().GetObjectPtr(&associated);//pega um ponteiro para o alien que vai ser guardados pelos minions (outra função de state)
     std::shared_ptr<Minion> minion_s(new Minion(*minion, weak_alien, (360.0/nMinions)*i));//divide o arco de 360 graus pela quantidade de minions desejada para que tenham a mesma distância entre si
+
+    minion->box.x = 0;
+    minion->box.y = 0;
 
     minion->AddComponent(minion_s);
     minionArray.emplace_back(weak_minion);//adiciona o novo minion ao array de minions
@@ -114,11 +119,21 @@ void Alien::Update(float dt){
   if (hp <= 0) {//se a vida do alien chegar a zero ou menos, ele morre e o objeto é deletado
     associated.RequestDelete();
   }
-
+  // std::cout << hp << '\n';
 }
 void Alien::Render(){
 
 }
 bool Alien::Is(std::string type){
   return (type == "Alien");
+}
+
+void Alien::NotifyCollision(GameObject& other){
+
+  std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet"));
+
+  if (bullet != nullptr && bullet->targetsPlayer == false) {
+    // std::cout << "alien colidiu com bullet" << '\n';
+    hp -= bullet->GetDamage();
+  }
 }

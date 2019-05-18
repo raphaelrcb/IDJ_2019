@@ -56,9 +56,9 @@ std::shared_ptr<Component> GameObject::GetComponent(std::string type){
   for (unsigned int i = 0; i < components.size(); i++) {
     if (components[i]->Is(type)){
       return components[i];//components[i].get();
+      // std::cout << "return component" << '\n';
     }
   }
-  std::cout << "return null" << '\n';
   return (nullptr);
 }
 

@@ -11,6 +11,7 @@ class Collision {
 		// Para usar graus, forneça a sua própria implementação de Rotate,
 		// ou transforme os ângulos no corpo de IsColliding.
 		static inline bool IsColliding(Rect& a, Rect& b, float angleOfA, float angleOfB) {
+			// std::cout << "chamou colliding" << '\n';
 			Vec2 A[] = { Vec2( a.x, a.y + a.h ),
 						  Vec2( a.x + a.w, a.y + a.h ),
 						  Vec2( a.x + a.w, a.y ),
@@ -21,7 +22,6 @@ class Collision {
 						  Vec2( b.x + b.w, b.y ),
 						  Vec2( b.x, b.y )
 						};
-
 			for (auto& v : A) {
 				v = Rotate(v - a.GetCenter(), angleOfA) + a.GetCenter();
 			}
@@ -58,7 +58,7 @@ class Collision {
 			return std::sqrt(p.x * p.x + p.y * p.y);
 		}
 
-		static inline Vec2 Norm(const Vec2& p) {
+		static inline Vec2 Norm(Vec2 p) {
 			return p * (1.f / Mag(p));
 		}
 

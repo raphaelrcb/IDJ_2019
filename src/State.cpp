@@ -79,19 +79,44 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
     quitRequested = true;
   }
 
-  if (input.KeyPress(SPACE_KEY)){
-    // std::cout << " space tleck" << '\n';
-    // Vec2 objPos = Vec2( 200, 0 ).GetRotated( -PI + PI*(rand() % 1001)/500.0 ) + Vec2( input.GetMouseX(), input.GetMouseY() );
-    // AddObject((int)objPos.x, (int)objPos.y);
-  }
+  // if (input.KeyPress(SPACE_KEY)){
+  // }
 
   for (int i = objectArray.size() - 1; i >= 0; --i) {
-      objectArray[i]->Update(dt);
+      objectArray[i]->Update(dt);//chama o update de todos os objetos no array
   }
 
   for (unsigned int i = 0; i < objectArray.size(); i++) {
     if (objectArray[i]->IsDead()) {
       objectArray.erase(objectArray.begin()+i);
+    }
+  }
+
+  for (unsigned int i = 0; i < objectArray.size(); i++) {
+    // std::shared_ptr<Component> cpt_a = objectArray[i]->GetComponent("Collider");
+    std::shared_ptr<Collider> cpt_a = std::dynamic_pointer_cast<Collider>(objectArray[i]->GetComponent("Collider"));
+    if (cpt_a != nullptr) {
+
+      for (unsigned int j = i + 1; j < objectArray.size(); j++) {
+        // std::shared_ptr<Component> cpt_b = objectArray[j]->GetComponent("Collider");
+        std::shared_ptr<Collider> cpt_b = std::dynamic_pointer_cast<Collider>(objectArray[j]->GetComponent("Collider"));
+
+        if (cpt_b != nullptr) {
+
+          if (Collision::IsColliding( cpt_a->box, cpt_b->box, objectArray[i]->angleDeg,  objectArray[j]->angleDeg)) {
+            objectArray[i]->NotifyCollision( *objectArray[j] );
+            objectArray[j]->NotifyCollision( *objectArray[i] );
+          }
+        }
+      }
+    }
+  }
+
+  for (int i = objectArray.size() - 1; i >= 0; --i) {
+    std::shared_ptr<Component> collider_update = objectArray[i]->GetComponent("Collider");
+    if (collider_update != nullptr) {//atulliza os colliders de cada objeto
+      (std::dynamic_pointer_cast<Collider>(collider_update))->Update(dt);
+
     }
   }
 }
