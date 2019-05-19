@@ -81,14 +81,24 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
 
   // if (input.KeyPress(SPACE_KEY)){
   // }
-
-  for (int i = objectArray.size() - 1; i >= 0; --i) {
-      objectArray[i]->Update(dt);//chama o update de todos os objetos no array
-  }
+  std::cout<< "n objects = " << objectArray.size() << '\n';
 
   for (unsigned int i = 0; i < objectArray.size(); i++) {
     if (objectArray[i]->IsDead()) {
       objectArray.erase(objectArray.begin()+i);
+      std::cout << "apagou objeto" << '\n';
+    }
+  }
+  for (unsigned int i = 0; i < objectArray.size(); i++) {
+    objectArray[i]->Update(dt);//chama o update de todos os objetos no array
+  }
+
+
+
+  for (unsigned int i = 0; i < objectArray.size(); i++) {
+    std::shared_ptr<Component> collider_update = objectArray[i]->GetComponent("Collider");
+    if (collider_update != nullptr) {//atulliza os colliders de cada objeto
+      (std::dynamic_pointer_cast<Collider>(collider_update))->Update(dt);
     }
   }
 
@@ -112,13 +122,6 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
     }
   }
 
-  for (int i = objectArray.size() - 1; i >= 0; --i) {
-    std::shared_ptr<Component> collider_update = objectArray[i]->GetComponent("Collider");
-    if (collider_update != nullptr) {//atulliza os colliders de cada objeto
-      (std::dynamic_pointer_cast<Collider>(collider_update))->Update(dt);
-
-    }
-  }
 }
 
 void State::Render(){//etapa 4 de Gamme::Run, renderiza o estado do jogoIsso inclui entidades, cenários, HUD, entre outros. Para esse rabalho, é chamdo apenas o render do fundo (bg).
@@ -138,7 +141,7 @@ State::~State(){
 std::weak_ptr<GameObject> State::AddObject(GameObject* go){
 
   std::shared_ptr<GameObject> shared(go);
-  objectArray.push_back(shared);//adicionando o shared object criado no object array
+  objectArray.emplace_back(shared);//adicionando o shared object criado no object array
 
   std::weak_ptr<GameObject> weak;
   weak = objectArray.back();//weak recebe o último elemento adicionado no object array (que é o shared criado)

@@ -6,14 +6,21 @@
 #include "Sprite.hpp"
 #include "Game.hpp"
 #include "State.hpp"
+#include "Sound.hpp"
 
 
 #define PENGUINBODY_PATH "assets/img/penguin.png"
-#define PENGUIN_DELTA_SPEED 150
+#define PENGUIN_DELTA_SPEED 200
 #define PENGUIN_MAX_SPEED 500
 #define PENGUIN_MIN_SPEED -500
 #define PENGUIN_ANGULAR_SPEED 200
 #define FRICTION 500
+
+#define PENGUIN_DEATH_SPRITES "assets/img/penguindeath.png"
+#define PENGUIN_DEATH_SOUND "assets/audio/boom.wav"
+#define PENGUIN_DEATH_FRAMECOUNT 5
+#define PENGUIN_DEATH_FRAMETIME 0.1
+
 
 class PenguinCannon;
 
@@ -37,7 +44,8 @@ public:
   void Render();
   bool Is(std::string type);
   void NotifyCollision(GameObject& other);
+  Vec2 Position();
 
-  PenguinBody* player;
+  static PenguinBody* player;
 
 };

@@ -15,8 +15,13 @@ class Bullet;
 #define V_ANG_MINION 0.75
 #define MINION_RADIUS 180
 #define MINION_BULLET_FRAMECOUNT 3
-#define MINION_BULLET_FRAMETIME MINION_BULLET_FRAMECOUNT/33
+#define MINION_BULLET_FRAMETIME 1
 #define MINION_BULLET_RANGE 1000
+
+#define MINION_DEATH_SPRITES "assets/img/miniondeath.png"
+#define MINION_DEATH_SOUND "assets/audio/boom.wav"
+#define MINION_DEATH_FRAMECOUNT 4
+#define MINION_DEATH_FRAMETIME 0.1
 
 class Minion : public Component {
 

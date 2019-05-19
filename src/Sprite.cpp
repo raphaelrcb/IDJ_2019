@@ -13,19 +13,25 @@ Sprite::Sprite(GameObject& associated)
   scale = Vec2(1,1);
   width = 0;
   height = 0;
+
+  secondsToSelfDestruct = 0;
 }
 
-Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime)
-                                                                                        :Component(associated){//seta texture como nullptr e em seguida chama Open para abrir uma imagem
+Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float frameTime, float secondsToSelfDestruct):Component(associated) {//seta texture como nullptr e em seguida chama Open para abrir uma imagem
   texture = nullptr;
   scale = Vec2(1,1);
+  width = 0;
+  height = 0;
 
   currentFrame = 0;
   timeElapsed = 0;
   this->frameCount = frameCount;
   this->frameTime = frameTime;
-  width = 0;
-  height = 0;
+  this->secondsToSelfDestruct = secondsToSelfDestruct;
+
+  if (secondsToSelfDestruct > 0) {
+    std::cout << "criando explosão - isdead = " << associated.IsDead() << '\n';
+  }
 
   Open(file);
 }
@@ -98,20 +104,25 @@ bool Sprite::Is(std::string type){
 
 void Sprite::Update(float dt){
 
-  // std::cout << "frameTime\t"<< frameTime << '\n';
-  // std::cout << "frameCount\t"<< frameCount << '\n';
+
+  std::cout << " isdead =  " << associated.IsDead() << '\n';
+  if (secondsToSelfDestruct > 0) {
+    selfDestructCount.Update(dt);
+    if (selfDestructCount.Get() >= secondsToSelfDestruct) {
+      associated.RequestDelete();
+      std::cout << "fim da explosão" << '\n';
+    }
+  }
+
   if (frameCount > 1) {
-    /* code */
     timeElapsed += dt;
     if (timeElapsed >= frameTime) {//se o tempo passado for maior que o tempo em que o frame deve permanecer, muda o frame
       timeElapsed = 0;
+      currentFrame += 1;//se não for o último vai para o próximo frame
       if (frameCount == currentFrame) {
         currentFrame = 1; //se o frame atual foir o último, retorna para o fram inicial
       }
-      else {
-        currentFrame += 1;//se não for o último vai para o próximo frame
-      }
-      SetClip(  (width/frameCount)*(currentFrame-1) , 0, width/frameCount, height);
+      SetClip(  (width/frameCount)*(currentFrame) , clipRect.y, width/frameCount, height);
     }
   }
 }
@@ -138,12 +149,10 @@ void Sprite::SetFrame(int frame){
     currentFrame = frame;
     SetClip(  (width/frameCount)*currentFrame , 0, width/frameCount, height);
   }
-
 }
 
 void Sprite::SetFrameCount(int frameCount){
   if (frameCount > 0) {
-    currentFrame = 0;
     this->frameCount = frameCount;
     associated.box.w = width/frameCount;
     SetClip(0 , 0, width/frameCount, height);
@@ -152,4 +161,5 @@ void Sprite::SetFrameCount(int frameCount){
 
 void Sprite::SetFrameTime(float frameTime){
   this->frameTime = frameTime;
+  timeElapsed = 0;
 }

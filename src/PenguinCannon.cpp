@@ -21,8 +21,6 @@ void PenguinCannon::Update(float dt){
   Vec2 mouse = Vec2(input.GetMouseX(), input.GetMouseY());
   std::shared_ptr<GameObject> penguin_body = pbody.lock();
 
-  std::cout << dt << '\n';
-
   if (penguin_body == nullptr) {
     associated.RequestDelete();
   }
@@ -33,20 +31,20 @@ void PenguinCannon::Update(float dt){
     // std::cout << angle*180/PI << '\n';
     associated.angleDeg = angle*180/PI;
 
-  }
-  cooldown.Update(dt);
-  if (input.MousePress(LEFT_MOUSE_BUTTON)){
-    if (cooldown.Get() > CANNON_COOLDOWN) {
-      cooldown.Restart();
-      Shoot();
+    cooldown.Update(dt);
+    if (input.MousePress(LEFT_MOUSE_BUTTON)){
+      if (cooldown.Get() > CANNON_COOLDOWN) {
+        cooldown.Restart();
+        Shoot();
+      }
     }
-    // std::cout << associated.box.x << '\n';
   }
-
 }
+
 void PenguinCannon::Render(){
 
 }
+
 bool PenguinCannon::Is(std::string type){
   return (type == "PenginCannon");
 }

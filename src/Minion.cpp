@@ -55,6 +55,16 @@ void Minion::Update(float dt){
   }
   else {
     associated.RequestDelete();
+
+    GameObject *death_object = new GameObject();
+    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
+    std::shared_ptr<GameObject> death = weak_death.lock();
+
+    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, MINION_DEATH_SPRITES, 4, 0.1, 4*0.1));
+    death->AddComponent(death_sprite);
+
+    death->box = associated.box;
+
   }
 
 }
@@ -72,14 +82,14 @@ void Minion::Shoot(Vec2 target){
   GameObject *bullet_object = new GameObject();
   std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
   std::shared_ptr<GameObject> bullet = weak_bullet.lock();
-  Vec2 shoot_dist = (target - associated.box.GetCenter());// a distância do tiro é o vetor resultante da diferença da posição do tiro e da posição do minion que vai atirar
+  // Vec2 shoot_dist = (target - associated.box.GetCenter());// a distância do tiro é o vetor resultante da diferença da posição do tiro e da posição do minion que vai atirar
 
   bullet->box.x = associated.box.x + associated.box.w/2;//a posição em que a bullet sai é a mesma possição so minion
   bullet->box.y = associated.box.y + associated.box.h/2;
 
   float angle = atan2(target.y - associated.box.y - associated.box.h/2, target.x - associated.box.x - associated.box.w/2);
 
-  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, BULLET_DAMAGE, shoot_dist.Absolute(), MINION_BULLET_PATH, MINION_BULLET_FRAMECOUNT, MINION_BULLET_FRAMETIME, true));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
+  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, BULLET_DAMAGE, MINION_BULLET_RANGE, MINION_BULLET_PATH, MINION_BULLET_FRAMECOUNT, MINION_BULLET_FRAMETIME, true));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
   bullet->AddComponent(bullet_s);
 
   // bullet->box.x -= bullet->box.w/2;//compensa o tamanho da bullet na posição dela

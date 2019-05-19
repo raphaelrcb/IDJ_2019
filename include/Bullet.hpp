@@ -8,8 +8,8 @@
 #include <math.h>
 
 
-#define BULLET_DAMAGE 100
-#define BULLET_SPEED 500.0
+#define BULLET_DAMAGE 250
+#define BULLET_SPEED 750.0
 
 
 class Minion;

@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL_include.h>
 #include "GameObject.hpp"
+#include "Timer.hpp"
 
 class Sprite: public Component{//implementar update, is e render da classe mãe (component)
 
@@ -21,9 +22,12 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     float timeElapsed;
     float frameTime;
 
+    Timer selfDestructCount;
+    float secondsToSelfDestruct;
+
   public:
     Sprite(GameObject& associated);
-    Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1);
+    Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1, float secondsToSelfDestruct = 0);
     ~Sprite();
 
     void Open(std::string file);

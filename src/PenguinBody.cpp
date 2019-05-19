@@ -1,5 +1,7 @@
 #include "../include/PenguinBody.hpp"
 
+PenguinBody* PenguinBody::player = nullptr;
+
 PenguinBody::PenguinBody(GameObject& associated)
                                                 :Component(associated){
 
@@ -7,7 +9,7 @@ PenguinBody::PenguinBody(GameObject& associated)
   linearSpeed = 0;
   angle = 0;
   // hp = (std::rand() % 6)*10 + 500;
-  hp = 700;
+  hp = 1500;
 
   std::shared_ptr<Sprite> penguinb_sprite(new Sprite(associated, PENGUINBODY_PATH));
   associated.AddComponent(penguinb_sprite);//cirando a sprite e adicionando ao vetor de components
@@ -27,7 +29,7 @@ PenguinBody::~PenguinBody(){
 void PenguinBody::Start(){
 
   GameObject *penguinc_object = new GameObject();
-  pcannon =  Game::GetInstance().GetState().AddObject(penguinc_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
+  pcannon =  Game::GetInstance().GetState().AddObject(penguinc_object);
   std::shared_ptr<GameObject> penguin_cannon = pcannon.lock();
 
   penguin_cannon->box.x = associated.box.x;
@@ -35,7 +37,7 @@ void PenguinBody::Start(){
 
   std::weak_ptr<GameObject> weak_pbody = Game::GetInstance().GetState().GetObjectPtr(&associated);
 
-  std::shared_ptr<PenguinCannon> penguin_c(new PenguinCannon(*penguin_cannon, weak_pbody));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
+  std::shared_ptr<PenguinCannon> penguin_c(new PenguinCannon(*penguin_cannon, weak_pbody));
   penguin_cannon->AddComponent(penguin_c);
 }
 
@@ -93,26 +95,47 @@ void PenguinBody::Update(float dt){
   associated.box.y += speed.y*dt;
 
   if (hp <= 0) {
-    Camera::Unfollow();
     hp = 0;
     associated.RequestDelete();
+    Camera::Unfollow();
+
+    std::cout << "morreu" << '\n';
+
+    GameObject *death_object = new GameObject();
+    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
+    std::shared_ptr<GameObject> death = weak_death.lock();
+
+    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, PENGUIN_DEATH_SPRITES, PENGUIN_DEATH_FRAMECOUNT, PENGUIN_DEATH_FRAMETIME, PENGUIN_DEATH_FRAMECOUNT*PENGUIN_DEATH_FRAMETIME));
+    std::shared_ptr<Sound> death_sound(new Sound(*death, PENGUIN_DEATH_SOUND));
+
+    death->box.x  = associated.box.x + associated.box.w/2 - death->box.w/2;
+    death->box.y  = associated.box.y + associated.box.h/2 - death->box.h/2;
+    death->AddComponent(death_sprite);
+    death->AddComponent(death_sound);
+    death_sound->Play(1);
+    // std::cout << "isdead "<< death->IsDead() << '\n';
+
   }
 }
 
 void PenguinBody::Render(){
-
 
 }
 
 bool PenguinBody::Is(std::string type){
   return (type == "PenguinBody");
 }
+Vec2 PenguinBody::Position(){
+  return (associated.box.GetCenter());
+}
+
 
 void PenguinBody::NotifyCollision(GameObject& other){
 
   std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet"));
 
-  if (  (bullet != nullptr) && bullet->targetsPlayer == true  ) {
+  if (  (bullet != nullptr) && bullet->targetsPlayer == true  && hp > 0) {
+    std::cout << "pinguin levou tiro" << '\n';
     hp -= bullet->GetDamage();
   }
 }
