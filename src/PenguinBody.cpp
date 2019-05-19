@@ -99,7 +99,7 @@ void PenguinBody::Update(float dt){
     associated.RequestDelete();
     Camera::Unfollow();
 
-    std::cout << "morreu" << '\n';
+    // std::cout << "morreu" << '\n';
 
     GameObject *death_object = new GameObject();
     std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
@@ -135,7 +135,7 @@ void PenguinBody::NotifyCollision(GameObject& other){
   std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(other.GetComponent("Bullet"));
 
   if (  (bullet != nullptr) && bullet->targetsPlayer == true  && hp > 0) {
-    std::cout << "pinguin levou tiro" << '\n';
+    // std::cout << "pinguin levou tiro" << '\n';
     hp -= bullet->GetDamage();
   }
 }

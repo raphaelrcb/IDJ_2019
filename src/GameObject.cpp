@@ -33,7 +33,6 @@ bool GameObject::IsDead(){///////////////////////////////////////////checkpoint
 
 void GameObject::RequestDelete(){
   isDead = true;
-  std::cout << " chamou request delete" << '\n';
 }
 
 void GameObject::AddComponent(std::shared_ptr<Component> cpt){

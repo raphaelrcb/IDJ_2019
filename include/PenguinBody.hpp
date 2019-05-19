@@ -19,7 +19,7 @@
 #define PENGUIN_DEATH_SPRITES "assets/img/penguindeath.png"
 #define PENGUIN_DEATH_SOUND "assets/audio/boom.wav"
 #define PENGUIN_DEATH_FRAMECOUNT 5
-#define PENGUIN_DEATH_FRAMETIME 0.1
+#define PENGUIN_DEATH_FRAMETIME 0.2
 
 
 class PenguinCannon;

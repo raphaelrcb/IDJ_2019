@@ -60,7 +60,7 @@ void Minion::Update(float dt){
     std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
     std::shared_ptr<GameObject> death = weak_death.lock();
 
-    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, MINION_DEATH_SPRITES, 4, 0.1, 4*0.1));
+    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, MINION_DEATH_SPRITES, MINION_DEATH_FRAMECOUNT, MINION_DEATH_FRAMETIME, MINION_DEATH_FRAMECOUNT*MINION_DEATH_FRAMETIME));
     death->AddComponent(death_sprite);
 
     death->box = associated.box;

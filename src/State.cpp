@@ -81,12 +81,12 @@ void State::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enq
 
   // if (input.KeyPress(SPACE_KEY)){
   // }
-  std::cout<< "n objects = " << objectArray.size() << '\n';
+  // std::cout<< "n objects = " << objectArray.size() << '\n';
 
   for (unsigned int i = 0; i < objectArray.size(); i++) {
     if (objectArray[i]->IsDead()) {
       objectArray.erase(objectArray.begin()+i);
-      std::cout << "apagou objeto" << '\n';
+      // std::cout << "apagou objeto" << '\n';
     }
   }
   for (unsigned int i = 0; i < objectArray.size(); i++) {

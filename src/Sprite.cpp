@@ -29,10 +29,6 @@ Sprite::Sprite(GameObject& associated, std::string file, int frameCount, float f
   this->frameTime = frameTime;
   this->secondsToSelfDestruct = secondsToSelfDestruct;
 
-  if (secondsToSelfDestruct > 0) {
-    std::cout << "criando explosão - isdead = " << associated.IsDead() << '\n';
-  }
-
   Open(file);
 }
 
@@ -105,12 +101,11 @@ bool Sprite::Is(std::string type){
 void Sprite::Update(float dt){
 
 
-  std::cout << " isdead =  " << associated.IsDead() << '\n';
   if (secondsToSelfDestruct > 0) {
     selfDestructCount.Update(dt);
     if (selfDestructCount.Get() >= secondsToSelfDestruct) {
       associated.RequestDelete();
-      std::cout << "fim da explosão" << '\n';
+      // std::cout << "fim da explosão" << '\n';
     }
   }
 

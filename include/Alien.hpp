@@ -25,8 +25,7 @@
 #define ALIEN_DEATH_SPRITES "assets/img/aliendeath.png"
 #define ALIEN_DEATH_SOUND "assets/audio/boom.wav"
 #define ALIEN_DEATH_FRAMECOUNT 4
-// #define ALIEN_DEATH_TIME 0.5
-#define ALIEN_DEATH_FRAMETIME 0.1
+#define ALIEN_DEATH_FRAMETIME 0.2
 
 class Alien : public Component {
 

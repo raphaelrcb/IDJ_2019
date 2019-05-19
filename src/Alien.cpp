@@ -61,22 +61,7 @@ void Alien::Update(float dt){
     associated.angleDeg = 0;
   }
 
-  // if (input.MousePress(LEFT_MOUSE_BUTTON)){
-  //   Alien::Action action(Action::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y);//cura a ação com o tipo a a posição aproproados
-  //   taskQueue.emplace(action);//coloca na fila
-  // }
-  // if (input.MousePress(RIGHT_MOUSE_BUTTON)) {
-  //   Action action(Action::MOVE, input.GetMouseX() - (associated.box.w/2) - Camera::pos.x, input.GetMouseY() - (associated.box.h/2) - Camera::pos.y);
-  //   taskQueue.emplace(action);
-  // }
-
-  // if (!taskQueue.empty()){
-
     switch (state) {
-
-      if (PenguinBody::player != nullptr) {
-        destination = PenguinBody::player->Position();
-      }
 
       case RESTING:
         if (restTimer.Get() >= ALIEN_COOLDOWN) {
@@ -92,7 +77,7 @@ void Alien::Update(float dt){
       break;
 
       case MOVING:
-        if ( (associated.box.GetCenter() - destination).Absolute() >  DISTANCE_RANGE)  {
+        if ( (associated.box.GetCenter() - destination).Absolute() >  DISTANCE_RANGE)  {//se o alien estiver muito longe do pinguin, ele se movimenta até chegar mais perto
 
           float movement = ALIEN_SPEED*dt;
 
@@ -107,7 +92,7 @@ void Alien::Update(float dt){
             associated.box.y = destination.y - associated.box.h/2;
           }
         }
-        else{
+        else{//se estiver perto o suficiente, atira na direção em que o pinguim estava no frame 
 
           Vec2 target = destination;
           Vec2 shoot_dist = Vec2();
@@ -147,7 +132,7 @@ void Alien::Update(float dt){
     std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
     std::shared_ptr<GameObject> death = weak_death.lock();
 
-    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, ALIEN_DEATH_SPRITES, 4, 0.1, 4*0.1));
+    std::shared_ptr<Sprite> death_sprite(new Sprite(*death, ALIEN_DEATH_SPRITES, ALIEN_DEATH_FRAMECOUNT, ALIEN_DEATH_FRAMETIME, ALIEN_DEATH_FRAMECOUNT*ALIEN_DEATH_FRAMETIME));
     death->AddComponent(death_sprite);
 
     std::shared_ptr<Sound> death_sound(new Sound(*death, ALIEN_DEATH_SOUND));
@@ -159,7 +144,6 @@ void Alien::Update(float dt){
 
     associated.RequestDelete();
   }
-  // std::cout << hp << '\n';
 }
 void Alien::Render(){
 
