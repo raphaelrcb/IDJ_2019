@@ -9,6 +9,7 @@ int Camera::Parallax_aux_y;
 
 void Camera::Follow(GameObject* newFocus){
   focus = newFocus;
+  // std::cout << "x " << focus->box.x <<" y " << focus->box.y << " w " <<focus->box.w <<" h " << focus->box.h << '\n';
 }
 
 void Camera::Unfollow(){
@@ -19,8 +20,13 @@ void Camera::Update(float dt){
   InputManager& input = InputManager::GetInstance();
 
   if (focus != nullptr) {
-    pos.x = focus->box.x + focus->box.w - WINDOW_WIDTH/2;// A posição da câmera é o calculo da posição do objeto na tels
-    pos.y = focus->box.y + focus->box.h - WINDOW_HEIGHT/2;
+
+    // pos = focus->box.GetCenter();
+    // pos.x -= WINDOW_WIDTH/2 ;// A posição da câmera é o calculo da posição do objeto na tels
+    // pos.y -= WINDOW_HEIGHT/2 ;
+
+    pos.x = -focus->box.x - focus->box.w/2 + WINDOW_WIDTH/2;
+    pos.y = -focus->box.y - focus->box.h/2 + WINDOW_HEIGHT/2;
 
   } else {
 
@@ -55,7 +61,6 @@ void Camera::Update(float dt){
     }
     pos.x += speed.x*dt;
     pos.y += speed.y*dt;
-
   }
 }
 void Camera::ParallaxUpdate(int layer, bool ParallaxEnd){

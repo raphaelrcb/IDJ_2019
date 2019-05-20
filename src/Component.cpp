@@ -16,3 +16,5 @@ bool Component::Is(std::string type){
 }
 void Component::Start(){
 }
+void Component::NotifyCollision(GameObject& other){
+}

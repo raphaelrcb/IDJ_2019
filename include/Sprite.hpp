@@ -5,19 +5,29 @@
 #include <SDL2/SDL_image.h>
 #include <SDL_include.h>
 #include "GameObject.hpp"
+#include "Timer.hpp"
 
 class Sprite: public Component{//implementar update, is e render da classe mãe (component)
 
   private:
     SDL_Texture* texture;
-    int width;
-    int height;
     SDL_Rect clipRect;
     Vec2 scale;
 
+    int width;
+    int height;
+
+    int frameCount;
+    int currentFrame;
+    float timeElapsed;
+    float frameTime;
+
+    Timer selfDestructCount;
+    float secondsToSelfDestruct;
+
   public:
     Sprite(GameObject& associated);
-    Sprite(GameObject& associated, std::string file);
+    Sprite(GameObject& associated, std::string file, int frameCount = 1, float frameTime = 1, float secondsToSelfDestruct = 0);
     ~Sprite();
 
     void Open(std::string file);
@@ -31,4 +41,8 @@ class Sprite: public Component{//implementar update, is e render da classe mãe 
     void Update(float dt);
     void SetScaleX(float scaleX, float scaleY);
     Vec2 GetScale();
+
+    void SetFrame(int frame);
+    void SetFrameCount(int frameCount);
+    void SetFrameTime(float frameTime);
 };

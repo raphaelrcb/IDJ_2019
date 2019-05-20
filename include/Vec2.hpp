@@ -9,10 +9,11 @@ public:
   float x;
   float y;
   Vec2();
-  Vec2(int a  , int b);
+  Vec2(float a  , float b);
 
   void Rotate(float angle);
   Vec2 GetRotated(float angle);
+  Vec2 Normalize();
   float Absolute();
 
 

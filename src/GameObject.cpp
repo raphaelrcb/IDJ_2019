@@ -8,6 +8,10 @@ GameObject::GameObject(){//inicializa IsDead como falso
 }
 
 GameObject::~GameObject(){
+
+  for(int i = (int)components.size() - 1; i >= 0; i--){
+    components.erase(components.begin() + i);
+}
   components.clear();//apaga e livbera os GameObject
 }
 
@@ -33,8 +37,10 @@ void GameObject::RequestDelete(){
 
 void GameObject::AddComponent(std::shared_ptr<Component> cpt){
   // std::cout << "added component " << cpt->Is("Sound") <<'\n';
+  if (cpt != nullptr) {
+    components.emplace_back(std::move(cpt));//Adiciona um componente ao
+  }
 
-  components.emplace_back(std::move(cpt));//Adiciona um componente ao
 }
 
 void GameObject::RemoveComponent(std::shared_ptr<Component> cpt){
@@ -54,11 +60,11 @@ void GameObject::RemoveComponent(std::shared_ptr<Component> cpt){
 std::shared_ptr<Component> GameObject::GetComponent(std::string type){
 
   for (unsigned int i = 0; i < components.size(); i++) {
-    if (components[i]->Is(type)){
+    if (components[i]->Is(type) && components[i] != nullptr){
       return components[i];//components[i].get();
+      // std::cout << "return component" << '\n';
     }
   }
-  std::cout << "return null" << '\n';
   return (nullptr);
 }
 
@@ -67,4 +73,9 @@ void GameObject::Start(){
     components[i]->Start();
   }
   started = true;
+}
+void GameObject::NotifyCollision(GameObject& other){
+  for (unsigned int i = 0; i < components.size(); i++) {
+    components[i]->NotifyCollision(other);
+  }
 }
