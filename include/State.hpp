@@ -21,8 +21,6 @@
 #define TILESET_PATH "assets/img/tileset.png"
 #define TILEMAP_PATH "assets/map/tileMap.txt"
 #define MUSIC_PATH "assets/audio/stageState.ogg"
-#define ENEMY_SPRITE_PATH "assets/img/penguinface.png"
-#define ENEMY_SOUND_PATH "assets/audio/boom.wav"
 #define N_MINIONS 5
 
 class State{
