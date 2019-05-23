@@ -6,6 +6,7 @@
 std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
 std::unordered_map<std::string, Mix_Music*> Resources::musicTable;
 std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable;
+std::unordered_map<std::string, std::shared_ptr<TTF_Font> > Resources::fontTable;
 
 
 std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
@@ -109,3 +110,44 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
    }
    soundTable.clear();
  }
+
+ std::shared_ptr<TTF_Font> Resources::GetFont(std::string file, int fontSize){
+
+   std::string file_and_size = file + std::to_string(fontSize);
+   std::unordered_map<std::string, std::shared_ptr<TTF_Font> >::const_iterator it = fontTable.find(file_and_size);//procura o arquivo solicitado na tabela de imagens
+   TTF_Font* raw_font;
+
+   if ( it == fontTable.end() ){//Caso não encontre a imagem, abre e aloca ela na memória
+
+
+     const char* path = file.c_str();
+    raw_font = TTF_OpenFont(path, fontSize);
+    std::shared_ptr<TTF_Font> font(raw_font, [](TTF_Font* delete_font){ TTF_CloseFont(delete_font); } );
+
+    if (font == nullptr){
+        std::cout << "Error loading font, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+        return nullptr;
+    } else {
+      fontTable.emplace(file, font);//coloca a imagem e seu caminho na tabela
+      return font;
+    }
+  }
+    return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
+}
+
+
+  void Resources::ClearFonts(){
+    std::unordered_map<std::string, std::shared_ptr<TTF_Font>>::const_iterator it = fontTable.begin();
+
+    while (it != fontTable.end()) {//para todos as imagens na tabela, desaloca a memória e apaga da tabela
+
+      if (it->second.unique()) {
+        it = fontTable.erase(it);
+      }
+      else{
+        it++;
+      }
+
+    }
+    // imageTable.clear();//limpa a tabela
+  }

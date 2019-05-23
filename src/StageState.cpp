@@ -89,10 +89,6 @@ void StageState::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, po
     }
   }
 
-  // for (unsigned int i = 0; i < objectArray.size(); i++) {
-  //   objectArray[i]->Update(dt);//chama o update de todos os objetos no array
-  // }
-
   UpdateArray(dt);
 
   for (unsigned int i = 0; i < objectArray.size(); i++) {

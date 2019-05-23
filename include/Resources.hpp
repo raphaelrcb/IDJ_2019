@@ -7,6 +7,7 @@
 #include "Sprite.hpp"
 #include "Music.hpp"
 #include "Sound.hpp"
+#include "Text.hpp"
 
 class Game;
 class Resources{
@@ -15,6 +16,8 @@ class Resources{
     static std::unordered_map<std::string, std::shared_ptr<SDL_Texture> > imageTable;
     static std::unordered_map<std::string, Mix_Music*> musicTable;
     static std::unordered_map<std::string, Mix_Chunk*> soundTable;
+    static std::unordered_map<std::string, std::shared_ptr<TTF_Font> > fontTable;
+
 
   public:
     static std::shared_ptr<SDL_Texture> GetImage(std::string file);
@@ -26,4 +29,10 @@ class Resources{
     static Mix_Chunk* GetSound(std::string file);
     static void ClearSounds();
 
+    static std::shared_ptr<TTF_Font> GetFont(std::string file, int fontSize);
+    static void ClearFonts();
+
 };
+// TTF_Font* TTF_OpenFont (const char* file, int ptsize)
+// void TTF_CloseFont (TTF_Font* font)
+// TTF_CloseFont (TTF_Font* font)

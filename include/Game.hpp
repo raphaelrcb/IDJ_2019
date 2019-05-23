@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL_include.h>
+#include <SDL2/SDL_ttf.h>
 #include <stack>
 #include "StageState.hpp"
 #include "TitleState.hpp"

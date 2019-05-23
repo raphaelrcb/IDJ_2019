@@ -7,7 +7,7 @@ Game *Game::instance = nullptr;
 
 Game::Game (std::string title, int width, int height){
 
-  int SDLError, ImgError, MixError;
+  int SDLError, ImgError, MixError, TxtError;
   dt = 0;
   frameStart = 0;
 
@@ -24,7 +24,7 @@ Game::Game (std::string title, int width, int height){
     std::cout << "SDL_Init failed, Error Code: " << SDL_GetError() << std::endl;//sdl_get error obtem o ultimo erro ocorrido na biblioteca
   }
   else {//casso não haja falha, inicia a imagem
-    std::cout << "SDL initiated" << std::endl;
+    // std::cout << "SDL initiated" << std::endl;
     ImgError = IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG |IMG_INIT_TIF);//img_init carregar os loaders da imagem, e retorna um bitmask correspondente aos loaders que ela conseguiu carregar
     if (ImgError == 0) {//se não carrefar nenhum, o retorno é 0 e há um erro
       std::cout << "IMIG_Init failed to load" << std::endl;
@@ -45,17 +45,20 @@ Game::Game (std::string title, int width, int height){
         if (window == nullptr) {//as entradas de create wndow passam o nome da janela, a posição dela na tela (a flag centraliza), tamanho da tela (width e height) e uma flag para padrões da janela
         std::cout << "Failed to create window, error code: " << SDL_GetError() << std::endl;
         }
-        // else {
-          // std::cout << "Window created" << std::endl;
-        // }
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);//cria um renderizador para a janela cirada, como entradas colocamos a janela, um valor de index que determinaqual dos drivers devemos usar;
         //o valor -1 faz o SDL escolher o melhor renderizador para o ambiente e para as flags setadas, o terceiro argumento é a flag
-        if (window == nullptr) {
+        if (renderer == nullptr) {
           std::cout << "Failed to create render, error code: " << SDL_GetError() << std::endl;
         }
-        // else{
-        //   std::cout << "Renderer created" << std::endl;
-        // }
+        else{
+          TxtError = TTF_Init();
+          if (TxtError != 0) {
+            std::cout << "TTF_Init failed to load" << std::endl;
+          }
+          // else{
+          //   std::cout << "TTF_INIT LOADED" << std::endl;
+          // }
+        }
       }
     }
   }
@@ -91,12 +94,14 @@ Game::~Game(){//destrutor desfaz as inicializações, deleta o estado, ecerra SD
   Resources::ClearImages();
   Resources::ClearMusics();
   Resources::ClearSounds();
+  Resources::ClearFonts();
 
   Mix_CloseAudio();
   Mix_Quit();
   IMG_Quit();
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
+  TTF_Quit();
   SDL_Quit();
 }
 
@@ -136,10 +141,10 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
 
   while(stateStack.top()->QuitRequested() != true && !stateStack.empty()){//enquanto um estado não pediu pra sair e a pilha não estiver vazia
 
-    // std::cout << "while" << '\n';
     if (stateStack.top()->PopRequested()) {//
       stateStack.pop();//se um estado pediu pra sair da pilha, pop nele
       Resources::ClearImages();
+      Resources::ClearFonts();
 
       if (!stateStack.empty()) {//se a pilha nnão estiver vazia após o pop, retoma o estado no topo
         stateStack.top()->Resume();
@@ -159,7 +164,7 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
     if (stateStack.empty()) {//se a pilha estiver vazia, sai do loop
       break;
     }
-    std::cout << stateStack.size() << '\n';
+    // std::cout << stateStack.size() << '\n';
     CalculateDeltaTime();
     input.Update();
     stateStack.top()->Update(dt);
@@ -174,6 +179,8 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
   Resources::ClearImages();
   Resources::ClearMusics();
   Resources::ClearSounds();
+  Resources::ClearFonts();
+
 }
 
 void Game::Push(State* state){
