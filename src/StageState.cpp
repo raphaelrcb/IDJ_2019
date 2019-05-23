@@ -78,7 +78,6 @@ void StageState::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, po
   Camera::Update(dt);
 
   if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
-    std::cout << "pediu pra voltar pro inicio" << '\n';
     popRequested = true;
   }
 

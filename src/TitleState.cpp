@@ -33,12 +33,10 @@ void TitleState::Update(float dt){
   Game& game = Game::GetInstance();
 
   if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
-    std::cout << "pediu pra sair do jogo" << '\n';
     quitRequested = true;
   }
 
   if (input.KeyPress(SPACE_KEY)) {
-    std::cout << "espaço" << '\n';
     StageState* stageState = new StageState();
     game.Push(stageState);
   }

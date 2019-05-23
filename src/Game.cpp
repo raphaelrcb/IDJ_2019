@@ -139,8 +139,7 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
     // std::cout << "while" << '\n';
     if (stateStack.top()->PopRequested()) {//
       stateStack.pop();//se um estado pediu pra sair da pilha, pop nele
-      // std::cout << "popRequested" << '\n';
-
+      Resources::ClearImages();
 
       if (!stateStack.empty()) {//se a pilha nnão estiver vazia após o pop, retoma o estado no topo
         stateStack.top()->Resume();
@@ -169,6 +168,9 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
     SDL_Delay(33);//impõe-se um limite de framerate, com um delay de 33ms, nos dará aproximadamente 30 FPS, (usado para não usar 100% di cpu já que é desnecessário)
   }
 
+  while (!stateStack.empty()) {//se a pilha não estava vazia, pausa o estado do topo para inciar o novo (que estava guardado)
+    stateStack.pop();
+  }
   Resources::ClearImages();
   Resources::ClearMusics();
   Resources::ClearSounds();

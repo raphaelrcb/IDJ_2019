@@ -10,7 +10,7 @@
 class Sprite: public Component{//implementar update, is e render da classe mãe (component)
 
   private:
-    SDL_Texture* texture;
+    std::shared_ptr<SDL_Texture> texture;
     SDL_Rect clipRect;
     Vec2 scale;
 

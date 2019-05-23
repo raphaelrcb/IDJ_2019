@@ -3,42 +3,49 @@
 // #include "Game.hpp"
 
 // Inicializa as variáveis estáticas da classe
-std::unordered_map<std::string, SDL_Texture*> Resources::imageTable = {{"", nullptr}};
-std::unordered_map<std::string, Mix_Music*> Resources::musicTable = {{"", nullptr}};
-std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable = {{"", nullptr}};
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
+std::unordered_map<std::string, Mix_Music*> Resources::musicTable;
+std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable;
 
 
-SDL_Texture* Resources::GetImage(std::string file){
+std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
 
-     std::unordered_map<std::string, SDL_Texture*>::const_iterator it = imageTable.find(file);//procura o arquivo solicitado na tabela de imagens
+     std::unordered_map<std::string, std::shared_ptr<SDL_Texture>>::const_iterator it = imageTable.find(file);//procura o arquivo solicitado na tabela de imagens
+     SDL_Texture* raw_texture;
 
      if ( it == imageTable.end() ){//Caso não encontre a imagem, abre e aloca ela na memória
 
        const char* path = file.c_str();
-       SDL_Texture* texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);
+       raw_texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), path);
+       std::shared_ptr<SDL_Texture> texture(raw_texture, [](SDL_Texture* delete_texture){ SDL_DestroyTexture(delete_texture); } );
 
        if (texture == nullptr){
            std::cout << "Error loading texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
+           return nullptr;
        } else {
-         imageTable.emplace (file, texture);//coloca a imagem e seu caminho na tabela
+         imageTable.emplace(file, texture);//coloca a imagem e seu caminho na tabela
          return texture;
        }
 
      }
        return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
-       // std::cout << it->first << " is " << it->second;
 }
 
 
  void Resources::ClearImages(){
-   std::unordered_map<std::string, SDL_Texture*>::const_iterator it = imageTable.begin();
+   std::unordered_map<std::string, std::shared_ptr<SDL_Texture>>::const_iterator it = imageTable.begin();
 
    while (it != imageTable.end()) {//para todos as imagens na tabela, desaloca a memória e apaga da tabela
-     SDL_DestroyTexture(it->second);
-     it = imageTable.erase(it);
+
+     if (it->second.unique()) {
+       it = imageTable.erase(it);
+     }
+     else{
+       it++;
+     }
+
    }
-   imageTable.clear();//limpa a tabela
-   // std::cout << "cleared" << '\n';
+   // imageTable.clear();//limpa a tabela
  }
 
 
@@ -60,7 +67,6 @@ SDL_Texture* Resources::GetImage(std::string file){
 
    }
      return (it->second);//caso encontre a imagem na tabela retorna seu ponteiro
-     // std::cout << it->first << " is " << it->second;
  }
 
  void Resources::ClearMusics(){
@@ -72,7 +78,6 @@ SDL_Texture* Resources::GetImage(std::string file){
      it = musicTable.erase(it);
    }
    musicTable.clear();//limpa a tabela
-   // std::cout << "cleared" << '\n';
  }
 
 
@@ -93,7 +98,6 @@ SDL_Texture* Resources::GetImage(std::string file){
 
    }
      return (it->second);
-     // std::cout << it->first << " is " << it->second;
  }
 
  void Resources::ClearSounds(){// Funciona de forma semelhante à ClearImages e ClearMusics
@@ -104,5 +108,4 @@ SDL_Texture* Resources::GetImage(std::string file){
      it = soundTable.erase(it);
    }
    soundTable.clear();
-   // std::cout << "cleared" << '\n';
  }

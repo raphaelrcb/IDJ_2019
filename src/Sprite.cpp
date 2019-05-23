@@ -37,14 +37,14 @@ Sprite::~Sprite(){
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
 
-  SDL_DestroyTexture(texture);
+  // SDL_DestroyTexture(texture);
   texture = Resources::GetImage(file);
 
   if (texture == nullptr){
       std::cout << "Error returning texture, Error code: "<< SDL_GetError() << std::endl;//caso o IMG_LoadTexture retorne nullptr (erro comum)
   }
   else {
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
+    SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);//obtém os parâmetros (dimensões) da imagem e armazena-os nos espaçços indicados nos argumentos
   }
   // width = width/frameCount;
   SetClip(0, 0, width/frameCount, height);//seta o clip com as dimensões da imagem
@@ -72,7 +72,7 @@ void Sprite::Render(int x, int y){// wrapper para a SDL_RenderCopy que possui qu
   dstrect.h = clipRect.h*scale.y;
   int RenderError;
 
-  RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
+  RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture.get(), &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
   if (RenderError != 0) {
     std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
   }
