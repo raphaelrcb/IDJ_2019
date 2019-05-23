@@ -37,10 +37,10 @@ void Alien::Start(){
 
   for (int i = 0; i < nMinions; i++) {
     GameObject *minion_object = new GameObject();
-    std::weak_ptr<GameObject> weak_minion =  Game::GetInstance().GetState().AddObject(minion_object);//pega a função AddObject do state para adicionar o novo minion ao array de objetos
+    std::weak_ptr<GameObject> weak_minion =  Game::GetInstance().GetCurrentState().AddObject(minion_object);//pega a função AddObject do state para adicionar o novo minion ao array de objetos
     std::shared_ptr<GameObject> minion = weak_minion.lock();
 
-    std::weak_ptr<GameObject> weak_alien = Game::GetInstance().GetState().GetObjectPtr(&associated);//pega um ponteiro para o alien que vai ser guardados pelos minions (outra função de state)
+    std::weak_ptr<GameObject> weak_alien = Game::GetInstance().GetCurrentState().GetObjectPtr(&associated);//pega um ponteiro para o alien que vai ser guardados pelos minions (outra função de state)
     std::shared_ptr<Minion> minion_s(new Minion(*minion, weak_alien, (360.0/nMinions)*i));//divide o arco de 360 graus pela quantidade de minions desejada para que tenham a mesma distância entre si
 
     minion->box.x = 0;
@@ -92,7 +92,7 @@ void Alien::Update(float dt){
             associated.box.y = destination.y - associated.box.h/2;
           }
         }
-        else{//se estiver perto o suficiente, atira na direção em que o pinguim estava no frame 
+        else{//se estiver perto o suficiente, atira na direção em que o pinguim estava no frame
 
           Vec2 target = destination;
           Vec2 shoot_dist = Vec2();
@@ -129,7 +129,7 @@ void Alien::Update(float dt){
     hp = 0;
 
     GameObject *death_object = new GameObject();
-    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
+    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetCurrentState().AddObject(death_object);//
     std::shared_ptr<GameObject> death = weak_death.lock();
 
     std::shared_ptr<Sprite> death_sprite(new Sprite(*death, ALIEN_DEATH_SPRITES, ALIEN_DEATH_FRAMECOUNT, ALIEN_DEATH_FRAMETIME, ALIEN_DEATH_FRAMECOUNT*ALIEN_DEATH_FRAMETIME));

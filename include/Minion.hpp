@@ -21,7 +21,7 @@ class Bullet;
 #define MINION_DEATH_SPRITES "assets/img/miniondeath.png"
 #define MINION_DEATH_SOUND "assets/audio/boom.wav"
 #define MINION_DEATH_FRAMECOUNT 4
-#define MINION_DEATH_FRAMETIME 0.2
+#define MINION_DEATH_FRAMETIME 0.5
 
 class Minion : public Component {
 

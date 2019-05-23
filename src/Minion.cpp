@@ -5,7 +5,6 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, fl
                                                                                                   Component(associated),
                                                                                                   alienCenter(alienCenter){
 
-
   std::shared_ptr<Sprite> minion_sprite(new Sprite(associated, MINION_PATH));
 
   float random_scale = 1 + ( (rand() % 6) )/10.0;//cria uma escala aleatória entre 1 e 1.5
@@ -57,7 +56,7 @@ void Minion::Update(float dt){
     associated.RequestDelete();
 
     GameObject *death_object = new GameObject();
-    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
+    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetCurrentState().AddObject(death_object);//
     std::shared_ptr<GameObject> death = weak_death.lock();
 
     std::shared_ptr<Sprite> death_sprite(new Sprite(*death, MINION_DEATH_SPRITES, MINION_DEATH_FRAMECOUNT, MINION_DEATH_FRAMETIME, MINION_DEATH_FRAMECOUNT*MINION_DEATH_FRAMETIME));
@@ -80,7 +79,7 @@ bool Minion::Is(std::string type){
 void Minion::Shoot(Vec2 target){
 
   GameObject *bullet_object = new GameObject();
-  std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
+  std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetCurrentState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
   std::shared_ptr<GameObject> bullet = weak_bullet.lock();
   // Vec2 shoot_dist = (target - associated.box.GetCenter());// a distância do tiro é o vetor resultante da diferença da posição do tiro e da posição do minion que vai atirar
 

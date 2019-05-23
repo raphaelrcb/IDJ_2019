@@ -19,13 +19,13 @@
 #define ALIEN_SPEED 400 //valor da variação de velocidade dado ao objeto caso ele se movimente
 #define ALIEN_ANG_SPEED 30
 #define DISTANCE_RANGE 200
-#define N_MINIONS 5
+#define N_MINIONS 6
 #define ALIEN_COOLDOWN 0.3
 
 #define ALIEN_DEATH_SPRITES "assets/img/aliendeath.png"
 #define ALIEN_DEATH_SOUND "assets/audio/boom.wav"
 #define ALIEN_DEATH_FRAMECOUNT 4
-#define ALIEN_DEATH_FRAMETIME 0.2
+#define ALIEN_DEATH_FRAMETIME 0.5
 
 class Alien : public Component {
 

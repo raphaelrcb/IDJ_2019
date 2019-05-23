@@ -29,13 +29,13 @@ PenguinBody::~PenguinBody(){
 void PenguinBody::Start(){
 
   GameObject *penguinc_object = new GameObject();
-  pcannon =  Game::GetInstance().GetState().AddObject(penguinc_object);
+  pcannon =  Game::GetInstance().GetCurrentState().AddObject(penguinc_object);
   std::shared_ptr<GameObject> penguin_cannon = pcannon.lock();
 
   penguin_cannon->box.x = associated.box.x;
   penguin_cannon->box.y = associated.box.y;
 
-  std::weak_ptr<GameObject> weak_pbody = Game::GetInstance().GetState().GetObjectPtr(&associated);
+  std::weak_ptr<GameObject> weak_pbody = Game::GetInstance().GetCurrentState().GetObjectPtr(&associated);
 
   std::shared_ptr<PenguinCannon> penguin_c(new PenguinCannon(*penguin_cannon, weak_pbody));
   penguin_cannon->AddComponent(penguin_c);
@@ -102,7 +102,7 @@ void PenguinBody::Update(float dt){
     // std::cout << "morreu" << '\n';
 
     GameObject *death_object = new GameObject();
-    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetState().AddObject(death_object);//
+    std::weak_ptr<GameObject> weak_death =  Game::GetInstance().GetCurrentState().AddObject(death_object);//
     std::shared_ptr<GameObject> death = weak_death.lock();
 
     std::shared_ptr<Sprite> death_sprite(new Sprite(*death, PENGUIN_DEATH_SPRITES, PENGUIN_DEATH_FRAMECOUNT, PENGUIN_DEATH_FRAMETIME, PENGUIN_DEATH_FRAMECOUNT*PENGUIN_DEATH_FRAMETIME));

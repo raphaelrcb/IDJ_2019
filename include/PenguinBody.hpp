@@ -10,11 +10,11 @@
 
 
 #define PENGUINBODY_PATH "assets/img/penguin.png"
-#define PENGUIN_DELTA_SPEED 200
-#define PENGUIN_MAX_SPEED 500
-#define PENGUIN_MIN_SPEED -500
+#define PENGUIN_DELTA_SPEED 300
+#define PENGUIN_MAX_SPEED 400
+#define PENGUIN_MIN_SPEED -400
 #define PENGUIN_ANGULAR_SPEED 200
-#define FRICTION 500
+#define FRICTION 200
 
 #define PENGUIN_DEATH_SPRITES "assets/img/penguindeath.png"
 #define PENGUIN_DEATH_SOUND "assets/audio/boom.wav"

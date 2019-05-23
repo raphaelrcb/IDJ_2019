@@ -1,0 +1,65 @@
+#include "../include/TitleState.hpp"
+#include "../include/Game.hpp"
+
+TitleState::TitleState(){
+
+  GameObject *title_object = new GameObject();
+
+  std::weak_ptr<GameObject> weak_title = AddObject(title_object);
+  std::shared_ptr<GameObject> title = weak_title.lock();
+
+  title->box.x = 0;
+  title->box.y = 0;
+
+  std::shared_ptr<Sprite> title_sprite(new Sprite(*title, TITLE_PATH));
+  std::shared_ptr<CameraFollower> CamFollow(new CameraFollower(*title));
+
+  title->AddComponent(title_sprite);
+  title->AddComponent(CamFollow);
+}
+
+TitleState::~TitleState(){
+  objectArray.clear();
+}
+
+
+void TitleState::LoadAssets(){
+
+}
+
+void TitleState::Update(float dt){
+
+  InputManager& input = InputManager::GetInstance();
+  Game& game = Game::GetInstance();
+
+  if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
+    std::cout << "pediu pra sair do jogo" << '\n';
+    quitRequested = true;
+  }
+
+  if (input.KeyPress(SPACE_KEY)) {
+    std::cout << "espaço" << '\n';
+    StageState* stageState = new StageState();
+    game.Push(stageState);
+  }
+
+  UpdateArray(dt);
+}
+
+void TitleState::Render(){
+  RenderArray();
+}
+
+
+void TitleState::Start(){
+  LoadAssets();
+  StartArray();
+  started = true;
+}
+
+void TitleState::Pause(){
+
+}
+
+void TitleState::Resume(){
+}

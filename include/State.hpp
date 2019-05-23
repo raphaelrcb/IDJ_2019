@@ -2,48 +2,50 @@
 
 #include <ctime>
 #include <cstdlib>
+#include <stdbool.h>
 
-#include "Component.hpp"
+// #include "Component.hpp"
 #include "GameObject.hpp"
-#include "Sound.hpp"
-#include "Sprite.hpp"
-#include "TileMap.hpp"
-#include "CameraFollower.hpp"
-#include "Music.hpp"
-#include "InputManager.hpp"
-#include "Alien.hpp"
-#include "PenguinBody.hpp"
-#include "Collider.hpp"
+// #include "Sound.hpp"
+// #include "Sprite.hpp"
+// #include "TileMap.hpp"
+// #include "CameraFollower.hpp"
+// #include "Music.hpp"
+// #include "InputManager.hpp"
+// #include "Alien.hpp"
+// #include "PenguinBody.hpp"
+// #include "Collider.hpp"
 
+class State {
 
-#define PI 3.14159265359
-#define BG_PATH "assets/img/ocean.jpg"
-#define TILESET_PATH "assets/img/tileset.png"
-#define TILEMAP_PATH "assets/map/tileMap.txt"
-#define MUSIC_PATH "assets/audio/stageState.ogg"
-#define N_MINIONS 5
+protected:
 
-class State{
+  void StartArray();
+  virtual void UpdateArray(float dt);
+  virtual void RenderArray();
 
-private:
-  // Sprite bg;
-  Music music;
-
+  bool popRequested;
   bool quitRequested;
   bool started;
+
   std::vector< std::shared_ptr<GameObject> > objectArray;
 
 public:
 
   State();
-  ~State();
+  virtual ~State();
 
-  std::weak_ptr<GameObject> AddObject(GameObject* go);
-  std::weak_ptr<GameObject> GetObjectPtr(GameObject* go);
+  virtual void LoadAssets() = 0;
+  virtual void Update(float dt) = 0;
+  virtual void Start() = 0;
+  virtual void Render() = 0;
+  virtual void Pause() = 0;
+  virtual void Resume() = 0;
 
-  void Start();
+  virtual std::weak_ptr<GameObject> AddObject(GameObject* object);
+  virtual std::weak_ptr<GameObject> GetObjectPtr(GameObject* object);
+
+  bool PopRequested();
   bool QuitRequested();
-  void LoadAssets();
-  void Update(float dt);
-  void Render();
+
 };

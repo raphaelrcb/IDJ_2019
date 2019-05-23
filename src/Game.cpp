@@ -59,7 +59,7 @@ Game::Game (std::string title, int width, int height){
       }
     }
   }
-  state = new State();//instancia um novo estado
+  storedState = nullptr;
   srand(time(NULL));
 
 }
@@ -79,6 +79,19 @@ Game& Game::GetInstance(){//cria a instância do jogo
 }
 
 Game::~Game(){//destrutor desfaz as inicializações, deleta o estado, ecerra SDL_Music e SDL_image, destrói o renderizador e a janela e encerra a SDL
+
+  if (storedState != nullptr) {
+    delete storedState;
+  }
+
+  while(!stateStack.empty()){
+    stateStack.pop();
+  }
+
+  Resources::ClearImages();
+  Resources::ClearMusics();
+  Resources::ClearSounds();
+
   Mix_CloseAudio();
   Mix_Quit();
   IMG_Quit();
@@ -87,8 +100,8 @@ Game::~Game(){//destrutor desfaz as inicializações, deleta o estado, ecerra SD
   SDL_Quit();
 }
 
-State& Game::GetState(){//Retorna o estado atual
-  return *state;
+State& Game::GetCurrentState(){//Retorna o estado atual
+  return *(stateStack.top());
 }
 
 SDL_Renderer* Game::GetRenderer(){//Retorna o renderer a ser usado
@@ -99,7 +112,6 @@ void Game::CalculateDeltaTime(){
   int previousFrame = frameStart;
   frameStart = (float)SDL_GetTicks();
   dt = float(frameStart - previousFrame)/1000;
-
   // std::cout << "previousFrame: " << previousFrame << " -- frameStart: " << frameStart << " -- dt:  " << dt << '\n';
 }
 
@@ -110,13 +122,49 @@ float Game::GetDeltaTime(){
 void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, porém nesse trabalho apenas as etapas 3 e 4
 
   InputManager& input = InputManager::GetInstance();
-  state->Start();
+  // state->Start();
 
-  while(state->QuitRequested() != true){
+  if (storedState == nullptr) {//se não houver um estado inicial, encerra o jogo
+    return;
+  }
+  else{//armazena o estado inicial na pilha e o inicializa
+    stateStack.emplace(storedState);
+    stateStack.top()->Start();
+    storedState = nullptr;//não tem mais estado guardado já que o que estava foi pra pilha
+  }
+
+
+  while(stateStack.top()->QuitRequested() != true && !stateStack.empty()){//enquanto um estado não pediu pra sair e a pilha não estiver vazia
+
+    // std::cout << "while" << '\n';
+    if (stateStack.top()->PopRequested()) {//
+      stateStack.pop();//se um estado pediu pra sair da pilha, pop nele
+      // std::cout << "popRequested" << '\n';
+
+
+      if (!stateStack.empty()) {//se a pilha nnão estiver vazia após o pop, retoma o estado no topo
+        stateStack.top()->Resume();
+      }
+    }
+
+    if (storedState != nullptr) {//se tinha algum estado guardado
+
+      if (!stateStack.empty()) {//se a pilha não estava vazia, pausa o estado do topo para inciar o novo (que estava guardado)
+        stateStack.top()->Pause();
+      }
+      // std::cout << "colocou novo state na pilha" << '\n';
+      stateStack.emplace(storedState);//armazena o estado guradado na pilha
+      stateStack.top()->Start();//inicializa o novo estado no topo
+      storedState = nullptr;//nçao tem mais estado guardado
+    }
+    if (stateStack.empty()) {//se a pilha estiver vazia, sai do loop
+      break;
+    }
+    std::cout << stateStack.size() << '\n';
     CalculateDeltaTime();
     input.Update();
-    state->Update(dt);//etapa 3
-    state->Render();//etapa 4
+    stateStack.top()->Update(dt);
+    stateStack.top()->Render();
     SDL_RenderPresent(Game::GetInstance().GetRenderer());
     SDL_Delay(33);//impõe-se um limite de framerate, com um delay de 33ms, nos dará aproximadamente 30 FPS, (usado para não usar 100% di cpu já que é desnecessário)
   }
@@ -124,4 +172,8 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
   Resources::ClearImages();
   Resources::ClearMusics();
   Resources::ClearSounds();
+}
+
+void Game::Push(State* state){
+  storedState = state;
 }

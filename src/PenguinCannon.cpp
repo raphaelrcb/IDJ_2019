@@ -51,7 +51,7 @@ bool PenguinCannon::Is(std::string type){
 void PenguinCannon::Shoot(){
 
   GameObject *bullet_object = new GameObject();
-  std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
+  std::weak_ptr<GameObject> weak_bullet =  Game::GetInstance().GetCurrentState().AddObject(bullet_object);//pega a função AddObject do state para adicionar o novo bullet ao array de objetos
   std::shared_ptr<GameObject> bullet = weak_bullet.lock();
 
   bullet->box.x = associated.box.x + associated.box.w/2 + cos(angle)*associated.box.w/2 + cos(angle)*associated.box.h/2;
