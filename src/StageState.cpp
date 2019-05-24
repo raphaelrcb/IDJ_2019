@@ -1,5 +1,6 @@
 #include "../include/StageState.hpp"
 #include "../include/Game.hpp"
+#include "../include/GameData.hpp"
 
 
 
@@ -33,16 +34,22 @@ StageState::StageState(){
 
   tileObject->AddComponent(tileMap);
 
-  ////////////////ALIEN
-  GameObject *alien_object = new GameObject();
+  ////////////////ALIENS
+  float nAliens = 2 + ( (rand() % 3) );
 
-  std::weak_ptr<GameObject> weak_alien =  AddObject(alien_object);
-  std::shared_ptr<GameObject> alien = weak_alien.lock();
-  std::shared_ptr<Alien> alien_s(new Alien(*alien, N_MINIONS));
+  // int nAliens = 3;
+  for (int i = 0; i < nAliens; i++) {
+    /* code */
+    GameObject *alien_object = new GameObject();
 
-  alien->box.x = 512 - alien->box.w/2;
-  alien->box.y = 300 - alien->box.h/2;
-  alien->AddComponent(alien_s);
+    std::weak_ptr<GameObject> weak_alien =  AddObject(alien_object);
+    std::shared_ptr<GameObject> alien = weak_alien.lock();
+    std::shared_ptr<Alien> alien_s(new Alien(*alien, N_MINIONS, i*0.9));
+
+    alien->box.x = 512 - (1+15*i)*alien->box.w/2;
+    alien->box.y = 300 - (1-15*i)*alien->box.h/2;
+    alien->AddComponent(alien_s);
+  }
 
   ////////////////PENGUIN
   GameObject *penguin_object = new GameObject();
@@ -75,6 +82,7 @@ void StageState::LoadAssets(){
 void StageState::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, por enquanto apenas verifica se já vai sair do jogo
 
   InputManager& input = InputManager::GetInstance();
+  Game& game = Game::GetInstance();
   Camera::Update(dt);
 
   if(input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
@@ -82,6 +90,19 @@ void StageState::Update(float dt){//etapa 3 de  Game::Run, atualiza o estado, po
   }
 
   // std::cout<< "n objects = " << objectArray.size() << '\n';
+
+  if (Alien::alienCount == 0) {//se o pinguin derrotou todos os aliens, ele foi vitorioso e salvou o mundo
+    popRequested = true;
+    GameData::playerVictory = true;
+    EndState* endState = new EndState();
+    game.Push(endState);
+  }
+  else if (PenguinBody::player == nullptr && Alien::alienCount > 0) {//se o pinguin morreu e sobraram aliens, ele foi derrotado e o mundo está condenada
+    popRequested = true;
+    GameData::playerVictory = false;
+    EndState* endState = new EndState();
+    game.Push(endState);
+  }
 
   for (unsigned int i = 0; i < objectArray.size(); i++) {
     if (objectArray[i]->IsDead()) {

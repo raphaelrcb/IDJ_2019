@@ -10,6 +10,7 @@
 #include "Alien.hpp"
 #include "PenguinBody.hpp"
 #include "Collider.hpp"
+#include "EndState.hpp"
 
 #define PI 3.14159265359
 #define BG_PATH "assets/img/ocean.jpg"

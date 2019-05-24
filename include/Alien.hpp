@@ -19,7 +19,7 @@
 #define ALIEN_SPEED 400 //valor da variação de velocidade dado ao objeto caso ele se movimente
 #define ALIEN_ANG_SPEED 30
 #define DISTANCE_RANGE 200
-#define N_MINIONS 6
+#define N_MINIONS 4
 #define ALIEN_COOLDOWN 0.3
 
 #define ALIEN_DEATH_SPRITES "assets/img/aliendeath.png"
@@ -39,9 +39,10 @@ private:
   AlienState state;
   Timer restTimer;
   Vec2 destination;
+  float timeOffset;
 
 public:
-  Alien(GameObject& associated, int nMinions);
+  Alien(GameObject& associated, int nMinions, float timeOffset = 0);
   ~Alien();
 
   void Start();

@@ -5,7 +5,7 @@
 
 int Alien::alienCount = 0;
 
-Alien::Alien(GameObject& associated, int nMinions)
+Alien::Alien(GameObject& associated, int nMinions, float timeOffset)
                                                   :Component(associated),
                                                    state(RESTING){
 
@@ -15,12 +15,11 @@ Alien::Alien(GameObject& associated, int nMinions)
 
   std::shared_ptr<Collider> alien_collider(new Collider(associated, {0.8, 0.8}));//criando a sprite e adicionando ao vetor de Components
   associated.AddComponent(alien_collider);
-  // hp = ( (rand() % 6) )*100.0 + 1000;//cria uma escala aleatória entre 1 e 1.5
   hp = 1500;
 
-  // hp = (std::rand() % 6)*100 + 1000;
   this->nMinions = nMinions;
   this->alienCount++;
+  this->timeOffset = timeOffset;
   speed.x = 0;
   speed.y = 0;
 
@@ -64,7 +63,7 @@ void Alien::Update(float dt){
     switch (state) {
 
       case RESTING:
-        if (restTimer.Get() >= ALIEN_COOLDOWN) {
+        if (restTimer.Get() >= ALIEN_COOLDOWN + timeOffset) {
           if (PenguinBody::player != nullptr) {
             destination = PenguinBody::player->Position();
           }
