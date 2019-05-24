@@ -14,7 +14,7 @@ class Text: public Component{//implementar update, is e render da classe mãe (c
 
     enum TextStyle {SOLID, SHADED, BLENDED};
 
-    Text(GameObject& associated, std::string fontFile, int fontSize, TextStyle style, std::string text, SDL_Color color);
+    Text(GameObject& associated, std::string fontFile, int fontSize, TextStyle style, std::string text, SDL_Color color, SDL_Color bgcolor);
     ~Text();
 
     void Update(float dt);
@@ -23,6 +23,7 @@ class Text: public Component{//implementar update, is e render da classe mãe (c
 
     void SetText(std::string text);
     void SetColor(SDL_Color color);
+    void SetBGColor(SDL_Color bgcolor);
     void SetStyle(TextStyle style);
     void SetFontFile(std::string fontFile);
     void SetFontSize(int fontSize);
@@ -32,10 +33,12 @@ class Text: public Component{//implementar update, is e render da classe mãe (c
 private:
 
     std::shared_ptr<TTF_Font> font;
-    std::shared_ptr<SDL_Texture> texture;
+    SDL_Texture* texture;
     std::string text;
     TextStyle style;
+    std::string fontFile;
     int fontSize;
     SDL_Color color;
+    SDL_Color bgcolor;
 
 };

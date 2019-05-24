@@ -13,12 +13,6 @@ Sound::Sound(GameObject& associated, std::string file):Component(associated){
 }
 
 Sound::~Sound(){
-  // std::cout << "destructor" << '\n';
-  // if (chunk != nullptr) {
-  //   while(Mix_Playing(channel));
-  //   Mix_HaltChannel(channel);
-  // }
-  // Mix_FreeChunk(chunk);
 }
 
 void Sound::Play(int times){

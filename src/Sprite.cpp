@@ -37,7 +37,6 @@ Sprite::~Sprite(){
 
 void Sprite::Open(std::string file){//carrega a imagem indicada pelo caminho file
 
-  // SDL_DestroyTexture(texture);
   texture = Resources::GetImage(file);
 
   if (texture == nullptr){

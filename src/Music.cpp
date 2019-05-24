@@ -46,5 +46,4 @@ bool Music::IsOpen(){//checa se a música é nula
 
 Music::~Music(){//destrutor, chama stop e libera a música da memória
  Stop(0);//passando 0 pra a função Mix_FadeOutMusic em Stop, a música para instantaneamente
- // Mix_FreeMusic(music);
 }
