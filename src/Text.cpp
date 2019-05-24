@@ -1,8 +1,9 @@
 #include "../include/Text.hpp"
 #include "../include/Camera.hpp"
 #include "../include/Game.hpp"
+#include "../include/Resources.hpp"
 
-Text::Text(GameObject& associated, std::string fontFile, int fontSize, TextStyle style, std::string text, SDL_Color color, SDL_Color bgcolor):Component(associated){
+Text::Text(GameObject& associated, std::string fontFile, int fontSize, TextStyle style, std::string text, SDL_Color color, float screenTime, SDL_Color bgcolor):Component(associated){
 
   this->fontFile = fontFile;
   this->fontSize = fontSize;
@@ -10,6 +11,7 @@ Text::Text(GameObject& associated, std::string fontFile, int fontSize, TextStyle
   this->text = text;
   this->color = color;
   this->bgcolor = bgcolor;
+  this->screenTime = screenTime;
   texture = nullptr;
   font = nullptr;
 
@@ -25,6 +27,16 @@ Text::~Text(){
 
 void Text::Update(float dt){
 
+  if (screenTime > 0) {
+    static Timer OnOff;
+    // std::cout << onScreen << " - " << OnOff.Get() << '\n';
+    OnOff.Update(dt);
+    if (OnOff.Get() > screenTime) {
+      SDL_SetTextureAlphaMod(texture, 255*onScreen);
+      (onScreen%2 == 0 ) ? (onScreen++) : (onScreen--);
+      OnOff.Restart();
+    }
+  }
 }
 
 void Text::Render(){
@@ -77,6 +89,10 @@ void Text::SetFontSize(int fontSize){
   this->fontSize = fontSize;
   RemakeTexture();
 
+}
+
+void Text::SetScreenTime(float screenTime){
+  this->screenTime = screenTime;
 }
 
 void Text::RemakeTexture(){

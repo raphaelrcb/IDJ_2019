@@ -22,7 +22,7 @@ TitleState::TitleState(){
   std::weak_ptr<GameObject> weak_text = AddObject(text_object);
   std::shared_ptr<GameObject> text = weak_text.lock();
 
-  std::shared_ptr<Text> title_text(new Text(*text, FONT_PATH, FONT_SIZE, Text::BLENDED, TITLE_TEXT, TEXT_COLOR, {0, 0, 0, 0}));
+  std::shared_ptr<Text> title_text(new Text(*text, FONT_PATH, FONT_SIZE, Text::BLENDED, TITLE_TEXT, TEXT_COLOR, SCREEN_TIME));
   text->box.x = 512 - text->box.w/2;
   text->box.y = 512 - text->box.h/2;
   text->AddComponent(title_text);
@@ -70,4 +70,6 @@ void TitleState::Pause(){
 }
 
 void TitleState::Resume(){
+    Camera::pos.x = 0;//retorna a câmera para posição inicial
+    Camera::pos.y = 0;
 }
