@@ -94,6 +94,19 @@ void PenguinBody::Update(float dt){
   associated.box.x += speed.x*dt;
   associated.box.y += speed.y*dt;
 
+  if (associated.box.x >= ( 1408 - associated.box.w) ) {// limita o pinguin a não sair do mapa pelo lado direito
+    associated.box.x = 1408 - associated.box.w;
+  }
+  if (associated.box.x <= 0 ) {// limita o pinguin a não sair do mapa pelo lado esquerdo
+    associated.box.x = 0;
+  }
+  if (associated.box.y >= ( 1280 - associated.box.h) ) {// limita o pinguin a não sair do mapa por cima
+    associated.box.y = 1280 - associated.box.h;
+  }
+  if (associated.box.y <= 0 ) {// limita o pinguin a não sair do mapa por baixo
+    associated.box.y = 0;
+  }
+
   if (hp <= 0) {
     hp = 0;
     associated.RequestDelete();
