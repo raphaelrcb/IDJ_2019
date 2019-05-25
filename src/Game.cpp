@@ -144,6 +144,8 @@ void Game::Run(){//loop principal do jogo, será implementado em 4 etapas, poré
     if (stateStack.top()->PopRequested()) {//
       stateStack.pop();//se um estado pediu pra sair da pilha, pop nele
       Resources::ClearImages();
+      Resources::ClearMusics();
+      Resources::ClearSounds();
       Resources::ClearFonts();
 
       if (!stateStack.empty()) {//se a pilha nnão estiver vazia após o pop, retoma o estado no topo

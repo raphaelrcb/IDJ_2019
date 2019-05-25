@@ -4,11 +4,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL_include.h>
+#include <memory>
 
 class Music{
 
 private:
-  Mix_Music* music;
+  std::shared_ptr<Mix_Music> music;
 
 public:
 

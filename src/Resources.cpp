@@ -3,9 +3,9 @@
 // #include "Game.hpp"
 
 // Inicializa as variáveis estáticas da classe
-std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
-std::unordered_map<std::string, Mix_Music*> Resources::musicTable;
-std::unordered_map<std::string, Mix_Chunk*> Resources::soundTable;
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture> > Resources::imageTable;
+std::unordered_map<std::string, std::shared_ptr<Mix_Music> > Resources::musicTable;
+std::unordered_map<std::string, std::shared_ptr<Mix_Chunk> > Resources::soundTable;
 std::unordered_map<std::string, std::shared_ptr<TTF_Font> > Resources::fontTable;
 
 
@@ -50,14 +50,14 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
  }
 
 
- Mix_Music* Resources::GetMusic(std::string file){
+std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file){
 
-   std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.find(file);//procura o arquivo solicitado na tabela de Músicas
-
+   std::unordered_map<std::string, std::shared_ptr<Mix_Music> >::const_iterator it = musicTable.find(file);//procura o arquivo solicitado na tabela de Músicas
    if ( it == musicTable.end() ){//Caso não encontre a música, abre e aloca ela na memória
 
      const char* path = file.c_str();
-     Mix_Music* music = Mix_LoadMUS(path);
+     Mix_Music* raw_music = Mix_LoadMUS(path);
+     std::shared_ptr<Mix_Music> music(raw_music, [](Mix_Music* delete_music){Mix_FreeMusic(delete_music); } );
 
      if (music == nullptr){
          std::cout << "Error loading music, Error code: "<< SDL_GetError() << std::endl;
@@ -71,24 +71,29 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
  }
 
  void Resources::ClearMusics(){
-
-   std::unordered_map<std::string, Mix_Music*>::const_iterator it = musicTable.begin();
+   std::unordered_map<std::string, std::shared_ptr<Mix_Music> >::const_iterator it = musicTable.begin();
 
    while (it != musicTable.end()) {//para todos as musicas na tabela, desaloca a memória e apaga da tabela
-     Mix_FreeMusic(it->second);
-     it = musicTable.erase(it);
+     // Mix_FreeMusic(it->second);
+     if (it->second.unique()) {
+       it = musicTable.erase(it);
+     }
+     else{
+       it++;
+     }
    }
-   musicTable.clear();//limpa a tabela
+   // musicTable.clear();//limpa a tabela
  }
 
 
- Mix_Chunk* Resources::GetSound(std::string file){// Funciona de forma semelhante à GetImage e GetMusic
-   std::unordered_map<std::string, Mix_Chunk*>::const_iterator it = soundTable.find(file);
+std::shared_ptr<Mix_Chunk> Resources::GetSound(std::string file){// Funciona de forma semelhante à GetImage e GetMusic
 
+   std::unordered_map<std::string, std::shared_ptr<Mix_Chunk> >::const_iterator it = soundTable.find(file);
    if ( it == soundTable.end() ){
 
      const char* path = file.c_str();
-     Mix_Chunk* chunk = Mix_LoadWAV(path);
+     Mix_Chunk* raw_chunk = Mix_LoadWAV(path);
+     std::shared_ptr<Mix_Chunk> chunk(raw_chunk, [](Mix_Chunk* delete_chunk){Mix_FreeChunk(delete_chunk); } );
 
      if (chunk == nullptr){
          std::cout << "Error loading chunk, Error code: "<< SDL_GetError() << std::endl;
@@ -102,13 +107,18 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file){
  }
 
  void Resources::ClearSounds(){// Funciona de forma semelhante à ClearImages e ClearMusics
-   std::unordered_map<std::string, Mix_Chunk*>::const_iterator it = soundTable.begin();
+   std::unordered_map<std::string, std::shared_ptr<Mix_Chunk> >::const_iterator it = soundTable.begin();
 
    while (it != soundTable.end()) {
-     Mix_FreeChunk(it->second);
-     it = soundTable.erase(it);
+     // Mix_FreeChunk(it->second);
+     if (it->second.unique()) {
+       it = soundTable.erase(it);
+     }
+     else{
+       it++;
+     }
    }
-   soundTable.clear();
+   // soundTable.clear();
  }
 
  std::shared_ptr<TTF_Font> Resources::GetFont(std::string file, int fontSize){

@@ -17,7 +17,7 @@ Sound::~Sound(){
 
 void Sound::Play(int times){
   if (chunk != nullptr) {
-    channel = Mix_PlayChannel(empty_channel, chunk, times -1); //empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
+    channel = Mix_PlayChannel(empty_channel, chunk.get(), times -1); //empty_channel = -1 a função escolherá o primeiro canal vazio e retornará o número dele
                                                               // loops indica quantas vezes o som deve ser repetido, ou seja, loops = 1 faz tocar duas vezes.
   } else {
     std::cout << "Chunk null, can't play sound, Error code: "<< SDL_GetError() << std::endl;
@@ -57,9 +57,5 @@ void Sound::Render(){
 }
 
 bool Sound::Is(std::string type){
-  if (type == "Sound") {
-    return true;
-  } else {
-    return false;
-  }
+  return (type == "Sound");
 }
