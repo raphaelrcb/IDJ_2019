@@ -124,7 +124,6 @@ void Alien::Update(float dt){
   // }
 
   if (hp <= 0) {//se a vida do alien chegar a zero ou menos, ele morre e o objeto é deletado
-    std::cout << "morreu" << '\n';
     hp = 0;
 
     GameObject *death_object = new GameObject();

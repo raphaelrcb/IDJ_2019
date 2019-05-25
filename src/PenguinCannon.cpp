@@ -1,6 +1,5 @@
 #include "../include/PenguinCannon.hpp"
 
-
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody):Component(associated){
 
   pbody = penguinBody;//inicializando as variáveis
@@ -42,12 +41,12 @@ void PenguinCannon::Update(float dt){
 }
 
 void PenguinCannon::Render(){
-
 }
 
 bool PenguinCannon::Is(std::string type){
   return (type == "PenginCannon");
 }
+
 void PenguinCannon::Shoot(){
 
   GameObject *bullet_object = new GameObject();
@@ -58,9 +57,8 @@ void PenguinCannon::Shoot(){
   bullet->box.y = associated.box.y + associated.box.h/2 + sin(angle)*associated.box.w/2 + sin(angle)*associated.box.h/2;
   //coloca o posição da bullet no ponto em que o tiro vai sair, que é a ponta do canhão
 
-  // std::cout << "saída    = "<< bullet->box.x << " " << bullet->box.y << '\n';
 
-  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, BULLET_SPEED, BULLET_DAMAGE, PENGUIN_BULLET_RANGE, PENGUIN_BULLET_PATH, PENGUIN_BULLET_FRAMECOUNT, PENGUIN_BULLET_FRAMETIME, false));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
+  std::shared_ptr<Bullet> bullet_s(new Bullet(*bullet, angle, PENGUIN_BULLET_SPEED, BULLET_DAMAGE, PENGUIN_BULLET_RANGE, PENGUIN_BULLET_PATH, PENGUIN_BULLET_FRAMECOUNT, PENGUIN_BULLET_FRAMETIME, false));//divide o arco de 360 graus pela quantidade de bullets desejada para que tenham a mesma distância entre si
   bullet->AddComponent(bullet_s);
 
   bullet->box.x -= bullet->box.w/2;//compensa o tamanho da bullet na posição dela

@@ -62,7 +62,7 @@ std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file){
      if (music == nullptr){
          std::cout << "Error loading music, Error code: "<< SDL_GetError() << std::endl;
      } else {
-       musicTable.emplace (file, music);//coloca a música e seu caminho na tabela
+       musicTable.emplace(file, music);//coloca a música e seu caminho na tabela
        return music;
      }
 
