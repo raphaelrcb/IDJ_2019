@@ -27,14 +27,20 @@ Text::~Text(){
 
 void Text::Update(float dt){
 
+  // if (screenTime > 0) {
+  //   OnOff.Update(dt);
+  //   if (OnOff.Get() > screenTime) {
+  //     SDL_SetTextureAlphaMod(texture, 255*onScreen);
+  //     (onScreen%2 == 0 ) ? (onScreen++) : (onScreen--);
+  //     OnOff.Restart();
+  //   }
+  // }
   if (screenTime > 0) {
-    static Timer OnOff;
-    // std::cout << onScreen << " - " << OnOff.Get() << '\n';
-    OnOff.Update(dt);
     if (OnOff.Get() > screenTime) {
-      SDL_SetTextureAlphaMod(texture, 255*onScreen);
-      (onScreen%2 == 0 ) ? (onScreen++) : (onScreen--);
       OnOff.Restart();
+    }
+    else {
+      OnOff.Update(dt);
     }
   }
 }
@@ -42,14 +48,40 @@ void Text::Update(float dt){
 void Text::Render(){
 
   int RenderError;
-  SDL_Rect clipRect = {0,0, (int)associated.box.w, (int)associated.box.h};
-  SDL_Rect dstrect = {(int)associated.box.x + (int)Camera::pos.x, (int)associated.box.y + (int)Camera::pos.y, clipRect.w, clipRect.h};
 
-  RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
-  if (RenderError != 0) {
-    std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
+  if (screenTime > 0) {
+    if (OnOff.Get() > screenTime) {
+      (onScreen%2 == 0 ) ? (onScreen++) : (onScreen--);
+    }
+    if (onScreen == 1) {
+      SDL_Rect clipRect = {0,0, (int)associated.box.w, (int)associated.box.h};
+      SDL_Rect dstrect = {(int)associated.box.x + (int)Camera::pos.x, (int)associated.box.y + (int)Camera::pos.y, clipRect.w, clipRect.h};
+
+      RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
+      if (RenderError != 0) {
+        std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
+      }
+    }
+
+  }
+  else if (screenTime == 0) {
+    SDL_Rect clipRect = {0,0, (int)associated.box.w, (int)associated.box.h};
+    SDL_Rect dstrect = {(int)associated.box.x + (int)Camera::pos.x, (int)associated.box.y + (int)Camera::pos.y, clipRect.w, clipRect.h};
+
+    RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
+    if (RenderError != 0) {
+      std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
+    }
   }
 
+  // int RenderError;
+  // SDL_Rect clipRect = {0,0, (int)associated.box.w, (int)associated.box.h};
+  // SDL_Rect dstrect = {(int)associated.box.x + (int)Camera::pos.x, (int)associated.box.y + (int)Camera::pos.y, clipRect.w, clipRect.h};
+  //
+  // RenderError = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, associated.angleDeg, nullptr, SDL_FLIP_NONE);
+  // if (RenderError != 0) {
+  //   std::cout << "Failed to Render Texture, error code: " << SDL_GetError() <<", texture = " << texture << std::endl;
+  // }
 }
 
 bool Text::Is(std::string type){

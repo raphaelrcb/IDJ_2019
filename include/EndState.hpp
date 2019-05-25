@@ -19,7 +19,7 @@
 #define TITLE_PATH "assets/img/title.jpg"
 #define FONT_PATH "assets/font/Call me maybe.ttf"
 #define END_FONT_SIZE 40
-#define END_SCREEN_TIME 0.7
+#define END_SCREEN_TIME 1
 
 
 

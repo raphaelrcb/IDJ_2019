@@ -42,6 +42,7 @@ private:
     SDL_Color color;
     SDL_Color bgcolor;
 
+    Timer OnOff;
     float screenTime;
     int onScreen = 0;
 };

@@ -49,13 +49,12 @@ EndState::EndState(){
     std::weak_ptr<GameObject> weak_lost_text = AddObject(lost_text_object);
     std::shared_ptr<GameObject> lost_text = weak_lost_text.lock();
 
-    std::shared_ptr<Text> you_lost(new Text(*lost_text, FONT_PATH, END_FONT_SIZE, Text::BLENDED, DEFEAT_MSG, TEXT_COLOR));
+    std::shared_ptr<Text> you_lost(new Text(*lost_text, FONT_PATH, END_FONT_SIZE, Text::BLENDED, DEFEAT_MSG, TEXT_COLOR, END_SCREEN_TIME));
     lost_text->box.x = 512 - lost_text->box.w/2;
     lost_text->box.y = 50 - lost_text->box.h/2;
     lost_text->AddComponent(you_lost);
 
     backgroundMusic.Open(DEFEAT_MUSIC);
-    // backgroundMusic.Play(-1);
   }
 
   GameObject *instruction_object = new GameObject();
@@ -63,7 +62,7 @@ EndState::EndState(){
   std::weak_ptr<GameObject> weak_instruction = AddObject(instruction_object);
   std::shared_ptr<GameObject> instruction = weak_instruction.lock();
 
-  std::shared_ptr<Text> instruction_text(new Text(*instruction, FONT_PATH, END_FONT_SIZE, Text::BLENDED, INSTRUCTION_MSG, TEXT_COLOR));
+  std::shared_ptr<Text> instruction_text(new Text(*instruction, FONT_PATH, END_FONT_SIZE, Text::BLENDED, INSTRUCTION_MSG, TEXT_COLOR, END_SCREEN_TIME));
   instruction->box.x = 512 - instruction->box.w/2;
   instruction->box.y = 550 - instruction->box.h/2;
   instruction->AddComponent(instruction_text);

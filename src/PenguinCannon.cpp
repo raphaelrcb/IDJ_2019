@@ -27,7 +27,6 @@ void PenguinCannon::Update(float dt){
     associated.box.x = penguin_body->box.x + penguin_body->box.w/2 - associated.box.w/2;
     associated.box.y = penguin_body->box.y + penguin_body->box.h/2 - associated.box.h/2;
     angle = atan2(mouse.y - (associated.box.y + associated.box.h/2) - Camera::pos.y, mouse.x - (associated.box.x + associated.box.w/2)  - Camera::pos.x);
-    // std::cout << angle*180/PI << '\n';
     associated.angleDeg = angle*180/PI;
 
     cooldown.Update(dt);
