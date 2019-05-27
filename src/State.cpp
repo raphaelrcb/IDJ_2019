@@ -1,4 +1,6 @@
 #include "../include/State.hpp"
+#include "../include/Camera.hpp"
+#include "../include/TileMap.hpp"
 
 State::State(){
   quitRequested = false;
@@ -85,7 +87,24 @@ void State::UpdateArray(float dt){
 }
 
 void State::RenderArray(){
+
+  std::shared_ptr<TileMap> tile_map;
+
   for (unsigned int i = 0; i < objectArray.size(); i++) {
     objectArray[i]->Render();
+    if (objectArray[i]->GetComponent("TileMap") != nullptr) {
+      tile_map = std::dynamic_pointer_cast<TileMap>(objectArray[i]->GetComponent("TileMap"));
+    }
+  }
+  if (tile_map != nullptr) {
+    // for (int i = 1; i < tile_map->GetDepth(); i++) {
+      Camera::ParallaxUpdate(tile_map->GetDepth() - 1, false);
+      tile_map->RenderLayer(tile_map->GetDepth() - 1,  Camera::pos.x, Camera::pos.y);
+      Camera::ParallaxUpdate(tile_map->GetDepth() - 1, true);
+    // }
   }
 }
+
+// Camera::ParallaxUpdate(tile_map->GetWidth()-1, false);
+// tile_map->RenderLayer(tile_map->GetWidth()-1, Camera::pos.x*( 1 +tile_map->GetWidth()-1 ), Camera::pos.y*(1 +tile_map->GetWidth()-1 ) );
+// Camera::ParallaxUpdate(tile_map->GetWidth()-1, true);
